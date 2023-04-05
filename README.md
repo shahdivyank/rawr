@@ -5,11 +5,14 @@
 ### Compiler Name: <b>rawr-lc</b>
 
 # integer schema variable 
-int 
+int <br /> 
 1D arrays
-char 
-string 
 
 # assignment 
-a = b
+|         Features         |           Syntax            |
+| :----------------------: | :-------------------------: |
+| Integer Scalar Variables |          int a = 0          |
+|        1D Arrays         |          int a[10]          |
+|   Assignment Operators   |            a = b            |
+|   Arithmetic Operators   | a + b, a - b, a \* b, a / b |
 
