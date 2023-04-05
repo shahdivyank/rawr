@@ -1,8 +1,10 @@
-### Experimental Programming Language: <b>rawr</b>
+# CS152 - Lab Group #8 (rawr)
 
-### File Extension: <b>rawr</b>
+## Overview
 
-### Compiler Name: <b>rawr-lc</b>
+- Experimental Programming Language Name: <b>rawr</b>
+- File Extension: <b>rawr</b>
+- Compiler Name: <b>rawr-lc</b>
 
 ## Features
 |         Features         |           Syntax            |
@@ -24,3 +26,8 @@
 - A valid identifier in this language would be that a variable can not start with a number of any special character. It must start with a lowercase letter first. Any number of upercase or lettercase letters can follow - including any special characters or numbers. There must also be no whitespace. 
 - Our language "rawr" will be case sensitive. 
 - Our language will consider a blank space or a newline to be whitespace. 
+
+## Symbols
+|         Symbol in Language         |           Token Name            |
+| :---------------------- | :------------------------- |
+| int |          INTEGER          |
