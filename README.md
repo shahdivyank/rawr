@@ -10,13 +10,13 @@
 | Integer Scalar Variables |          int a = 0          |
 |        1D Arrays         |          int a[10]          |
 |   Assignment Operators   |            a = b            |
-|   Arithmetic Operators (e.g., “+”, “-”, “*”, “/”)  | a + b, a - b, a \* b, a / b |
-|   Relational Operators (e.g., “<”, “==”, “>”, “!=”)  | a == b, a < b, a > b,  a != b|
+|   Arithmetic Operators (e.g., “+”, “-”, “*”, “/”)  | a + b <br> a - b <br> a \* b <br> a / b |
+|   Relational Operators (e.g., “<”, “==”, “>”, “!=”)  | a == b <br> a < b <br> a > b <br>  a != b|
 |   While Loop  | while(a > 100) { <br/>// code<br/>}|
 |   If-then-else statements  | if (a > 10) {<br/><br/>} <br/><br/>else if (a < 10) {<br/><br/>} <br/><br/>else {<br/><br/>} |
 |   Read and write statements | rin(a), rout(a)|
-|   Comments | // This is a comment, /* This is another comment */|
-|   Functions |  const int add (int a, int b) {return a + b;}|
+|   Comments | // This is a comment <br/><br/>/* <br> This whole block is a comment <br>*/|
+|   Functions |  const int add (int a, int b) {<br>return a + b;<br>}|
 
 
 ## Additional info on our language
