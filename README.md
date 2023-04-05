@@ -4,11 +4,6 @@
 
 ### Compiler Name: <b>rawr-lc</b>
 
-# integer schema variable 
-int <br /> 
-1D arrays
-
-# assignment 
 |         Features         |           Syntax            |
 | :----------------------: | :-------------------------: |
 | Integer Scalar Variables |          int a = 0          |
