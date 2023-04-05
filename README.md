@@ -1,8 +1,8 @@
-# rawr
+### Experimental Programming Language: <b>rawr</b>
 
-Experimental Programming Language: rawr
-File Extension: rawr
-Compiler Name: rawr-lc
+### File Extension: <b>rawr</b>
+
+### Compiler Name: <b>rawr-lc</b>
 
 # integer schema variable 
 int 
@@ -12,3 +12,4 @@ string
 
 # assignment 
 a = b
+
