@@ -1,5 +1,7 @@
 # rawr
 
-Experimental Programming Language: rawr
-File Extension: rawr
-Compiler Name: rawr-lc
+### Experimental Programming Language: <b>rawr</b>
+
+### File Extension: <b>rawr</b>
+
+### Compiler Name: <b>rawr-lc</b>
