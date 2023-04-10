@@ -31,3 +31,38 @@
 |         Symbol in Language         |           Token Name            |
 | :---------------------- | :------------------------- |
 | int |          INTEGER          |
+| + |          ADD          |
+| - |          SUB          |
+| * |          MULT          |
+| / |          DIV          |
+| = |          EQUALS          |
+| < |          L_THAN          |
+| > |          G_THAN          |
+| <= |          L_THAN_EQUALS          |
+| >= |          G_THAN_EQUALS          |
+| == |          EQS_TO          |
+| integer number (ex. 0, 1, 2, 3)|          NUM X (WHERE IS DENOTES THE VALUE)          |
+| ( |         L_PAR           |
+| ) |         R_PAR           |
+| { |         L_BRACE           |
+| } |         R_BRACE           |
+| [ |         L_BRACKET           |
+| ] |         R_BRACKET           |
+| || |        OR            |
+| && |        AND            |
+| ; |         SEMICOLON           |
+| : |         COLON           |
+| , |         COMMA           |
+|
+ if |             IF       |
+| else |             ELSE       |
+| else if |           ELSE_IF         |
+| while |            WHILE        |
+| break |            BR        |
+| continue  |        CONT            |
+| read |             READ       |
+| write |             WRITE       |
+| main |           MAIN         |
+| return |          RET          |
+| func |        FUNCT        |
+| continue  |           CONT        |
