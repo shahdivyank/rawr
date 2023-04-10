@@ -53,7 +53,6 @@
 | ; |         SEMICOLON           |
 | : |         COLON           |
 | , |         COMMA           |
-|
  if |             IF       |
 | else |             ELSE       |
 | else if |           ELSE_IF         |
