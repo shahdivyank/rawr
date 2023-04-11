@@ -63,5 +63,5 @@
 | write |             WRITE       |
 | main |           MAIN         |
 | return |          RET          |
-| func |        FUNCT        |
+| function |        FUNCT        |
 | continue  |           CONT        |
