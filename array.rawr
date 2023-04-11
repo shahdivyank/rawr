@@ -1,0 +1,24 @@
+//test cases for array 
+
+int c[10] 
+int a 
+int b 
+
+//result will print 7 
+a=5
+b=2
+c[0] = a+b
+rout(c)
+
+//result will print 500
+c[1] = 500 
+rout(c[1])
+
+//result will be 100
+c[2] = 100 
+rout (c[2])
+
+
+//result will be 2800 as 7* (500-100) 
+c[3] = c[0] * (c[1] - c[2])
+rout(c[3])
