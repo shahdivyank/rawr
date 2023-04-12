@@ -10,21 +10,21 @@ const int subtract (int a, int b) {
 }
 
 //Result will print result of a multiplied by b
-const int mult (int a, int b) {
+const int multiply (int a, int b) {
     rout(a * b);
 }
 
-int a =5
-int b = 2
+int a = 5;
+int b = 2;
 
 //result will be 7
-int c = add(a, b)
-rout(c)
+int c = add(a, b);
+rout(c);
 
 //result will be 3
-int d = subtract(a, b)
-rout(d)
+int d = subtract(a, b);
+rout(d);
 
 //result will be 10
-int e = mult(a, b)
-rout(e)
+int e = multiply(a, b);
+rout(e);

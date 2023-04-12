@@ -1,8 +1,8 @@
 //this is a while loop that prints out numbers from 1 to 100
 
-int i =0
+int i = 0;
 
 while (i <= 100){
-    rout(i)
-    i=i+1
+    rout(i);
+    i = i + 1;
 }

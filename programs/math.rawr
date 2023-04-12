@@ -1,26 +1,26 @@
 // tests math functions 
 
-int a = 20
-int b = 30
+int a = 20;
+int b = 30;
 
 //Addition - the answer is 50 because 20+30 is 50
-int c = a+b
-rout(c)
+int c = a + b;
+rout(c);
 
 //Subtraction - the answer is 10 because 30-20 is 10
-c = b-a 
-rout(c)
+c = b - a;
+rout(c);
 
 //Multiplication - answer is 600 as 20*30 is 600
-c = a*b
-rout(c)
+c = a * b;
+rout(c);
 
 //Division - answer is 10 as 20/2 is 10
-c = a/2
-rout(c)
+c = a / 2;
+rout(c);
 
 //"Complex" expression 
-a =3
-b=5
-c = (a*b) + 9
-rout(c)
+a = 3;
+b = 5;
+c = (a * b) + 9;
+rout(c);

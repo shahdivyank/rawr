@@ -1,0 +1,10 @@
+int a = 5;
+int b = 3;
+
+if (a > b) {
+    rout(a);
+} else if (b > a){
+    rout(b);
+} else {
+    rout(0);
+}
