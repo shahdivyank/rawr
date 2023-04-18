@@ -46,6 +46,7 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "main"            { printf("MAIN\n"); col += 4; }
 "return"          { printf("RET\n"); col += 6; }
 "const"           { printf("FUNCT\n"); col += 5; }
+"arr"             { printf("ARRAY\n"); col += 3; }
 {DIGIT}+          { printf("NUMBER: %s\n", yytext); col += yyleng; }
 [0-9]{VARIABLES}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col + 1, yytext); }
 "_"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A UNDERSCORE: %s\n", row, col + 1, yytext); }
