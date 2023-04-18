@@ -4,13 +4,15 @@ int row = 1, col = 1;
 %}
 
 DIGIT [0-9]
-SINGLE_COMMENT "\/\/".*"\n"
-MULTI_COMMENT "\/*".*"*\/"
+SINGLE_COMMENT "//".*"\n"
+MULTI_COMMENT "/*".*"*/"
+VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]*
 
 %%
 {DIGIT}+          { printf("NUMBER: %s\n", yytext); }
 {SINGLE_COMMENT}  {} 
-{MULTI_COMMENT}   {} 
+{MULTI_COMMENT}   {}
+"\n"              { printf("\n"); row++; } 
 "+"               { printf("ADD\n"); col++; }
 "-"               { printf("SUB\n"); col++; }
 " "               {} // don't print anything
@@ -34,6 +36,7 @@ MULTI_COMMENT "\/*".*"*\/"
 ";"               { printf("SEMICOLON\n"); col++; }
 ":"               { printf("COLON\n"); col++; }
 ","               { printf("COMMA\n"); col++; }
+"int"             { printf("INT\n"); col += 3; }
 "if"              { printf("IF\n"); col += 2; }
 "else"            { printf("ELSE\n"); col += 4; }
 "while"           { printf("WHILE\n"); col += 5; }
@@ -45,6 +48,8 @@ MULTI_COMMENT "\/*".*"*\/"
 "return"          { printf("RET\n"); col += 6; }
 "const"           { printf("FUNCT\n"); col += 5; }
 "."               { printf("**Error. Unidentified token '%s'\n", yytext); }
+{VARIABLES}       { printf("VARIABLE: %s\n", yytext); col += yyleng; }
+
 %%
 
 int main(void) {
