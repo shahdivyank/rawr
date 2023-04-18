@@ -60,9 +60,9 @@
 | while                           | WHILE                              |
 | break                           | BR                                 |
 | continue                        | CONT                               |
-| read                            | READ                               |
-| write                           | WRITE                              |
+| rin                             | READ                               |
+| rout                            | WRITE                              |
 | main                            | MAIN                               |
 | return                          | RET                                |
-| function                        | FUNCT                              |
+| const                           | FUNCT                              |
 | continue                        | CONT                               |
