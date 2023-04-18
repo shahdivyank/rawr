@@ -1,3 +1,3 @@
 all:
 	flex rawr.lex
-	gcc lex.yy.c -lfl
+	gcc -o lexer lex.yy.c -lfl
