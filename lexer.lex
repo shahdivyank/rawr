@@ -17,7 +17,5 @@ ALPHA [a-zA-Z]
 int main(void) {
   char *number = "1234";
   printf("Ctrl+D to quit\n");
-  printf("Hello, My Name is %s\n", "Daniel");
-  printf("The Answer to the Universe is: %d\n", 42);
   yylex();
 }
