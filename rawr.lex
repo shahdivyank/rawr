@@ -32,6 +32,7 @@ ALPHA [a-zA-Z]
 ";"        { printf("SEMICOLON\n"); }
 ":"        { printf("COLON\n"); }
 ","        { printf("COMMA\n"); }
+// kanin code goes below
 
 
 .          { printf("**Error. Unidentified token '%s'\n", yytext); }
