@@ -6,10 +6,9 @@ int row = 1, col = 1;
 DIGIT [0-9]
 SINGLE_COMMENT "//".*"\n"
 MULTI_COMMENT "/*".*"*/"
-VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]*
+VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 
 %%
-{DIGIT}+          { printf("NUMBER: %s\n", yytext); }
 {SINGLE_COMMENT}  {} 
 {MULTI_COMMENT}   {}
 "\n"              { printf("\n"); row++; } 
@@ -48,8 +47,13 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]*
 "return"          { printf("RET\n"); col += 6; }
 "const"           { printf("FUNCT\n"); col += 5; }
 "."               { printf("**Error. Unidentified token '%s'\n", yytext); }
+{DIGIT}+          { printf("NUMBER: %s\n", yytext); }
+[0-9]{VARIABLES}  { printf("GG BOIS: %s\n", yytext); }
+"_"{VARIABLES}    { printf("GG BOIS: %s\n", yytext); }
+"-"{VARIABLES}    { printf("GG BOIS: %s\n", yytext); }
+{VARIABLES}"-"    { printf("GG BOIS: %s\n", yytext); }
+{VARIABLES}"_"    { printf("GG BOIS: %s\n", yytext); }
 {VARIABLES}       { printf("VARIABLE: %s\n", yytext); col += yyleng; }
-{[0-9]*["_"*"-"]*VARIABLES} { printf("GG BOIS: %s\n", yytext); }
 
 %%
 
