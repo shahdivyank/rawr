@@ -43,8 +43,6 @@ ALPHA [a-zA-Z]
 "return"       { printf("RET\n"); }
 "const"       { printf("FUNCT\n"); }
 "continue"       { printf("CONT\n"); }
-
-
 .          { printf("**Error. Unidentified token '%s'\n", yytext); }
 
 
