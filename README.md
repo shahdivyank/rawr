@@ -44,7 +44,7 @@
 | >=                              | G_THAN_EQUALS                      |
 | ==                              | EQS_TO                             |
 | !=                              | NOT_EQS_TO                         |
-| integer number (ex. 0, 1, 2, 3) | NUM X (WHERE IS DENOTES THE VALUE) |
+| integer number (ex. 0, 1, 2, 3) | NUM X (WHERE X ITSELF DENOTES THE VALUE) |
 | (                               | L_PAR                              |
 | )                               | R_PAR                              |
 | {                               | L_BRACE                            |
