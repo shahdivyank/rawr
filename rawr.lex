@@ -32,7 +32,17 @@ ALPHA [a-zA-Z]
 ";"        { printf("SEMICOLON\n"); }
 ":"        { printf("COLON\n"); }
 ","        { printf("COMMA\n"); }
-// kanin code goes below
+"if"       { printf("IF\n"); }
+"else"       { printf("ELSE\n"); }
+"while"       { printf("WHILE\n"); }
+"break"       { printf("BR\n"); }
+"continue"       { printf("CONT\n"); }
+"rin"       { printf("READ\n"); }
+"rout"       { printf("WRITE\n"); }
+"main"       { printf("MAIN\n"); }
+"ret"       { printf("RET\n"); }
+"const"       { printf("FUNCT\n"); }
+"continue"       { printf("CONT\n"); }
 
 
 .          { printf("**Error. Unidentified token '%s'\n", yytext); }
