@@ -46,14 +46,14 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "main"            { printf("MAIN\n"); col += 4; }
 "return"          { printf("RET\n"); col += 6; }
 "const"           { printf("FUNCT\n"); col += 5; }
-{DIGIT}+          { printf("NUMBER: %s\n", yytext); }
-[0-9]{VARIABLES}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col, yytext); }
-"_"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A UNDERSCORE: %s\n", row, col, yytext); }
-"-"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A HYPHEN: %s\n", row, col, yytext); }
-{VARIABLES}"-"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A HYPEN: %s\n", row, col, yytext); }
-{VARIABLES}"_"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A UNDERSCORE %s\n", row, col, yytext); }
+{DIGIT}+          { printf("NUMBER: %s\n", yytext); col += yyleng; }
+[0-9]{VARIABLES}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col + 1, yytext); }
+"_"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A UNDERSCORE: %s\n", row, col + 1, yytext); }
+"-"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A HYPHEN: %s\n", row, col + 1, yytext); }
+{VARIABLES}"-"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A HYPEN: %s\n", row, col + 1, yytext); }
+{VARIABLES}"_"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A UNDERSCORE %s\n", row, col + 1, yytext); }
 {VARIABLES}       { printf("VARIABLE: %s\n", yytext); col += yyleng; }
-.                 { printf("ERROR: ROW: %d COL: %d. UNRECOGNIZED TOKEN %s\n", row, col, yytext); }
+.                 { printf("ERROR: ROW: %d COL: %d. UNRECOGNIZED TOKEN %s\n", row, col + 1, yytext); }
 
 %%
 
