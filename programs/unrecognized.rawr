@@ -1,0 +1,11 @@
+// to detect unrecognized Symbols (just used test file from array.rawr)
+
+int c[10];
+int a;
+int b;
+
+//result will print 7 
+a = 5;
+b = 2;
+c[0] = a + b? // should print out error bc of ? symbol
+rout(c);

@@ -15,7 +15,6 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "\n"              { printf("\n"); row++; col = 0; } 
 "+"               { printf("ADD\n"); col++; }
 "-"               { printf("SUB\n"); col++; }
-" "               {} // don't print anything
 "*"               { printf("MULT\n"); col++; }
 "/"               { printf("DIV\n"); col++; }
 "("               { printf("L_PAR\n"); col++; }
@@ -47,7 +46,6 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "main"            { printf("MAIN\n"); col += 4; }
 "return"          { printf("RET\n"); col += 6; }
 "const"           { printf("FUNCT\n"); col += 5; }
-"."               { printf("**Error. Unidentified token '%s'\n", yytext); }
 {DIGIT}+          { printf("NUMBER: %s\n", yytext); }
 [0-9]{VARIABLES}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col, yytext); }
 "_"{VARIABLES}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A UNDERSCORE: %s\n", row, col, yytext); }
@@ -55,6 +53,7 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 {VARIABLES}"-"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A HYPEN: %s\n", row, col, yytext); }
 {VARIABLES}"_"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A UNDERSCORE %s\n", row, col, yytext); }
 {VARIABLES}       { printf("VARIABLE: %s\n", yytext); col += yyleng; }
+.                 { printf("ERROR: ROW: %d COL: %d. UNRECOGNIZED TOKEN %s\n", row, col, yytext); }
 
 %%
 
