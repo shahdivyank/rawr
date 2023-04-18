@@ -8,6 +8,7 @@ ALPHA [a-zA-Z]
 %%
 {DIGIT}+   { printf("NUMBER: %s\n", yytext); }
 {ALPHA}+   { printf("WORD:   %s\n", yytext); }
+
 "+"        { printf("ADD\n"); }
 "-"        { printf("SUB\n"); }
 " "        {} // don't print anything
@@ -29,6 +30,7 @@ ALPHA [a-zA-Z]
 "&&"       { printf("AND\n"); }
 "||"       { printf("OR\n"); }
 ";"        { printf("SEMICOLON\n"); }
+":"        { printf("COLON\n"); }
 ","        { printf("COMMA\n"); }
 
 
@@ -39,7 +41,6 @@ ALPHA [a-zA-Z]
 %%
 
 int main(void) {
-  char *number = "1234";
   printf("Ctrl+D to quit\n");
   yylex();
 }
