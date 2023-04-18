@@ -40,7 +40,7 @@ ALPHA [a-zA-Z]
 "rin"       { printf("READ\n"); }
 "rout"       { printf("WRITE\n"); }
 "main"       { printf("MAIN\n"); }
-"ret"       { printf("RET\n"); }
+"return"       { printf("RET\n"); }
 "const"       { printf("FUNCT\n"); }
 "continue"       { printf("CONT\n"); }
 
