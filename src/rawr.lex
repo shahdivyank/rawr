@@ -49,6 +49,7 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]*
 "const"           { printf("FUNCT\n"); col += 5; }
 "."               { printf("**Error. Unidentified token '%s'\n", yytext); }
 {VARIABLES}       { printf("VARIABLE: %s\n", yytext); col += yyleng; }
+{[0-9]*["_"*"-"]*VARIABLES} { printf("GG BOIS: %s\n", yytext); }
 
 %%
 
