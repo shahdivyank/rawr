@@ -1,0 +1,5 @@
+// to detect invalid identifiers
+
+int 1a = 20; // can't start with a number
+int _b = 30; // can't start with an underscore
+int c_ = 45; // can't end with an underscore either

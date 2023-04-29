@@ -24,7 +24,7 @@
 ## Additional info on our language
 
 - A comment can be started by using "//". Any characters after the "//" all the way until the end of the current line will count as a single comment. A comment can also be multiple lines as well by starting it with " /* " and ending it with " */ ".
-- A valid identifier in this language would be that a variable can not start with a number of any special character. It must start with a lowercase letter first. Any number of upercase or lettercase letters can follow - including any special characters or numbers. There must also be no whitespace.
+- A valid identifier in this language would a variable that can not start with a number or any special character. It must start with a letter first. Any number of upercase or lettercase letters can follow - including any special characters or numbers. It must end with either a letter or a number. There must also be no whitespace.
 - Our language "rawr" will be case sensitive.
 - Our language will consider a blank space or a newline to be whitespace.
 
