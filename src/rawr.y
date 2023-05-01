@@ -16,11 +16,8 @@ extern FILE* yyin;
 %%
 
 prog_start: %empty { printf("prog_start -> epsilon"); }
-        |   main { printf("prog_start -> main \n"); }
+        |   MAIN { printf("prog_start -> main \n"); }
         ; 
-
-main:       INT MAIN L_PAR R_PAR L_BRACE R_BRACE { printf("main function detected"); } 
-        ;
 
 %%
 
@@ -35,3 +32,7 @@ void main(int argc, char** argv){
     }
     yyparse();
 }
+
+int yyerror () {
+   fprintf (stderr, "Invalid Syntax!!!");
+ }

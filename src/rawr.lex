@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "y.tab.h"
 int row = 1, col = 1;
 %}
 
@@ -43,7 +44,7 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "break"           { col += 5; }
 "continue"        { col += 8; }
 "rin"             { col += 3; }
-"rout"            { col += 4; }
+"rout"            { col += 4; return WRITE;}
 "main"            { col += 4; return MAIN;}
 "return"          { col += 6; }
 "const"           { col += 5; }
@@ -58,8 +59,3 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 .                 { printf("ERROR: ROW: %d COL: %d. UNRECOGNIZED TOKEN %s\n", row, col + 1, yytext); }
 
 %%
-
-int main(void) {
-  printf("Ctrl+D to quit\n");
-  yylex();
-}
