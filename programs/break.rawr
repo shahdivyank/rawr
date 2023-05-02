@@ -1,11 +1,13 @@
-//this is a while loop that prints out numbers from 1 to 100 and breaks when it reaches 50
+// this is a while loop that prints out numbers from 1 to 100 and breaks when it reaches 50
 
-int i = 0;
+int main() {
+    int i = 0;
 
-while (i <= 100){
-    if(i == 50) {
-        break;
+    while (i <= 100){
+        if(i == 50) {
+            break;
+        }
+        rout(i);
+        i = i + 1;
     }
-    rout(i);
-    i = i + 1;
 }

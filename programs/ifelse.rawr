@@ -1,8 +1,10 @@
-int a = 5;
-int b = 3;
+int main(){
+    int a = 5;
+    int b = 3;
 
-if (a > b) {
-    rout(a);
-} else {
-    rout(b);
+    if (a > b) {
+        rout(a);
+    } else {
+        rout(b);
+    }
 }
