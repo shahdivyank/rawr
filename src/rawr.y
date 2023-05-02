@@ -3,6 +3,7 @@
 %{ 
 #include <stdio.h> 
 extern FILE* yyin;   
+
 %}
 
 %start prog_start
@@ -33,12 +34,13 @@ void main(int argc, char** argv){
         yyin = fopen(argv[1], "r"); 
         if (yyin == NULL)
             yyin = stdin; 
-    } else {
+    } 
+    else {
         yyin = stdin; 
     }
     yyparse();
 }
 
 int yyerror () {
-   fprintf (stderr, "Invalid Syntax!!!");
+   fprintf (stderr, "Invalid Syntax!!! \n");
  }
