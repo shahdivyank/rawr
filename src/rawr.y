@@ -40,9 +40,8 @@ COMPARISON_OP : EQS_TO = { printf ("COMPARISON_OP -> EQS_TO\n"); }
     | NOT_EQS_TO { printf ("COMPARISON_OP -> NOT_EQS_TO\n"); }
     | G_THAN_EQUALS { printf ("COMPARISON_OP -> G_THAN_EQUALS\n");}
     | L_THAN_EQUALS{ printf ("COMPARISON_OP -> L_THAN_EQUALS\n");}
-
-
 %%
+
 
 void main(int argc, char** argv){
     if (argc >= 2)
