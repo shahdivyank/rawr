@@ -29,7 +29,7 @@ function: main { printf("function -> main"); }
         | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
         ;
 
-main: CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
+main: CONST INT main L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
         ;
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
@@ -46,10 +46,10 @@ statements: statement statements { printf ("statements -> statement statements \
 
 statement: assignment { printf("statement -> assignment \n"); }
         | conditional { printf("statement -> conditional \n"); }
-        | loop { printf(statement -> loop \n"); }
-        | read { printf(statement -> read \n"); }
-        | write { printf(statement -> write \n"); }
-        | BR { printf(statement -> BR \n"); }
+        | loop { printf("statement -> loop \n"); }
+        | read { printf("statement -> read \n"); }
+        | write { printf("statement -> write \n"); }
+        | BR { printf("statement -> BR \n"); }
         ;
 
 assignment: INT VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQUALS NUMBER SEMICOLON \n"); }
@@ -117,7 +117,7 @@ arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_
     | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("arr -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
     ;
 
-%
+%%
 
 
 void main(int argc, char** argv){
