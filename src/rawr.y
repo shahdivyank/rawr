@@ -29,10 +29,18 @@ conditionalStatements: conditionalStatement { printf("conditionalStatements -> c
                     | conditionalStatement OR conditionalStatement { printf("conditionalStatements -> conditionalStatement OR conditionalStatements); }
                     | conditionalStatement AND conditionalStatement{ printf("conditionalStatements -> conditionalStatement AND conditionalStatements); }
                     ;
-%%
 
 conditionalStatements: boolCondition { printf("conditionalStatement -> boolCondition \n"); }
                     ;
+
+boolCondition: FALSE { printf("boolCondition -> FALSE \n"); }
+            | TRUE { printf("boolCondition -> TRUE \n"); }
+            | termValue boolOp termValue { printf("boolCondition -> termValue boolOp termValue"); }
+            ;
+
+
+%%
+
 
 void main(int argc, char** argv){
     if (argc >= 2)
