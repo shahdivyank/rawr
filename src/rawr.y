@@ -3,6 +3,7 @@
 %{ 
 #include <stdio.h> 
 extern FILE* yyin;   
+
 %}
 
 %start prog_start
@@ -25,27 +26,20 @@ main: %empty ;
 
 statements: %empty ;
 
-// need to define rule for "termValue"
+math_operators: ADD {printf ("math_operators -> ADD\n"); } 
+    | SUB {printf ("math_operators -> SUB\n");}
+    | MULT {printf ("math_operators -> MULTN\n");} 
+    | DIV {printf ("math_operators -> DIVN\n");}
 
-conditionalStatements: conditionalStatement { printf("conditionalStatements -> conditionalStatement \n"); }
-                    | conditionalStatement OR conditionalStatement { printf("conditionalStatements -> conditionalStatement OR conditionalStatements); }
-                    | conditionalStatement AND conditionalStatement{ printf("conditionalStatements -> conditionalStatement AND conditionalStatements); }
-                    ;
+logical_op : AND { printf ("logical_op -> AND\n"); }
+    | OR { printf ("logical_op -> OR\n"); }
 
-conditionalStatements: boolCondition { printf("conditionalStatement -> boolCondition \n"); }
-                    ;
+assignment_op : = { printf ("assignment_op ->  EQUALS\n"); }
 
-boolCondition: FALSE { printf("boolCondition -> FALSE \n"); }
-            | TRUE { printf("boolCondition -> TRUE \n"); }
-            | termValue boolOp termValue { printf("boolCondition -> termValue boolOp termValue"); }
-            ;
-
-boolOp: EQS_TO { printf("boolOps -> EQS_TO"); }
-    | NOT_EQS_TO { printf("boolOps -> NOT_EQS_TO"); }
-    | G_THAN { printf("boolOps -> G_THAN"); }
-    | G_THAN_EQUALS { printf("boolOps -> G_THAN_EQUALS"); }
-    | L_THAN { printf("boolOps -> L_THAN"); }
-    | L_THAN_EQUALS { printf("boolOps -> L_THAN_EQUALS"); }
+COMPARISON_OP : EQS_TO = { printf ("COMPARISON_OP -> EQS_TO\n"); }
+    | NOT_EQS_TO { printf ("COMPARISON_OP -> NOT_EQS_TO\n"); }
+    | G_THAN_EQUALS { printf ("COMPARISON_OP -> G_THAN_EQUALS\n");}
+    | L_THAN_EQUALS{ printf ("COMPARISON_OP -> L_THAN_EQUALS\n");}
 %%
 
 
@@ -55,12 +49,13 @@ void main(int argc, char** argv){
         yyin = fopen(argv[1], "r"); 
         if (yyin == NULL)
             yyin = stdin; 
-    } else {
+    } 
+    else {
         yyin = stdin; 
     }
     yyparse();
 }
 
 int yyerror () {
-   fprintf (stderr, "Invalid Syntax!!!");
+   fprintf (stderr, "Invalid Syntax!!! \n");
  }
