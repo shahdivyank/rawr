@@ -16,8 +16,14 @@ extern FILE* yyin;
 %%
 
 prog_start: %empty { printf("prog_start -> epsilon"); }
-        |   MAIN { printf("prog_start -> main \n"); }
+        |   function { printf("prog_start -> function \n"); }
         ; 
+
+function: main { printf("function -> main \n"); }
+
+main: INT MAIN L_PAR R_PAR L_BRACE statements R_BRACE 
+
+statements: INT VARIABLE EQUALS DIGIT SEMICOLON
 
 %%
 
