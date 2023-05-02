@@ -12,24 +12,22 @@ extern FILE* yyin;
 %token L_PAR R_PAR L_BRACE R_BRACE L_BRACKET R_BRACKET
 %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS AND OR
 %token SEMICOLON COLON COMMA
-%token INT IF ELSE WHILE BR CONT READ WRITE MAIN RET FUNCT ARRAY NUMBER VARIABLE
-%token CONST
+%token INT IF ELSE WHILE BR CONT READ WRITE MAIN RET FUNCT ARRAY NUMBER VARIABLE CONST
 
 %%
 
-prog_start: %empty { printf("prog_start -> epsilon \n"); }
-        |   functions { printf("prog_start -> functions \n"); }
+prog_start: functions { printf("prog_start -> functions \n"); }
         ; 
 
 functions: function functions { printf("functions -> function functions \n"); } 
-        | function { printf("functions -> function"); }
+        | function { printf("functions -> function \n"); }
         ;
 
-function: main { printf("function -> main"); }
+function: main { printf("function -> main \n"); }
         | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
         ;
 
-main: CONST INT main L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
+main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT MAIN L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
         ;
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
@@ -49,19 +47,21 @@ statement: assignment { printf("statement -> assignment \n"); }
         | loop { printf("statement -> loop \n"); }
         | read { printf("statement -> read \n"); }
         | write { printf("statement -> write \n"); }
-        | BR { printf("statement -> BR \n"); }
+        | BR SEMICOLON { printf("statement -> BR SEMICOLON \n"); }
+        | %empty { printf("statement -> epsilon \n"); }
         ;
 
 assignment: INT VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQUALS NUMBER SEMICOLON \n"); }
         | VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> VARIABLE EQUALS NUMBER SEMICOLON \n"); }
         | arr { printf("assignment -> arr \n"); }
+        | INT VARIABLE SEMICOLON { printf("assignment -> INT VARIABLE SEMICOLON \n"); }
         ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
-        | ELSE L_BRACE statements R_BRACE { printf("ELSE L_BRACE statements R_BRACE \n");}
+        | ELSE L_BRACE statements R_BRACE { printf("conditional -> ELSE L_BRACE statements R_BRACE \n");}
         ;
 
-conditions: condition { printf("conditions -> condition"); }
+conditions: condition { printf("conditions -> condition \n"); }
         | condition AND L_PAR conditions R_PAR { printf("conditions -> condition AND L_PAR condition R_PAR \n"); }
         | condition OR L_PAR conditions R_PAR { printf("condition OR L_PAR conditions R_PAR \n"); }
         ;
@@ -70,6 +70,7 @@ condition: r_var r_op r_var { printf("condition -> r_var r_op r_var \n"); }
 
 r_var: NUMBER { printf("r_var -> NUMBER \n"); } 
     | VARIABLE { printf("r_var -> VARIABLE \n"); }
+    | %empty { printf("r_var -> epsilon \n"); }
     ;
 
 r_op: EQS_TO { printf("r_op -> EQS_TO \n"); }
@@ -113,7 +114,7 @@ mul_op: MULT { printf("mul_op -> MULT \n"); }
     ;
 
 arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); }
-    | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf {"arr -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"}; }
+    | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf ("arr -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
     | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("arr -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
     ;
 
@@ -134,5 +135,6 @@ void main(int argc, char** argv){
 }
 
 int yyerror () {
-   fprintf (stderr, "Invalid Syntax!!! \n");
+    extern int yylineno;
+   fprintf (stderr, "Invalid Syntax!!! On Line: %d \n", yylineno);
  }
