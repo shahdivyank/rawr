@@ -25,9 +25,20 @@ functions: function functions { printf("functions -> function functions \n"); }
         | function { printf("functions -> function"); }
 
 function: main { printf("function -> main"); }
-        | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE"); } 
+        | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
 
-main: CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE"); }
+main: CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
+
+arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
+        | argument { printf ("arguments -> argument \n"); }
+
+argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
+        | INT VARIABLE COMMA { printf ("argument -> INT VARIABLE COMMA \n"); }
+
+statements: statement statements { printf ("statements -> statement statements \n"); }
+        | statement { printf("statements -> statement \n"); }
+
+        
 
 
 
