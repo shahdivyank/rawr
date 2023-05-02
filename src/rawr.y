@@ -25,6 +25,8 @@ main: %empty ;
 
 statements: %empty ;
 
+// need to define rule for "termValue"
+
 conditionalStatements: conditionalStatement { printf("conditionalStatements -> conditionalStatement \n"); }
                     | conditionalStatement OR conditionalStatement { printf("conditionalStatements -> conditionalStatement OR conditionalStatements); }
                     | conditionalStatement AND conditionalStatement{ printf("conditionalStatements -> conditionalStatement AND conditionalStatements); }
@@ -38,7 +40,6 @@ boolCondition: FALSE { printf("boolCondition -> FALSE \n"); }
             | termValue boolOp termValue { printf("boolCondition -> termValue boolOp termValue"); }
             ;
 
-// %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS 
 boolOp: EQS_TO { printf("boolOps -> EQS_TO"); }
     | NOT_EQS_TO { printf("boolOps -> NOT_EQS_TO"); }
     | G_THAN { printf("boolOps -> G_THAN"); }
