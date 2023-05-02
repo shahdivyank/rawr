@@ -93,6 +93,25 @@ vars: var COMMA vars { printf("vars -> var COMMA vars \n"); }
     | var { printf("vars -> var \n"); }
     ;
 
+maths: math maths { printf("maths -> math maths \n"); }
+    | math { printf("maths -> math \n"); }
+    ;
+
+math: r_var op r_var { printf("math -> r_var op r_var \n"); }
+    ;
+
+op: add_op { printf("op -> add_op \n"); } 
+    | mul_op { printf("op -> mul_op \n"); }
+    ;
+
+add_op: ADD { printf("add_op -> ADD \n"); }
+    | SUB { printf("add_op -> SUB \n"); }
+    ;
+
+mul_op: MULT { printf("mul_op -> MULT \n"); }
+    | DIV { printf("mul_op -> DIV \n"); }
+    ;
+
 
 %
 
