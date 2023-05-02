@@ -26,6 +26,22 @@ main: %empty ;
 
 statements: %empty ;
 
+math_operators: ADD {printf ("math_operators -> ADD\n"); } 
+    | SUB {printf ("math_operators -> SUB\n");}
+    | MULT {printf ("math_operators -> MULTN\n");} 
+    | DIV {printf ("math_operators -> DIVN\n");}
+
+logical_op : AND { printf ("logical_op -> AND\n"); }
+    | OR { printf ("logical_op -> OR\n"); }
+
+assignment_op : = { printf ("assignment_op ->  EQUALS\n"); }
+
+COMPARISON_OP : EQS_TO = { printf ("COMPARISON_OP -> EQS_TO\n"); }
+    | NOT_EQS_TO { printf ("COMPARISON_OP -> NOT_EQS_TO\n"); }
+    | G_THAN_EQUALS { printf ("COMPARISON_OP -> G_THAN_EQUALS\n");}
+    | L_THAN_EQUALS{ printf ("COMPARISON_OP -> L_THAN_EQUALS\n");}
+
+
 %%
 
 void main(int argc, char** argv){
