@@ -51,11 +51,33 @@ statement: assignment { printf("statement -> assignment \n"); }
         | %empty { printf("statement -> epsilon \n"); }
         ;
 
-assignment: INT VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQUALS NUMBER SEMICOLON \n"); }
-        | VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> VARIABLE EQUALS NUMBER SEMICOLON \n"); }
+assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); }
+        | VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> VARIABLE EQUALS r_var SEMICOLON \n"); }
         | arr { printf("assignment -> arr \n"); }
         | INT VARIABLE SEMICOLON { printf("assignment -> INT VARIABLE SEMICOLON \n"); }
+        | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> r_var EQUALS expressions \n"); }
+        | INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT r_var EQUALS expressions \n"); }
         ;
+
+expressions: expression expressions { printf("expressions -> expression expressions \n"); }
+        | expression { printf("expressions -> expression SEMICOLON \n"); }
+        ;
+
+expression: r_var op r_var { printf("expression -> r_var op r_var SEMICOLON \n"); }
+        | L_PAR r_var op r_var R_PAR
+        ;
+
+op: add_op { printf("op -> add_op \n"); } 
+    | mul_op { printf("op -> mul_op \n"); }
+    ;
+
+add_op: ADD { printf("add_op -> ADD \n"); }
+    | SUB { printf("add_op -> SUB \n"); }
+    ;
+
+mul_op: MULT { printf("mul_op -> MULT \n"); }
+    | DIV { printf("mul_op -> DIV \n"); }
+    ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
         | ELSE L_BRACE statements R_BRACE { printf("conditional -> ELSE L_BRACE statements R_BRACE \n");}
@@ -92,25 +114,6 @@ read: READ L_PAR vars R_PAR SEMICOLON { printf("read -> READ L_PAR vars R_PAR SE
 
 vars: VARIABLE COMMA vars { printf("vars -> VARIABLE COMMA vars \n"); }
     | VARIABLE { printf("vars -> VARIABLE \n"); }
-    ;
-
-maths: math maths { printf("maths -> math maths \n"); }
-    | math { printf("maths -> math \n"); }
-    ;
-
-math: r_var op r_var { printf("math -> r_var op r_var \n"); }
-    ;
-
-op: add_op { printf("op -> add_op \n"); } 
-    | mul_op { printf("op -> mul_op \n"); }
-    ;
-
-add_op: ADD { printf("add_op -> ADD \n"); }
-    | SUB { printf("add_op -> SUB \n"); }
-    ;
-
-mul_op: MULT { printf("mul_op -> MULT \n"); }
-    | DIV { printf("mul_op -> DIV \n"); }
     ;
 
 arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); }
