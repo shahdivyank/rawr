@@ -13,18 +13,26 @@ extern FILE* yyin;
 %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS AND OR
 %token SEMICOLON COLON COMMA
 %token INT IF ELSE WHILE BR CONT READ WRITE MAIN RET FUNCT ARRAY NUMBER VARIABLE
+%token CONST
 
 %%
 
-prog_start: %empty { printf("prog_start -> epsilon"); }
-        |   function { printf("prog_start -> function \n"); }
+prog_start: %empty { printf("prog_start -> epsilon \n"); }
+        |   functions { printf("prog_start -> functions \n"); }
         ; 
 
-function: main { printf("function -> main \n"); }
+functions: function functions { printf("functions -> function functions \n"); } 
+        | function { printf("functions -> function"); }
 
-main: %empty ;
+function: main { printf("function -> main"); }
+        | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE"); } 
 
-statements: %empty ;
+main: CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE"); }
+
+
+
+
+// define argumentm, statements
 
 math_operators: ADD {printf ("math_operators -> ADD\n"); } 
     | SUB {printf ("math_operators -> SUB\n");}
