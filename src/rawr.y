@@ -23,53 +23,78 @@ prog_start: %empty { printf("prog_start -> epsilon \n"); }
 
 functions: function functions { printf("functions -> function functions \n"); } 
         | function { printf("functions -> function"); }
+        ;
 
 function: main { printf("function -> main"); }
         | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
+        ;
 
 main: CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT main L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
+        ;
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
         | argument { printf ("arguments -> argument \n"); }
+        ;
 
 argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
         | INT VARIABLE COMMA { printf ("argument -> INT VARIABLE COMMA \n"); }
+        ;
 
 statements: statement statements { printf ("statements -> statement statements \n"); }
         | statement { printf("statements -> statement \n"); }
+        ;
 
 statement: assignment { printf("statement -> assignment \n"); }
         | conditional { printf("statement -> conditional \n"); }
         | loop { printf(statement -> loop \n"); }
         | read { printf(statement -> read \n"); }
         | write { printf(statement -> write \n"); }
+        | BR { printf(statement -> BR \n"); }
+        ;
 
-assignment: INT VARIABLE EQS_TO NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQS_TO NUMBER SEMICOLON \n"); }
-        | VARIABLE EQS_TO NUMBER SEMICOLON { printf("assignment -> VARIABLE EQS_TO NUMBER SEMICOLON \n"); }
-        | INT ARRAY L_BRACKET NUMBER R_BRACKET EQS_TO NUMBER { printf("assignment -> INT ARRAY L_BRACKET NUMBER R_BRACKET EQS_TO NUMBER \n"); }
+assignment: INT VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQUALS NUMBER SEMICOLON \n"); }
+        | VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> VARIABLE EQUALS NUMBER SEMICOLON \n"); }
+        | INT ARRAY L_BRACKET NUMBER R_BRACKET EQUALS NUMBER { printf("assignment -> INT ARRAY L_BRACKET NUMBER R_BRACKET EQUALS NUMBER \n"); }
+        ;
+
+conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
+        | ELSE L_BRACE statements R_BRACE { printf("ELSE L_BRACE statements R_BRACE \n");}
+        ;
+
+conditions: condition { printf("conditions -> condition"); }
+        | condition AND L_PAR conditions R_PAR { printf("conditions -> condition AND L_PAR condition R_PAR \n"); }
+        | condition OR L_PAR conditions R_PAR { printf("condition OR L_PAR conditions R_PAR \n"); }
+        ;
+
+condition: r_var r_op r_var { printf("condition -> r_var r_op r_var \n"); }
+
+r_var: NUMBER { printf("r_var -> NUMBER \n"); } 
+    | VARIABLE { printf("r_var -> VARIABLE \n"); }
+    ;
+
+r_op: EQS_TO { printf("r_op -> EQS_TO \n"); }
+    | L_THAN_EQUALS { printf("r_op -> L_THAN_EQUALS \n"); }
+    | L_THAN { printf("r_op -> L_THAN \n"); }
+    | G_THAN { printf("r_op -> G_THAN \n"); }
+    | G_THAN_EQUALS { printf("r_op -> G_THAN_EQUALS \n"); }
+    | NOT_EQS_TO { printf("r_op -> NOT_EQS_TO \n"); }
+    ;
+
+loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
+    ;
+
+write: rin L_PAR vars R_PAR SEMICOLON { printf("write -> rin L_PAR vars R_PAR SEMICOLON \n"); }
+    ;
+
+read: rout L_PAR vars R_PAR SEMICOLON { printf("read -> rout L_PAR vars R_PAR SEMICOLON \n"); }
+    ;
+
+vars: var COMMA vars { printf("vars -> var COMMA vars \n"); }
+    | var { printf("vars -> var \n"); }
+    ;
 
 
-
-
-
-
-// define argumentm, statements
-
-math_operators: ADD {printf ("math_operators -> ADD\n"); } 
-    | SUB {printf ("math_operators -> SUB\n");}
-    | MULT {printf ("math_operators -> MULTN\n");} 
-    | DIV {printf ("math_operators -> DIVN\n");}
-
-logical_op : AND { printf ("logical_op -> AND\n"); }
-    | OR { printf ("logical_op -> OR\n"); }
-
-assignment_op : = { printf ("assignment_op ->  EQUALS\n"); }
-
-COMPARISON_OP : EQS_TO = { printf ("COMPARISON_OP -> EQS_TO\n"); }
-    | NOT_EQS_TO { printf ("COMPARISON_OP -> NOT_EQS_TO\n"); }
-    | G_THAN_EQUALS { printf ("COMPARISON_OP -> G_THAN_EQUALS\n");}
-    | L_THAN_EQUALS{ printf ("COMPARISON_OP -> L_THAN_EQUALS\n");}
-%%
+%
 
 
 void main(int argc, char** argv){
