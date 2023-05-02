@@ -38,7 +38,17 @@ argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
 statements: statement statements { printf ("statements -> statement statements \n"); }
         | statement { printf("statements -> statement \n"); }
 
-        
+statement: assignment { printf("statement -> assignment \n"); }
+        | conditional { printf("statement -> conditional \n"); }
+        | loop { printf(statement -> loop \n"); }
+        | read { printf(statement -> read \n"); }
+        | write { printf(statement -> write \n"); }
+
+assignment: INT VARIABLE EQS_TO NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQS_TO NUMBER SEMICOLON \n"); }
+        | VARIABLE EQS_TO NUMBER SEMICOLON { printf("assignment -> VARIABLE EQS_TO NUMBER SEMICOLON \n"); }
+        | INT ARRAY L_BRACKET NUMBER R_BRACKET EQS_TO NUMBER { printf("assignment -> INT ARRAY L_BRACKET NUMBER R_BRACKET EQS_TO NUMBER \n"); }
+
+
 
 
 
