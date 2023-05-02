@@ -38,7 +38,13 @@ boolCondition: FALSE { printf("boolCondition -> FALSE \n"); }
             | termValue boolOp termValue { printf("boolCondition -> termValue boolOp termValue"); }
             ;
 
-
+// %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS 
+boolOp: EQS_TO { printf("boolOps -> EQS_TO"); }
+    | NOT_EQS_TO { printf("boolOps -> NOT_EQS_TO"); }
+    | G_THAN { printf("boolOps -> G_THAN"); }
+    | G_THAN_EQUALS { printf("boolOps -> G_THAN_EQUALS"); }
+    | L_THAN { printf("boolOps -> L_THAN"); }
+    | L_THAN_EQUALS { printf("boolOps -> L_THAN_EQUALS"); }
 %%
 
 
