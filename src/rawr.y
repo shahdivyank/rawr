@@ -25,7 +25,14 @@ main: %empty ;
 
 statements: %empty ;
 
+conditionalStatements: conditionalStatement { printf("conditionalStatements -> conditionalStatement \n"); }
+                    | conditionalStatement OR conditionalStatement { printf("conditionalStatements -> conditionalStatement OR conditionalStatements); }
+                    | conditionalStatement AND conditionalStatement{ printf("conditionalStatements -> conditionalStatement AND conditionalStatements); }
+                    ;
 %%
+
+conditionalStatements: boolCondition { printf("conditionalStatement -> boolCondition \n"); }
+                    ;
 
 void main(int argc, char** argv){
     if (argc >= 2)
