@@ -54,7 +54,7 @@ statement: assignment { printf("statement -> assignment \n"); }
 
 assignment: INT VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> INT VARIABLE EQUALS NUMBER SEMICOLON \n"); }
         | VARIABLE EQUALS NUMBER SEMICOLON { printf("assignment -> VARIABLE EQUALS NUMBER SEMICOLON \n"); }
-        | INT ARRAY L_BRACKET NUMBER R_BRACKET EQUALS NUMBER { printf("assignment -> INT ARRAY L_BRACKET NUMBER R_BRACKET EQUALS NUMBER \n"); }
+        | arr { printf("assignment -> arr \n"); }
         ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
@@ -83,14 +83,14 @@ r_op: EQS_TO { printf("r_op -> EQS_TO \n"); }
 loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
     ;
 
-write: rin L_PAR vars R_PAR SEMICOLON { printf("write -> rin L_PAR vars R_PAR SEMICOLON \n"); }
+write: WRITE L_PAR vars R_PAR SEMICOLON { printf("write -> WRITE L_PAR vars R_PAR SEMICOLON \n"); }
     ;
 
-read: rout L_PAR vars R_PAR SEMICOLON { printf("read -> rout L_PAR vars R_PAR SEMICOLON \n"); }
+read: READ L_PAR vars R_PAR SEMICOLON { printf("read -> READ L_PAR vars R_PAR SEMICOLON \n"); }
     ;
 
-vars: var COMMA vars { printf("vars -> var COMMA vars \n"); }
-    | var { printf("vars -> var \n"); }
+vars: VARIABLE COMMA vars { printf("vars -> VARIABLE COMMA vars \n"); }
+    | VARIABLE { printf("vars -> VARIABLE \n"); }
     ;
 
 maths: math maths { printf("maths -> math maths \n"); }
@@ -112,6 +112,10 @@ mul_op: MULT { printf("mul_op -> MULT \n"); }
     | DIV { printf("mul_op -> DIV \n"); }
     ;
 
+arr: INT ARRAY L_BRACKET VARIABLE R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_BRACKET VARIABLE R_BRACKET SEMICOLON \n"); }
+    | INT ARRAY L_BRACKET VARIABLE R_BRACKET EQUALS VARIABLE SEMICOLON { printf {"arr -> INT ARRAY L_BRACKET VARIABLE R_BRACKET EQUALS VARIABLE SEMICOLON \n"}; }
+    | ARRAY L_BRACKET VARIABLE R_BRACKET EQUALS VARIABLE SEMICOLON { printf("arr -> ARRAY L_BRACKET VARIABLE R_BRACKET EQUALS VARIABLE SEMICOLON \n"); }
+    ;
 
 %
 
