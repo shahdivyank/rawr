@@ -4,6 +4,7 @@
 #include <stdio.h> 
 extern FILE* yyin;   
 
+int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %}
 
 %start prog_start
@@ -51,32 +52,32 @@ statement: assignment { printf("statement -> assignment \n"); }
         | %empty { printf("statement -> epsilon \n"); }
         ;
 
-assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); }
-        | VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> VARIABLE EQUALS r_var SEMICOLON \n"); }
+assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); equals++; }
+        | VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> VARIABLE EQUALS r_var SEMICOLON \n");equals++; }
         | arr { printf("assignment -> arr \n"); }
         | INT VARIABLE SEMICOLON { printf("assignment -> INT VARIABLE SEMICOLON \n"); }
-        | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> r_var EQUALS expressions \n"); }
-        | INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT r_var EQUALS expressions \n"); }
+        | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> r_var EQUALS expressions \n"); equals++; }
+        | INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT r_var EQUALS expressions \n"); equals++; }
         ;
 
 expressions: expression expressions { printf("expressions -> expression expressions \n"); }
         | expression { printf("expressions -> expression SEMICOLON \n"); }
         ;
 
-expression: r_var op r_var { printf("expression -> r_var op r_var SEMICOLON \n"); }
-        | L_PAR r_var op r_var R_PAR
+expression: r_var op r_var { printf("expression -> r_var op r_var \n"); }
+        | L_PAR r_var op r_var R_PAR { printf("expression -> L_PAR r_var op r_var R_PAR \n"); parentheses += 2; }
         ;
 
 op: add_op { printf("op -> add_op \n"); } 
     | mul_op { printf("op -> mul_op \n"); }
     ;
 
-add_op: ADD { printf("add_op -> ADD \n"); }
-    | SUB { printf("add_op -> SUB \n"); }
+add_op: ADD { printf("add_op -> ADD \n"); operators++; }
+    | SUB { printf("add_op -> SUB \n"); operators++; }
     ;
 
-mul_op: MULT { printf("mul_op -> MULT \n"); }
-    | DIV { printf("mul_op -> DIV \n"); }
+mul_op: MULT { printf("mul_op -> MULT \n"); operators++; }
+    | DIV { printf("mul_op -> DIV \n"); operators++; }
     ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
@@ -90,7 +91,7 @@ conditions: condition { printf("conditions -> condition \n"); }
 
 condition: r_var r_op r_var { printf("condition -> r_var r_op r_var \n"); }
 
-r_var: NUMBER { printf("r_var -> NUMBER \n"); } 
+r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;} 
     | VARIABLE { printf("r_var -> VARIABLE \n"); }
     | %empty { printf("r_var -> epsilon \n"); }
     ;
@@ -135,6 +136,8 @@ void main(int argc, char** argv){
         yyin = stdin; 
     }
     yyparse();
+
+    printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
 }
 
 int yyerror () {
