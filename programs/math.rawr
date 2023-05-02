@@ -26,5 +26,7 @@ int main() {
     b = 5;
     c = (a * b) + 9;
     rout(c);
+
+    return 0;
 }
 
