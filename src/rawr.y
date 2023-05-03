@@ -120,10 +120,17 @@ vars: VARIABLE COMMA vars { printf("vars -> VARIABLE COMMA vars \n"); }
 arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); }
     | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf ("arr -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
     | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("arr -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
+    | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON \n"); equals++; }
     ;
 
 %%
 
+
+int yyerror (const char *mssg) {
+    extern int yylineno;
+   fprintf (stderr, "Invalid Syntax! On Line: %d \n", yylineno);
+   return 1; 
+ }
 
 int main(int argc, char** argv){
     if (argc >= 2)
@@ -135,14 +142,12 @@ int main(int argc, char** argv){
     else {
         yyin = stdin; 
     }
-    yyparse();
+    if (yyparse() != 0){
+        fprintf(stderr, "failed\n"); 
+        return 1; 
+    }
 
     printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
 
     return 0;
 }
-
-int yyerror () {
-    extern int yylineno;
-   fprintf (stderr, "Invalid Syntax!!! On Line: %d \n", yylineno);
- }
