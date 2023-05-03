@@ -125,7 +125,7 @@ arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_
 %%
 
 
-void main(int argc, char** argv){
+int main(int argc, char** argv){
     if (argc >= 2)
     {
         yyin = fopen(argv[1], "r"); 
@@ -138,6 +138,8 @@ void main(int argc, char** argv){
     yyparse();
 
     printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
+
+    return 0;
 }
 
 int yyerror () {
