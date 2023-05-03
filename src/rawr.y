@@ -118,9 +118,8 @@ vars: VARIABLE COMMA vars { printf("vars -> VARIABLE COMMA vars \n"); }
     ;
 
 arr: INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("arr -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); }
-    | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf ("arr -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
-    | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("arr -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
-    | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON \n"); equals++; }
+    | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf ("arr -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); equals++; }
+    | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("arr -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); equals++; }
     ;
 
 %%
