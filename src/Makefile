@@ -1,33 +1,33 @@
 all:
 	clean
 
-lexer_parser:
+parser:
 	bison -v -d --file-prefix=y rawr.y
 	flex rawr.lex
 	gcc -o parser y.tab.c lex.yy.c -lfl
 
-array: lexer_parser
+array: parser
 	parser ../programs/array.rawr
 
-break: lexer_parser
+break: parser
 	parser ../programs/break.rawr
 
-function: lexer_parser
+function: parser
 	parser ../programs/function.rawr
 
-ifelse: lexer_parser
+ifelse: parser
 	parser ../programs/ifelse.rawr
 
-invalid: lexer_parser
+invalid: parser
 	parser ../programs/invalid.rawr
 
-math: lexer_parser
+math: parser
 	parser ../programs/math.rawr
 
-unrecognized: lexer_parser
+unrecognized: parser
 	parser ../programs/unrecognized.rawr
 
-while: lexer_parser
+while: parser
 	parser ../programs/while.rawr
 
 clean:
