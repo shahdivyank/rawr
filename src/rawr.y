@@ -54,11 +54,15 @@ statement: assignment { printf("statement -> assignment \n"); }
 
 assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); equals++; }
         | VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> VARIABLE EQUALS r_var SEMICOLON \n");equals++; }
-        | arr { printf("assignment -> arr \n"); }
         | INT VARIABLE SEMICOLON { printf("assignment -> INT VARIABLE SEMICOLON \n"); }
         | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> r_var EQUALS expressions \n"); equals++; }
         | INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT r_var EQUALS expressions \n"); equals++; }
+        | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("assignment -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
+        | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); }
+        | INT ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> INT ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON \n"); }
+        | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON \n"); }
         ;
+
 
 expressions: expression expressions { printf("expressions -> expression expressions \n"); }
         | expression { printf("expressions -> expression SEMICOLON \n"); }
