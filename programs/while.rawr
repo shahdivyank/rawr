@@ -1,11 +1,13 @@
 // this is a while loop that prints out numbers from 1 to 100
 
 int main() {
+    int a = 10;
     int i = 0;
 
-    while (i <= 100){
-        rout(i);
-        i = i + 1;
+    while(a < 15) {
+        i = 1;
     }
+
+    return 0;
 }
 

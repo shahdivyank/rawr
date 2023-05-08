@@ -1,16 +1,16 @@
 // Result will print sum of a and b
 const int add (int a, int b) {
-    rout(a + b);
+    return a + b;
 }
 
 // Result will print difference of a and b
 const int subtract (int a, int b) {
-    rout(a - b);
+    return a - b;
 }
 
 // Result will print result of a multiplied by b
 const int multiply (int a, int b) {
-    rout(a * b);
+    return a * b;
 }
 
 int main() {
@@ -28,4 +28,6 @@ int main() {
     //result will be 10
     int e = multiply(a, b);
     rout(e);
+
+    return 0;
 }

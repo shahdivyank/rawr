@@ -10,5 +10,7 @@ int main() {
     b = 2;
     c[0] = a + b? // should print out error bc of ? symbol
     rout(c);
+
+    return 0;
 }
 

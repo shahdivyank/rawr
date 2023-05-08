@@ -12,9 +12,8 @@ int main() {
     rout(arr[0]);
 
     //result will print 500
-    arr[1] = 500;
     rout(arr[1]);
-
+    
     //result will be 100
     arr[2] = 100;
     rout(arr[2]);
@@ -23,5 +22,7 @@ int main() {
     //result will be 2800 as 7 * (500-100) 
     arr[3] = arr[0] * (arr[1] - arr[2]);
     rout(arr[3]);
+
+    return 0;
 }
 
