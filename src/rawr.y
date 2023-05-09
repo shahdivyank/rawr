@@ -81,7 +81,8 @@ op: ADD { printf("op -> ADD \n"); }
     ;
 
 expression: r_var op r_var { printf("expression -> r_var op r_var \n"); } 
-    ;
+        | r_var { printf("expression -> r_var \n"); }
+        ;
 
 read: READ L_PAR r_var R_PAR SEMICOLON { printf("read -> READ L_PAR r_var R_PAR SEMICOLON \n"); }
     ;
