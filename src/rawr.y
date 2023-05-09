@@ -87,7 +87,6 @@ singleTerm: extraOp r_var { printf("singleTerm -> extraOp r_var \n"); }
 
 // for the op number cases 
 extraOp: op { printf("extraOp -> op \n"); }
-        | %empty { printf("extraOp -> epsilon \n"); }
         ;
 
 // for arguments
