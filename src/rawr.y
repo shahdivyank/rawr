@@ -29,7 +29,7 @@ function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var 
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
         | argument { printf ("arguments -> argument \n"); }
-        | %empty { printf("arguments -> epsilon \n"); }
+        | %empty { printf("arguments -> empty \n"); }
         ;
 
 argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
@@ -41,7 +41,7 @@ main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { prin
         ;
 
 statements: statement statements { printf ("statements -> statement statements \n"); }
-         | %empty { printf("statements -> epsilon \n"); }
+         | %empty { printf("statements -> empty \n"); }
         ;
 
 statement: initialization { printf("statement -> initialization \n"); }
@@ -69,8 +69,8 @@ r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;}
         | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
         ;
 
-expressions: expressions op singleTerm { printf("expressions -> expressions op manyTerms \n"); }
-        | singleTerm { printf("expressions -> manyTerms \n"); }
+expressions: expressions op singleTerm { printf("expressions -> expressions op singleTerm \n"); }
+        | singleTerm { printf("expressions -> singleTerm \n"); }
         ;
 
 singleTerm: op r_var { printf("singleTerm -> op r_var \n"); }
