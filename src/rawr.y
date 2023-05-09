@@ -62,10 +62,10 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> IN
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions \n"); } 
         ;
 
-r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;} 
+r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++; } 
         | VARIABLE L_PAR arguments R_PAR { printf("singleTerm -> VARIABLE L_PAR arguments R_PAR \n"); }
         | VARIABLE { printf("r_var -> VARIABLE \n"); }
-        | ARRAY L_BRACKET NUMBER R_BRACKET { printf("r_var -> ARRAY L_BRACKET NUMBER R_BRACKET \n"); }
+        | ARRAY L_BRACKET NUMBER R_BRACKET { printf("r_var -> ARRAY L_BRACKET NUMBER R_BRACKET \n"); integers++; }
         | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
         ;
 
