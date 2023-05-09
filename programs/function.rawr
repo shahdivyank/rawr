@@ -21,15 +21,15 @@ int main() {
     int b = 2;
 
     //result will be 7
-    //int c = add(a, b);
+    int c = add(a, b);
     rout(c);
 
     //result will be 3
-    //int d = subtract(a, b);
+    int d = subtract(a, b);
     rout(d);
 
     //result will be 10
-    //int e = multiply(a, b);
+    int e = multiply(a, b);
     rout(e);
 
     return 0;
