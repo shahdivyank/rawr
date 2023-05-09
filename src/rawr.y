@@ -34,7 +34,7 @@ arguments: argument COMMA arguments { printf("arguments -> argument COMMA argume
 
 argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
         | INT ARRAY L_BRACKET r_var R_BRACKET { printf("argument -> INT ARRAY L_BRACKET r_var R_BRACKET \n"); }
-        | r_var
+        | r_var { printf("argument -> r_var \n"); }
         ;
 
 main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
