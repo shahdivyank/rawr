@@ -71,32 +71,13 @@ r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;}
     | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
     ;
 
-expressions: expressions op manyTerms { printf("expressions -> expressions op manyTerms \n"); }
-        | manyTerms { printf("expressions -> manyTerms \n"); }
-        ;
-
-manyTerms: manyTerms op singleTerm { printf("manyTerms -> manyTerms op singleTerm \n"); }
-        | singleTerm { printf("manyTerms -> singleTerm \n"); }
+expressions: expressions op singleTerm { printf("expressions -> expressions op manyTerms \n"); }
+        | singleTerm { printf("expressions -> manyTerms \n"); }
         ;
 
 singleTerm: op r_var { printf("singleTerm -> op r_var \n"); }
         | r_var { printf("singleTerm -> r_var \n"); }
         | L_PAR expressions R_PAR  { printf("singleTerm -> L_PAR expressions R_PAR \n"); }
-        | r_var L_PAR moreVals R_PAR { printf("singleTerm -> r_var L_PAR moreVals R_PAR \n"); }
-        ;
-
-// // for the op number cases 
-// extraOp: op { printf("extraOp -> op \n"); }
-//         ;
-
-// for arguments
-moreVals: moreMoreVals { printf("moreVals -> moreMoreVals \n"); }
-        | %empty { printf("moreVals -> epsilon \n"); }
-        ;
-
-// for multiple arguments
-moreMoreVals: expressions { printf("moreMoreVals -> expressions \n"); }
-        | expressions COMMA moreMoreVals { printf("moreMoreVals -> expressions COMMA moreMoreVals \n"); }
         ;
 
 op: ADD { printf("op -> ADD \n"); } 
