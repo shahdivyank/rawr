@@ -78,10 +78,10 @@ singleTerm: op r_var { printf("singleTerm -> op r_var \n"); }
         | L_PAR expressions R_PAR  { printf("singleTerm -> L_PAR expressions R_PAR \n"); }
         ;
 
-op: ADD { printf("op -> ADD \n"); } 
-    | SUB { printf("op -> SUB \n"); } 
-    | DIV { printf("op -> DIV \n"); } 
-    | MULT { printf("op -> MULT \n"); } 
+op: ADD { printf("op -> ADD \n"); operators++; } 
+    | SUB { printf("op -> SUB \n"); operators++; } 
+    | DIV { printf("op -> DIV \n"); operators++; } 
+    | MULT { printf("op -> MULT \n"); operators++; } 
     ;
 
 read: READ L_PAR r_var R_PAR SEMICOLON { printf("read -> READ L_PAR r_var R_PAR SEMICOLON \n"); }
