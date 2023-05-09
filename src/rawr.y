@@ -20,12 +20,12 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 prog_start: functions { printf("prog_start -> functions \n"); }
         ; 
 
-functions: function functions { printf("functions -> function functions \n"); } 
+functions: functions function { printf("functions -> function functions \n"); } 
         | function { printf("functions -> function \n"); }
         ;
 
 function: main { printf("function -> main \n"); }
-        | INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
+        | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
         ;
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
@@ -34,6 +34,7 @@ arguments: argument COMMA arguments { printf("arguments -> argument COMMA argume
         ;
 
 argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
+        | INT ARRAY L_BRACKET r_var R_BRACKET { printf("argument -> INT ARRAY L_BRACKET r_var R_BRACKET \n"); }
         ;
 
 main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT MAIN L_PAR R PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
@@ -53,7 +54,7 @@ statement: initialization { printf("statement -> initialization \n"); }
         ;
 
 initialization: INT VARIABLE SEMICOLON { printf("initialization -> INT VARIABLE SEMICOLON \n"); }
-        | INT ARRAY L_BRACKET NUMBER R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
+        | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
         ; 
 
 assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); }
@@ -70,8 +71,33 @@ r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;}
     | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
     ;
 
-expressions: expression op expressions { printf("expressions -> expression op expressions \n"); } 
-        
+expressions: expressions op manyTerms { printf("expressions -> expressions op manyTerms \n"); }
+        | manyTerms { printf("expressions -> manyTerms \n"); }
+        ;
+
+manyTerms: manyTerms op singleTerm { printf("manyTerms -> manyTerms op singleTerm \n"); }
+        | singleTerm { printf("manyTerms -> singleTerm \n"); }
+        ;
+
+singleTerm: extraOp r_var { printf("singleTerm -> extraOp r_var \n"); }
+        | r_var { printf("singleTerm -> r_var \n"); }
+        | L_PAR expressions R_PAR  { printf("singleTerm -> L_PAR expressions R_PAR \n"); }
+        | r_var L_PAR moreVals R_PAR { printf("singleTerm -> r_var L_PAR moreVals R_PAR \n"); }
+        ;
+
+// for the op number cases 
+extraOp: op { printf("extraOp -> op \n"); }
+        | %empty { printf("extraOp -> epsilon \n"); }
+        ;
+
+// for arguments
+moreVals: moreMoreVals { printf("moreVals -> moreMoreVals \n"); }
+        | %empty { printf("moreVals -> epsilon \n"); }
+        ;
+
+// for multiple arguments
+moreMoreVals: expressions { printf("moreMoreVals -> expressions \n"); }
+        | expressions COMMA moreMoreVals { printf("moreMoreVals -> expressions COMMA moreMoreVals \n"); }
         ;
 
 op: ADD { printf("op -> ADD \n"); } 
@@ -80,19 +106,17 @@ op: ADD { printf("op -> ADD \n"); }
     | MULT { printf("op -> MULT \n"); } 
     ;
 
-expression: r_var { printf("expression -> r_var \n"); }
-
 read: READ L_PAR r_var R_PAR SEMICOLON { printf("read -> READ L_PAR r_var R_PAR SEMICOLON \n"); }
     ;
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { printf("write -> WRITE L_PAR r_var R_PAR SEMICOLON \n"); }
     ;
 
-conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON \n"); }
-        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE SEMICOLON \n"); }
+conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
+        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE \n"); }
         ;
 
-loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON \n"); }
+loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); }
     ;
 
 conditions: condition { printf("conditions -> condition \n"); }
