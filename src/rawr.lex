@@ -47,7 +47,7 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "rout"            { col += 4; return WRITE;}
 "main"            { col += 4; return MAIN;}
 "return"          { col += 6; return RET; }
-"const"           { col += 5; return FUNCT; }
+"const"           { col += 5; return CONST; }
 "arr"             { col += 3; return ARRAY; }
 {DIGIT}+          { col += yyleng; return NUMBER; }
 [0-9]{VARIABLES}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col + 1, yytext); }
