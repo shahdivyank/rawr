@@ -34,6 +34,7 @@ arguments: argument COMMA arguments { printf("arguments -> argument COMMA argume
 
 argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
         | INT ARRAY L_BRACKET r_var R_BRACKET { printf("argument -> INT ARRAY L_BRACKET r_var R_BRACKET \n"); }
+        | r_var
         ;
 
 main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); }
@@ -62,10 +63,11 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> IN
         ;
 
 r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++ ;} 
-    | VARIABLE { printf("r_var -> VARIABLE \n"); }
-    | ARRAY L_BRACKET NUMBER R_BRACKET { printf("r_var -> ARRAY L_BRACKET NUMBER R_BRACKET \n"); }
-    | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
-    ;
+        | VARIABLE L_PAR arguments R_PAR { printf("singleTerm -> VARIABLE L_PAR arguments R_PAR \n"); }
+        | VARIABLE { printf("r_var -> VARIABLE \n"); }
+        | ARRAY L_BRACKET NUMBER R_BRACKET { printf("r_var -> ARRAY L_BRACKET NUMBER R_BRACKET \n"); }
+        | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
+        ;
 
 expressions: expressions op singleTerm { printf("expressions -> expressions op manyTerms \n"); }
         | singleTerm { printf("expressions -> manyTerms \n"); }
