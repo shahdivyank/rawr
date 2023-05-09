@@ -24,8 +24,7 @@ functions: function functions { printf("functions -> function functions \n"); }
         | %empty { printf("functions -> empty \n"); }
         ;
 
-function: main { printf("function -> main \n"); }
-        | CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
+function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); } 
         ;
 
 arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
