@@ -53,7 +53,7 @@ statement: initialization { printf("statement -> initialization \n"); }
         ;
 
 initialization: INT VARIABLE SEMICOLON { printf("initialization -> INT VARIABLE SEMICOLON \n"); }
-        | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
+        | INT ARRAY L_BRACKET NUMBER R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
         ; 
 
 assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); }
@@ -88,8 +88,8 @@ read: READ L_PAR r_var R_PAR SEMICOLON { printf("read -> READ L_PAR r_var R_PAR 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { printf("write -> WRITE L_PAR r_var R_PAR SEMICOLON \n"); }
     ;
 
-conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON \n"); }
-        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE SEMICOLON { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE SEMICOLON \n"); }
+conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON \n"); }
+        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE SEMICOLON \n"); }
         ;
 
 loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE SEMICOLON \n"); }
