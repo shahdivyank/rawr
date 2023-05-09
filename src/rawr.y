@@ -56,11 +56,8 @@ initialization: INT VARIABLE SEMICOLON { printf("initialization -> INT VARIABLE 
         | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
         ; 
 
-assignment: INT VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> INT VARIABLE EQUALS r_var SEMICOLON \n"); }
-        | INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT VARIABLE EQUALS expressions SEMICOLON \n"); } 
-        | VARIABLE EQUALS r_var SEMICOLON { printf("assignment -> VARIABLE EQUALS r_var SEMICOLON \n"); } 
+assignment: INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT VARIABLE EQUALS expressions SEMICOLON \n"); } 
         | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> VARIABLE EQUALS expressions SEMICOLON \n"); } 
-        | ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS r_var SEMICOLON \n"); } 
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions \n"); } 
         ;
 
