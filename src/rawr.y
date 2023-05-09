@@ -123,7 +123,6 @@ int main(int argc, char** argv){
     }
 
     if (yyparse() != 0){
-        fprintf(stderr, "failed\n"); 
         return 1; 
     }
 

@@ -4,6 +4,8 @@
 int row = 1, col = 1;
 %}
 
+%option yylineno
+
 DIGIT [0-9]
 SINGLE_COMMENT "//".*"\n"
 MULTI_COMMENT "/*".*"*/"
