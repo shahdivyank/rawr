@@ -17,11 +17,11 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 %%
 
-prog_start: functions { printf("prog_start -> functions \n"); }
+prog_start: functions main functions { printf("prog_start -> functions main functions \n"); }
         ; 
 
-functions: functions function { printf("functions -> function functions \n"); } 
-        | function { printf("functions -> function \n"); }
+functions: function functions { printf("functions -> function functions \n"); } 
+        | %empty { printf("functions -> empty \n"); }
         ;
 
 function: main { printf("function -> main \n"); }
@@ -79,15 +79,15 @@ manyTerms: manyTerms op singleTerm { printf("manyTerms -> manyTerms op singleTer
         | singleTerm { printf("manyTerms -> singleTerm \n"); }
         ;
 
-singleTerm: extraOp r_var { printf("singleTerm -> extraOp r_var \n"); }
+singleTerm: op r_var { printf("singleTerm -> op r_var \n"); }
         | r_var { printf("singleTerm -> r_var \n"); }
         | L_PAR expressions R_PAR  { printf("singleTerm -> L_PAR expressions R_PAR \n"); }
         | r_var L_PAR moreVals R_PAR { printf("singleTerm -> r_var L_PAR moreVals R_PAR \n"); }
         ;
 
-// for the op number cases 
-extraOp: op { printf("extraOp -> op \n"); }
-        ;
+// // for the op number cases 
+// extraOp: op { printf("extraOp -> op \n"); }
+//         ;
 
 // for arguments
 moreVals: moreMoreVals { printf("moreVals -> moreMoreVals \n"); }
