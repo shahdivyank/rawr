@@ -37,7 +37,6 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "&&"              { col += 2; return AND; }
 "||"              { col += 2; return OR; }
 ";"               { col++; return SEMICOLON; }
-":"               { col++; return COLON; }
 ","               { col++; return COMMA; }
 "int"             { col += 3; return INT; }
 "if"              { col += 2; return IF; }

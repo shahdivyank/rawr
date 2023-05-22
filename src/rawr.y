@@ -8,6 +8,10 @@
 #include<string.h>
 #include<stdlib.h>
 
+extern int yylex(void);
+void yyerror(const char *msg);
+
+
 // Possible Datatypes in Language
 enum Type { Integer, Array };
 
@@ -82,19 +86,38 @@ extern FILE* yyin;
 int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %}
 
+%union {
+  char *character;
+  int number;
+  struct CodeNode *node;
+}
+
 %start prog_start
 
 %token ADD SUB MULT DIV EQUALS
 %token L_PAR R_PAR L_BRACE R_BRACE L_BRACKET R_BRACKET
 %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS AND OR
 %token SEMICOLON COMMA
-%token INT IF ELSE WHILE BR READ WRITE MAIN RET ARRAY NUMBER VARIABLE CONST
+%token INT IF ELSE WHILE BR READ WRITE MAIN RET ARRAY CONST
+
+%token <character> VARIABLE 
+%token <number> NUMBER
+%type  <node>   functions function main statements statement arguments argument initialization assignment r_var expressions
+%type  <node>   singleTerm op read write conditional loop conditions condition
+
 
 %%
 
 // TODO
-prog_start: functions main functions { printf("prog_start -> functions main functions \n"); }
-        ; 
+prog_start: functions main { 
+        CodeNode *function  = $1;
+        CodeNode *main = $2;
+        std::string code = function->code + main->code;
+        CodeNode *node = new CodeNode;
+        node->code = code;
+        printf("Generated code:\n");
+        printf("%s\n", code.c_str());
+ }; 
 
 functions: function functions { 
                 CodeNode *function  = $1;
@@ -109,97 +132,210 @@ functions: function functions {
                 $$ = node;
          }
         ;
-// TODO
-function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("function -> CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); parentheses += 2; } 
+
+function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
+                // TODO
+                parentheses += 2; 
+        } 
         ;
-// TODO
-arguments: argument COMMA arguments { printf("arguments -> argument COMMA arguments \n"); }
-        | argument { printf ("arguments -> argument \n"); }
+
+arguments: argument COMMA arguments { 
+                // TODO
+        }
+        | argument { 
+                // TODO
+         }
         | %empty { 
-                CodeNode *node = new CodeNode;
-                $$ = node;
+                // TODO
          }
         ;
-// TODO
-argument: INT VARIABLE { printf("argument -> INT VARIABLE \n"); }
-        | INT ARRAY L_BRACKET r_var R_BRACKET { printf("argument -> INT ARRAY L_BRACKET r_var R_BRACKET \n"); }
-        | r_var { printf("argument -> r_var \n"); }
+
+argument: INT VARIABLE { 
+                // TODO
+        }
+        | INT ARRAY L_BRACKET r_var R_BRACKET { 
+                // TODO
+        }
+        | r_var { 
+                // TODO
+        }
         ;
-// TODO
-main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { printf("main -> CONST INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE \n"); parentheses+= 2; }
+
+main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
+                // TODO        
+                parentheses+= 2; 
+        }
         ;
-// TODO
-statements: statement statements { printf ("statements -> statement statements \n"); }
+
+statements: statement statements { 
+                // TODO
+        }
          | %empty { 
                 CodeNode *node = new CodeNode;
                 $$ = node;
           }
         ;
-// TODO
-statement: initialization { printf("statement -> initialization \n"); }
-        | assignment { printf("statement -> assignment \n"); }
-        | conditional { printf("statement -> conditional \n"); }
-        | loop { printf("statement -> loop \n"); }
-        | read { printf("statement -> read \n"); }
-        | write { printf("statement -> write \n"); }
-        | BR SEMICOLON { printf("statement -> BR SEMICOLON \n"); }
+
+statement: initialization {
+                // TODO
+        }
+        | assignment {
+                // TODO
+        }
+        | conditional {
+                // TODO
+        }
+        | loop {
+                // TODO
+        }
+        | read {
+                // TODO
+        }
+        | write {
+                // TODO
+        }
+        | BR SEMICOLON {
+                // TODO
+        }
         ;
-// TODO
-initialization: INT VARIABLE SEMICOLON { printf("initialization -> INT VARIABLE SEMICOLON \n"); }
-        | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON { printf("initialization -> INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON \n"); } 
+
+initialization: INT VARIABLE SEMICOLON {
+                // TODO
+        }
+        | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON {
+                // TODO
+        } 
         ; 
-// TODO
-assignment: INT VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> INT VARIABLE EQUALS expressions SEMICOLON \n"); equals++; } 
-        | VARIABLE EQUALS expressions SEMICOLON { printf("assignment -> VARIABLE EQUALS expressions SEMICOLON \n"); equals++; } 
-        | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON { printf("assignment -> ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions \n"); equals++; } 
+
+assignment: INT VARIABLE EQUALS expressions SEMICOLON { 
+                // TODO
+                equals++; 
+        } 
+        | VARIABLE EQUALS expressions SEMICOLON { 
+                // TODO
+                equals++; 
+        } 
+        | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
+                // TODO 
+                equals++; 
+        } 
         ;
-// TODO
-r_var: NUMBER { printf("r_var -> NUMBER \n"); integers++; } 
-        | VARIABLE L_PAR arguments R_PAR { printf("singleTerm -> VARIABLE L_PAR arguments R_PAR \n"); parentheses += 2; }
-        | VARIABLE { printf("r_var -> VARIABLE \n"); }
-        | ARRAY L_BRACKET NUMBER R_BRACKET { printf("r_var -> ARRAY L_BRACKET NUMBER R_BRACKET \n"); integers++; }
-        | ARRAY L_BRACKET VARIABLE R_BRACKET { printf("r_var -> ARRAY L_BRACKET VARIABLE R_BRACKET \n"); }
+
+r_var: NUMBER { 
+                // TODO
+                integers++;
+        } 
+        | VARIABLE L_PAR arguments R_PAR { 
+                // TODO
+                parentheses += 2; 
+        }
+        | VARIABLE { 
+                // TODO
+         }
+        | ARRAY L_BRACKET NUMBER R_BRACKET { 
+                // TODO
+                integers++; 
+        }
+        | ARRAY L_BRACKET VARIABLE R_BRACKET {
+                // TODO
+        }
         ;
-// TODO
-expressions: expressions op singleTerm { printf("expressions -> expressions op singleTerm \n"); }
-        | singleTerm { printf("expressions -> singleTerm \n"); }
+
+expressions: expressions op singleTerm {
+                // TODO
+        }
+        | singleTerm {
+                // TODO
+        }
         ;
-// TODO
-singleTerm: op r_var { printf("singleTerm -> op r_var \n"); }
-        | r_var { printf("singleTerm -> r_var \n"); }
-        | L_PAR expressions R_PAR  { printf("singleTerm -> L_PAR expressions R_PAR \n"); parentheses += 2; }
+
+singleTerm: op r_var {
+                // TODO
+        }
+        | r_var {
+                // TODO
+        }
+        | L_PAR expressions R_PAR  {
+                // TODO
+                parentheses += 2; 
+        }
         ;
-// TODO
-op: ADD { printf("op -> ADD \n"); operators++; } 
-    | SUB { printf("op -> SUB \n"); operators++; } 
-    | DIV { printf("op -> DIV \n"); operators++; } 
-    | MULT { printf("op -> MULT \n"); operators++; } 
+
+op: ADD { 
+                // TODO 
+                operators++; 
+        } 
+    | SUB { 
+                // TODO 
+                operators++; 
+        }
+    | MULT { 
+                // TODO 
+                operators++; 
+        }
+    | DIV { 
+                // TODO 
+                operators++; 
+        }
     ;
-// TODO
-read: READ L_PAR r_var R_PAR SEMICOLON { printf("read -> READ L_PAR r_var R_PAR SEMICOLON \n"); parentheses += 2; }
+
+read: READ L_PAR r_var R_PAR SEMICOLON { 
+                // TODO 
+                parentheses += 2; 
+        }
     ;
-// TODO
-write: WRITE L_PAR r_var R_PAR SEMICOLON { printf("write -> WRITE L_PAR r_var R_PAR SEMICOLON \n"); parentheses += 2; }
+
+write: WRITE L_PAR r_var R_PAR SEMICOLON { 
+                // TODO 
+                parentheses += 2; 
+        }
     ;
-// TODO
-conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); parentheses += 2; }
-        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE { printf("conditional -> IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE \n"); parentheses += 2;}
+
+conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
+                // TODO 
+                parentheses += 2; 
+        }
+        | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE {
+                // TODO 
+                parentheses += 2;
+        }
+        ;
+
+loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
+                // TODO 
+                parentheses += 2; 
+        }
+    ;
+
+conditions: condition { 
+                // TODO 
+        }
+        | condition OR conditions { 
+                // TODO 
+        }
+        | condition AND conditions { 
+                // TODO 
+        }
         ;
 // TODO
-loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { printf("loop -> WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE \n"); parentheses += 2; }
-    ;
-// TODO
-conditions: condition { printf("conditions -> condition \n"); }
-        | condition OR conditions { printf("conditions -> condition OR conditions \n"); }
-        | condition AND conditions { printf("conditions -> condition AND conditions \n"); }
-        ;
-// TODO
-condition: r_var EQS_TO r_var { printf("condition -> r_var EQS_TO r_var \n"); }
-        | r_var G_THAN_EQUALS r_var { printf("condition -> r_var G_THAN_EQUALS r_var \n"); }
-        | r_var L_THAN_EQUALS r_var { printf("condition -> r_var L_THAN_EQUALS r_var \n"); }
-        | r_var G_THAN r_var { printf("condition -> r_var G_THAN r_var \n"); }
-        | r_var L_THAN r_var { printf("condition -> r_var L_THAN r_var \n"); }
-        | r_var NOT_EQS_TO r_var { printf("condition -> r_var NOT_EQS_TO r_var \n"); }
+condition: r_var EQS_TO r_var {
+                // TODO 
+        }
+        | r_var G_THAN_EQUALS r_var {
+                // TODO 
+        }
+        | r_var L_THAN_EQUALS r_var {
+                // TODO 
+        }
+        | r_var G_THAN r_var {
+                // TODO 
+        }
+        | r_var L_THAN r_var {
+                // TODO 
+        }
+        | r_var NOT_EQS_TO r_var {
+                // TODO 
+        }
         ;
 %%
 
@@ -223,8 +359,7 @@ int main(int argc, char** argv){
     return 0;
 }
 
-int yyerror (const char *mssg) {
+void yyerror (const char *mssg) {
     extern int yylineno;
     fprintf (stderr, "Invalid Syntax! On Line: %d \n", yylineno);
-    return 1; 
  }
