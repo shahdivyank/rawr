@@ -192,7 +192,11 @@ main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
         ;
 
 statements: statement statements { 
-                // TODO
+                CodeNode *statement  = $1;
+                CodeNode *statements = $2;
+                std::string code = statement->code + statements->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
          | %empty { 
                 CodeNode *node = new CodeNode;
@@ -305,19 +309,23 @@ singleTerm: op r_var {
         ;
 
 op: ADD { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->name = "+";
                 operators++; 
         } 
     | SUB { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->name = "-";
                 operators++; 
         }
     | MULT { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->name = "*";
                 operators++; 
         }
     | DIV { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->name = "/";
                 operators++; 
         }
     ;
@@ -373,30 +381,62 @@ conditions: condition {
                 $$ = node;
         }
         | condition OR conditions { 
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + " OR " + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | condition AND conditions { 
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + " AND " + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         ;
-// TODO
+
 condition: r_var EQS_TO r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + "==" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | r_var G_THAN_EQUALS r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + ">=" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | r_var L_THAN_EQUALS r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + "<=" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | r_var G_THAN r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + ">" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | r_var L_THAN r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + "<" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         | r_var NOT_EQS_TO r_var {
-                // TODO 
+                CodeNode *left  = $1;
+                CodeNode *right = $3;
+                std::string code = left->code + "!=" + right->code;
+                CodeNode *node = new CodeNode;
+                node->code = code;
         }
         ;
 %%
