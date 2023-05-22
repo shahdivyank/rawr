@@ -134,7 +134,20 @@ functions: function functions {
         ;
 
 function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
-                // TODO
+                std::string func_name = $3;
+                CodeNode *params = $5;
+                CodeNode *stmts = $8;
+                CodeNode *return_value = $10;
+                std::string code = std::string("func ") + func_name + std::string("\n");
+                code += params->code;
+                code += stmts->code;
+                code += return_value->code;
+                code += std::string("endfunc\n");
+
+                CodeNode *node = new CodeNode;
+                node->code = code;
+                $$ = node;
+
                 parentheses += 2; 
         } 
         ;
@@ -162,7 +175,16 @@ argument: INT VARIABLE {
         ;
 
 main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
-                // TODO        
+                CodeNode *stmts = $6;
+                CodeNode *return_value = $8;
+                std::string code = std::string("func main \n");
+                code += stmts->code;
+                code += return_value->code;
+                code += std::string("endfunc\n");
+
+                CodeNode *node = new CodeNode;
+                node->code = code;
+                $$ = node;
                 parentheses+= 2; 
         }
         ;
@@ -223,6 +245,10 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
 
 r_var: NUMBER { 
                 // TODO
+                int value = $1;
+                CodeNode *node = new CodeNode;
+                node->name = $1;
+                $$ = node; 
                 integers++;
         } 
         | VARIABLE L_PAR arguments R_PAR { 
