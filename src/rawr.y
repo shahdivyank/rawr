@@ -1,7 +1,4 @@
-// BISON FILE 
-
 %{ 
-#include <stdio.h> 
 #include<stdio.h>
 #include<string>
 #include<vector>
@@ -112,6 +109,7 @@ prog_start: functions main {
         CodeNode *function  = $1;
         CodeNode *main = $2;
         std::string code = function->code + main->code;
+        
         CodeNode *node = new CodeNode;
         node->code = code;
         printf("Generated code:\n");
@@ -247,8 +245,19 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
                 // TODO
                 equals++; 
         } 
-        | VARIABLE EQUALS expressions SEMICOLON { 
-                // TODO
+        | VARIABLE EQUALS expressions SEMICOLON { // paulian's attempt - rawr
+                // to review
+                std::string var_name = $1;
+                std::string error;
+                if(!find(var_name, Integer, error)) {
+                        yyerror(error.c_str());
+                }
+
+                CodeNode *node = new CodeNode;
+                node->code = $3->code;
+                node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n");
+                $$ = node;
+
                 equals++; 
         } 
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
