@@ -339,17 +339,30 @@ write: WRITE L_PAR r_var R_PAR SEMICOLON {
     ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                // TODO 
+                CodeNode *conditions  = $3;
+                CodeNode *statements = $6;
+                std::string code = "IF" + conditions->code + "\n" + statements->code + "\nENDIF";
+                CodeNode *node = new CodeNode;
+                node->code = code;
                 parentheses += 2; 
         }
         | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE {
-                // TODO 
+                CodeNode *conditions  = $3;
+                CodeNode *if_statements = $6;
+                CodeNode *else_statements = $10;
+                std::string code = "IF" + conditions->code + "\n" + if_statements->code + "\nENDIF\nELSE\n" + else_statements->code + "ENDELSE";
+                CodeNode *node = new CodeNode;
+                node->code = code;
                 parentheses += 2;
         }
         ;
 
 loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                // TODO 
+                CodeNode *conditions  = $3;
+                CodeNode *statements = $6;
+                std::string code = "WHILE" + conditions->code + "\n" + statements->code + "\nENDWHILE";
+                CodeNode *node = new CodeNode;
+                node->code = code;
                 parentheses += 2; 
         }
     ;
