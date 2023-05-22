@@ -1,0 +1,36 @@
+// Result will print sum of a and b
+const int add (int a, int b) {
+    int c = a + b
+    return c;
+}
+
+// Result will print difference of a and b
+const int subtract (int a, int b) {
+    int c = a - b;
+    return c;
+}
+
+// Result will print result of a multiplied by b
+const int multiply (int a, int b) {
+    int c = a * b;
+    return c;
+}
+
+int main() {
+    int a = 5;
+    int b = 2;
+
+    //result will be 7
+    int c = add(a, b);
+    rout(c);
+
+    //result will be 3
+    int d = subtract(a, b);
+    rout(d);
+
+    //result will be 10
+    int e = multiply(a, b);
+    rout(e);
+
+    return 0;
+}
