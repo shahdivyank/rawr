@@ -282,7 +282,16 @@ r_var: NUMBER {
                 parentheses += 2; 
         }
         | VARIABLE { 
-                // TODO
+                // to review-paulian
+                CodeNode *node = new CodeNode;
+                node->code = "";
+                node->name = $1;
+                std::string error;
+                
+                if(!find(node->name, Integer,error)) {
+                        yyerror(error.c_str());
+                }
+                $$ = node;
          }
         | ARRAY L_BRACKET NUMBER R_BRACKET { 
                 // TODO
