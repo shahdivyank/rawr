@@ -108,7 +108,6 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 %%
 
-// TODO
 prog_start: functions main { 
         CodeNode *function  = $1;
         CodeNode *main = $2;
@@ -156,10 +155,13 @@ arguments: argument COMMA arguments {
                 // TODO
         }
         | argument { 
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
          }
         | %empty { 
-                // TODO
+               CodeNode *node = new CodeNode;
+                $$ = node;
          }
         ;
 
@@ -199,22 +201,34 @@ statements: statement statements {
         ;
 
 statement: initialization {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | assignment {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | conditional {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | loop {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | read {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | write {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | BR SEMICOLON {
                 // TODO
@@ -244,7 +258,6 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
         ;
 
 r_var: NUMBER { 
-                // TODO
                 int value = $1;
                 CodeNode *node = new CodeNode;
                 node->name = $1;
@@ -271,7 +284,9 @@ expressions: expressions op singleTerm {
                 // TODO
         }
         | singleTerm {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         ;
 
@@ -279,7 +294,9 @@ singleTerm: op r_var {
                 // TODO
         }
         | r_var {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | L_PAR expressions R_PAR  {
                 // TODO
@@ -334,7 +351,9 @@ loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE {
     ;
 
 conditions: condition { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | condition OR conditions { 
                 // TODO 
