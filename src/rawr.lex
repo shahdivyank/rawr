@@ -44,7 +44,6 @@ VARIABLES [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "else"            { col += 4; return ELSE; }
 "while"           { col += 5; return WHILE; }
 "break"           { col += 5; return BR; }
-"continue"        { col += 8; return CONT; }
 "rin"             { col += 3; return READ; }
 "rout"            { col += 4; return WRITE;}
 "main"            { col += 4; return MAIN;}

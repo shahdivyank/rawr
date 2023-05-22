@@ -60,10 +60,8 @@
 | else                            | ELSE                               |
 | while                           | WHILE                              |
 | break                           | BR                                 |
-| continue                        | CONT                               |
 | rin                             | READ                               |
 | rout                            | WRITE                              |
 | main                            | MAIN                               |
 | return                          | RET                                |
 | const                           | FUNCT                              |
-| continue                        | CONT                               |
