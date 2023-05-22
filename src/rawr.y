@@ -323,13 +323,17 @@ op: ADD {
     ;
 
 read: READ L_PAR r_var R_PAR SEMICOLON { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->code = "READ" + $3->code;
+                $$ = node;
                 parentheses += 2; 
         }
     ;
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
-                // TODO 
+                CodeNode *node = new CodeNode;
+                node->code = "WRITE" + $3->code;
+                $$ = node;
                 parentheses += 2; 
         }
     ;
