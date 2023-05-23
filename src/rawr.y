@@ -119,9 +119,11 @@ prog_start: functions main {
 functions: function functions { 
                 CodeNode *function = $1;
                 CodeNode *functions = $2;
+
                 std::string code = function->code + functions->code;
                 CodeNode *node = new CodeNode;
                 node->code = code;
+
                 $$ = node;
         } 
         | %empty { 
@@ -135,7 +137,9 @@ function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var 
                 CodeNode *params = $5;
                 CodeNode *stmts = $8;
                 CodeNode *return_value = $10;
+
                 std::string code = std::string("func ") + func_name + std::string("\n");
+
                 code += params->code;
                 code += stmts->code;
                 code += return_value->code;
@@ -153,7 +157,7 @@ arguments: argument COMMA arguments {
                 CodeNode *node = $1; // argument
                 CodeNode *node2 = $3; // arguments
 
-                node->code=node2->code;
+                node->code = node2->code;
                 $$ = node;
         }
         | argument { 
@@ -163,12 +167,18 @@ arguments: argument COMMA arguments {
          }
         | %empty { 
                CodeNode *node = new CodeNode;
-                $$ = node;
+               $$ = node;
          }
         ;
 
-argument: INT VARIABLE { 
-                // TODO
+argument: INT VARIABLE {  // UR MISSION
+                // std::string var_name = $2;
+
+                // CodeNode *node = new CodeNode;
+                // node->code=""; // accounts for integer (don't need)
+
+
+
         }
         | INT ARRAY L_BRACKET r_var R_BRACKET { 
                 // TODO
@@ -189,7 +199,7 @@ main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
                 CodeNode *node = new CodeNode;
                 node->code = code;
                 $$ = node;
-                parentheses+= 2; 
+                parentheses += 2; 
         }
         ;
 
