@@ -171,14 +171,15 @@ arguments: argument COMMA arguments {
          }
         ;
 
-argument: INT VARIABLE {  // UR MISSION
-                // std::string var_name = $2;
+argument: INT VARIABLE { 
+                std::string var_name = $2;
 
-                // CodeNode *node = new CodeNode;
-                // node->code=""; // accounts for integer (don't need)
+                CodeNode *node = new CodeNode;
+                node->code=""; // accounts for integer (don't need)
 
+                node->code += std::string(". " ) + var_name + std::string("\n");
 
-
+                $$ = node;
         }
         | INT ARRAY L_BRACKET r_var R_BRACKET { 
                 // TODO
