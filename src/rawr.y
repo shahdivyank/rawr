@@ -171,15 +171,15 @@ arguments: argument COMMA arguments {
          }
         ;
 
-argument: INT VARIABLE { 
-                std::string var_name = $2;
+argument: INT VARIABLE { // help
+                // std::string var_name = $2;
 
-                CodeNode *node = new CodeNode;
-                node->code=""; // accounts for integer (don't need)
+                // CodeNode *node = new CodeNode;
+                // node->code=""; // accounts for integer (don't need)
 
-                node->code += std::string(". " ) + var_name + std::string("\n");
-
-                $$ = node;
+                // node->code += std::string(". " ) + var_name + std::string("\n");
+                
+                // $$ = node;
         }
         | INT ARRAY L_BRACKET r_var R_BRACKET { 
                 // TODO
@@ -252,8 +252,15 @@ statement: initialization {
         }
         ;
 
-initialization: INT VARIABLE SEMICOLON {
-                // TODO
+initialization: INT VARIABLE SEMICOLON { // help
+                std::string var_name = $2;
+
+                CodeNode *node = new CodeNode;
+                node->code=""; // accounts for integer (don't need)
+
+                node->code += std::string(". " ) + var_name + std::string("\n");
+                
+                $$ = node;
         }
         | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON {
                 // TODO
@@ -265,19 +272,16 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
                 equals++; 
         } 
         | VARIABLE EQUALS expressions SEMICOLON { // paulian's attempt - rawr
-                // to review
-                // std::string var_name = $1;
-                // std::string error;
-                // if(!find(var_name, Integer, error)) {
-                //         yyerror(error.c_str());
-                // }
+                std::string var_name = $1;
 
-                // CodeNode *node = new CodeNode;
-                // node->code = $3->code;
-                // node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n");
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = $3->code;
 
-                // equals++; 
+                // ->name is the contents of the variable
+                node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n"); 
+                $$ = node;
+
+                equals++; 
         } 
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 // TODO 
@@ -298,15 +302,8 @@ r_var: NUMBER {
         }
         | VARIABLE { 
                 // to review-paulian
-                // CodeNode *node = new CodeNode;
-                // node->code = "";
-                // node->name = $1;
-                // std::string error;
-                
-                // if(!find(node->name, Integer,error)) {
-                //         yyerror(error.c_str());
-                // }
-                // $$ = node;
+                $$ = new CodeNode();
+                $$->name = $1;
          }
         | ARRAY L_BRACKET NUMBER R_BRACKET { 
                 // TODO
