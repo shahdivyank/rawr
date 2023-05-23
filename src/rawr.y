@@ -106,7 +106,6 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %%
 
 prog_start: functions main { 
-        // need to include symbol table as well 
         CodeNode *functions = $1;
         CodeNode *main = $2;
         std::string code = functions->code + main->code;
@@ -151,7 +150,11 @@ function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var 
         ;
 
 arguments: argument COMMA arguments { 
-                // TODO
+                CodeNode *node = $1; // argument
+                CodeNode *node2 = $3; // arguments
+
+                node->code=node2->code;
+                $$ = node;
         }
         | argument { 
                 CodeNode *node = new CodeNode;
@@ -252,18 +255,18 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
         } 
         | VARIABLE EQUALS expressions SEMICOLON { // paulian's attempt - rawr
                 // to review
-                std::string var_name = $1;
-                std::string error;
-                if(!find(var_name, Integer, error)) {
-                        yyerror(error.c_str());
-                }
+                // std::string var_name = $1;
+                // std::string error;
+                // if(!find(var_name, Integer, error)) {
+                //         yyerror(error.c_str());
+                // }
 
-                CodeNode *node = new CodeNode;
-                node->code = $3->code;
-                node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n");
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $3->code;
+                // node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n");
+                // $$ = node;
 
-                equals++; 
+                // equals++; 
         } 
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 // TODO 
@@ -284,15 +287,15 @@ r_var: NUMBER {
         }
         | VARIABLE { 
                 // to review-paulian
-                CodeNode *node = new CodeNode;
-                node->code = "";
-                node->name = $1;
-                std::string error;
+                // CodeNode *node = new CodeNode;
+                // node->code = "";
+                // node->name = $1;
+                // std::string error;
                 
-                if(!find(node->name, Integer,error)) {
-                        yyerror(error.c_str());
-                }
-                $$ = node;
+                // if(!find(node->name, Integer,error)) {
+                //         yyerror(error.c_str());
+                // }
+                // $$ = node;
          }
         | ARRAY L_BRACKET NUMBER R_BRACKET { 
                 // TODO
