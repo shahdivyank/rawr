@@ -106,9 +106,10 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %%
 
 prog_start: functions main { 
-        CodeNode *function  = $1;
+        // need to include symbol table as well 
+        CodeNode *functions = $1;
         CodeNode *main = $2;
-        std::string code = function->code + main->code;
+        std::string code = functions->code + main->code;
         
         CodeNode *node = new CodeNode;
         node->code = code;
@@ -117,7 +118,7 @@ prog_start: functions main {
  }; 
 
 functions: function functions { 
-                CodeNode *function  = $1;
+                CodeNode *function = $1;
                 CodeNode *functions = $2;
                 std::string code = function->code + functions->code;
                 CodeNode *node = new CodeNode;
