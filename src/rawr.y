@@ -94,7 +94,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %token L_PAR R_PAR L_BRACE R_BRACE L_BRACKET R_BRACKET
 %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS AND OR
 %token SEMICOLON COMMA
-%token INT IF ELSE WHILE BR READ WRITE MAIN RET ARRAY CONST
+%token INT IF ELSE WHILE BR READ WRITE MAIN RET CONST
 
 %token <character> VARIABLE
 %token <character> NUMBER
@@ -182,7 +182,7 @@ argument: INT VARIABLE { // help
                 
                 // $$ = node;
         }
-        | INT ARRAY L_BRACKET r_var R_BRACKET { 
+        | INT VARIABLE L_BRACKET r_var R_BRACKET { 
                 // TODO
         }
         | r_var { 
@@ -260,18 +260,15 @@ statement: initialization {
         }
         ;
 
-initialization: INT VARIABLE SEMICOLON { // help
-                std::string var_name = $2;
-                // Type t = Integer;
-                // add_variable_to_symbol_table(var_name, t);
-
+initialization: INT VARIABLE SEMICOLON {
                 CodeNode *node = new CodeNode;
-                node->code = ". " + var_name + "\n";
-                
+                node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
         }
-        | INT ARRAY L_BRACKET r_var R_BRACKET SEMICOLON {
-                // TODO
+        | INT VARIABLE L_BRACKET NUMBER R_BRACKET SEMICOLON {
+                CodeNode *node = new CodeNode;
+                node->code = std::string(".[] " ) + $2 + std::string(", ") + $4 + std::string("\n");
+                $$ = node;
         } 
         ; 
 
@@ -301,7 +298,7 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
                 $$->code = $3->code;
                 $$->code += std::string("= ") + variableName + std::string(", ") + varValue + std::string("\n");
         } 
-        | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
+        | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 // TODO 
                 // equals++; 
         } 
@@ -322,11 +319,11 @@ r_var: NUMBER {
                 node->code = $1;
                 $$ = node; 
          }
-        | ARRAY L_BRACKET NUMBER R_BRACKET { 
+        | VARIABLE L_BRACKET NUMBER R_BRACKET { 
                 // TODO
                 // integers++; 
         }
-        | ARRAY L_BRACKET VARIABLE R_BRACKET {
+        | VARIABLE L_BRACKET VARIABLE R_BRACKET {
                 // TODO
         }
         ;

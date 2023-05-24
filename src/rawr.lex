@@ -48,7 +48,6 @@ VARIABLE [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "main"            { col += 4; return MAIN;}
 "return"          { col += 6; return RET; }
 "const"           { col += 5; return CONST; }
-"arr"             { col += 3; return ARRAY; }
 {DIGIT}+          { col += yyleng; 
     char * token = new char[yyleng];
     strcpy(token, yytext);
