@@ -60,7 +60,7 @@ VARIABLE [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 "-"{VARIABLE}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A HYPHEN: %s\n", row, col + 1, yytext); }
 {VARIABLE}"-"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A HYPEN: %s\n", row, col + 1, yytext); }
 {VARIABLE}"_"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A UNDERSCORE %s\n", row, col + 1, yytext); }
-{VARIABLE}       { printf("VARIABLE: %s\n", yytext); 
+{VARIABLE}       {
     col += yyleng; 
     char * token = new char[yyleng];
     strcpy(token, yytext);

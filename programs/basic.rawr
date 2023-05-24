@@ -1,4 +1,5 @@
 main() {
     rin(3);
     rout(2);
+    int a;
 }

@@ -317,9 +317,9 @@ r_var: NUMBER {
                 // parentheses += 2; 
         }
         | VARIABLE { 
-                // help
-                $$ = new CodeNode();
-                $$->name = $1;
+                CodeNode *node = new CodeNode;
+                node->code = $1;
+                $$ = node; 
          }
         | ARRAY L_BRACKET NUMBER R_BRACKET { 
                 // TODO
