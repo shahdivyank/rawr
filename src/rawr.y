@@ -213,6 +213,7 @@ statements: statement statements {
 
                 CodeNode *node = new CodeNode;
                 node->code = code;
+                $$ = node;
         }
          | %empty { 
                 CodeNode *node = new CodeNode;
@@ -241,14 +242,16 @@ statement: initialization {
                 // $$ = node;
         }
         | read {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                printf("READ CALLED");
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | write {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                printf("WRITE CALLED");
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | BR SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -374,10 +377,10 @@ op: ADD {
     ;
 
 read: READ L_PAR r_var R_PAR SEMICOLON { 
-                // CodeNode *node = new CodeNode;
-                // node->code = "READ" + $3->code;
-                // $$ = node;
-                // parentheses += 2; 
+                CodeNode *node = new CodeNode;
+                node->code = ".<" + $3->code + "\n";
+                $$ = node;
+                parentheses += 2; 
         }
     ;
 
