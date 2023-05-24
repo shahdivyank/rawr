@@ -276,6 +276,7 @@ initialization: INT VARIABLE SEMICOLON { // help
         ; 
 
 assignment: INT VARIABLE EQUALS expressions SEMICOLON { 
+                // WE SHOULD DISABLE THIS PROLLY
                 // TODO
                 // equals++; 
                 std::string variable = $2;
@@ -292,7 +293,7 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
 
                 // $$ = node;
         } 
-        | VARIABLE EQUALS expressions SEMICOLON { // paulian's attempt - rawr
+        | VARIABLE EQUALS expressions SEMICOLON {
                 std::string variableName = $1;
                 std::string varValue = $3->name;
 
