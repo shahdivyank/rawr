@@ -378,7 +378,7 @@ op: ADD {
 
 read: READ L_PAR r_var R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = ".<" + $3->code + "\n";
+                node->code = ".< " + $3->code + "\n";
                 $$ = node;
                 parentheses += 2; 
         }
@@ -386,7 +386,7 @@ read: READ L_PAR r_var R_PAR SEMICOLON {
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = ".>" + $3->code + "\n";
+                node->code = ".> " + $3->code + "\n";
                 $$ = node;
                 parentheses += 2; 
         }
