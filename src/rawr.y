@@ -97,7 +97,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %token SEMICOLON COMMA
 %token INT IF ELSE WHILE BR READ WRITE MAIN RET ARRAY CONST
 
-%token <character> VARIABLE 
+%token <character> VARIABLES
 %token <number> NUMBER
 %type  <node>   functions function main statements statement arguments argument initialization assignment r_var expressions
 %type  <node>   singleTerm op read write conditional loop conditions condition
@@ -108,6 +108,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 prog_start: functions main { 
         CodeNode *functions = $1;
         CodeNode *main = $2;
+
         std::string code = functions->code + main->code;
         
         CodeNode *node = new CodeNode;
@@ -133,37 +134,38 @@ functions: function functions {
         ;
 
 function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
-                std::string func_name = $3;
-                CodeNode *params = $5;
-                CodeNode *stmts = $8;
-                CodeNode *return_value = $10;
+                // std::string func_name = $3;
+                // CodeNode *params = $5;
+                // CodeNode *stmts = $8;
+                // CodeNode *return_value = $10;
 
-                std::string code = std::string("func ") + func_name + std::string("\n");
+                // std::string code = std::string("func ") + func_name + std::string("\n");
 
-                code += params->code;
-                code += stmts->code;
-                code += return_value->code;
-                code += std::string("endfunc\n");
+                // code += params->code;
+                // code += stmts->code;
+                // code += return_value->code;
+                // code += std::string("endfunc\n");
 
-                CodeNode *node = new CodeNode;
-                node->code = code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
+                // $$ = node;
 
-                parentheses += 2; 
+                // parentheses += 2; 
         } 
+        
         ;
 
 arguments: argument COMMA arguments { 
-                CodeNode *node = $1; // argument
-                CodeNode *node2 = $3; // arguments
+                // CodeNode *node = $1; // argument
+                // CodeNode *node2 = $3; // arguments
 
-                node->code = node2->code;
-                $$ = node;
+                // node->code = node2->code;
+                // $$ = node;
         }
         | argument { 
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
          }
         | %empty { 
                CodeNode *node = new CodeNode;
@@ -207,7 +209,9 @@ main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
 statements: statement statements { 
                 CodeNode *statement  = $1;
                 CodeNode *statements = $2;
+
                 std::string code = statement->code + statements->code;
+
                 CodeNode *node = new CodeNode;
                 node->code = code;
         }
@@ -223,29 +227,29 @@ statement: initialization {
                 $$ = node;
         }
         | assignment {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | conditional {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | loop {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | read {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | write {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | BR SEMICOLON {
                 // TODO
@@ -254,11 +258,11 @@ statement: initialization {
 
 initialization: INT VARIABLE SEMICOLON { // help
                 std::string var_name = $2;
+                // Type t = Integer;
+                // add_variable_to_symbol_table(var_name, t);
 
                 CodeNode *node = new CodeNode;
-                node->code=""; // accounts for integer (don't need)
-
-                node->code += std::string(". " ) + var_name + std::string("\n");
+                node->code = ". " + var_name + "\n";
                 
                 $$ = node;
         }
@@ -269,23 +273,32 @@ initialization: INT VARIABLE SEMICOLON { // help
 
 assignment: INT VARIABLE EQUALS expressions SEMICOLON { 
                 // TODO
-                equals++; 
+                // equals++; 
+                std::string variable = $2;
+
+                // std::string value = $4->name;
+                // CodeNode* expressions = new CodeNode();
+                // expressions->code = $4->code;
+                
+                // CodeNode* node = new CodeNode();
+                // node->code = $4->code;
+
+                // node->code += std::string("= ") + variable + std::string(", ") + value + std::string("\n");
+
+
+                // $$ = node;
         } 
         | VARIABLE EQUALS expressions SEMICOLON { // paulian's attempt - rawr
-                std::string var_name = $1;
+                std::string variableName = $1;
+                std::string varValue = $3->name;
 
-                CodeNode *node = new CodeNode;
-                node->code = $3->code;
-
-                // ->name is the contents of the variable
-                node->code += std::string("= ") + var_name + std::string(", ") + $3->name + std::string("\n"); 
-                $$ = node;
-
-                equals++; 
+                $$ = new CodeNode();
+                $$->code = $3->code;
+                $$->code += std::string("= ") + variableName + std::string(", ") + varValue + std::string("\n");
         } 
         | ARRAY L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 // TODO 
-                equals++; 
+                // equals++; 
         } 
         ;
 
@@ -298,16 +311,16 @@ r_var: NUMBER {
         } 
         | VARIABLE L_PAR arguments R_PAR { 
                 // TODO
-                parentheses += 2; 
+                // parentheses += 2; 
         }
         | VARIABLE { 
-                // to review-paulian
+                // help
                 $$ = new CodeNode();
                 $$->name = $1;
          }
         | ARRAY L_BRACKET NUMBER R_BRACKET { 
                 // TODO
-                integers++; 
+                // integers++; 
         }
         | ARRAY L_BRACKET VARIABLE R_BRACKET {
                 // TODO
@@ -328,145 +341,145 @@ singleTerm: op r_var {
                 // TODO
         }
         | r_var {
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | L_PAR expressions R_PAR  {
                 // TODO
-                parentheses += 2; 
+                // parentheses += 2; 
         }
         ;
 
 op: ADD { 
-                CodeNode *node = new CodeNode;
-                node->name = "+";
-                operators++; 
+                // CodeNode *node = new CodeNode;
+                // node->name = "+";
+                // operators++; 
         } 
     | SUB { 
-                CodeNode *node = new CodeNode;
-                node->name = "-";
-                operators++; 
+                // CodeNode *node = new CodeNode;
+                // node->name = "-";
+                // operators++; 
         }
     | MULT { 
-                CodeNode *node = new CodeNode;
-                node->name = "*";
-                operators++; 
+                // CodeNode *node = new CodeNode;
+                // node->name = "*";
+                // operators++; 
         }
     | DIV { 
-                CodeNode *node = new CodeNode;
-                node->name = "/";
-                operators++; 
+                // CodeNode *node = new CodeNode;
+                // node->name = "/";
+                // operators++; 
         }
     ;
 
 read: READ L_PAR r_var R_PAR SEMICOLON { 
-                CodeNode *node = new CodeNode;
-                node->code = "READ" + $3->code;
-                $$ = node;
-                parentheses += 2; 
+                // CodeNode *node = new CodeNode;
+                // node->code = "READ" + $3->code;
+                // $$ = node;
+                // parentheses += 2; 
         }
     ;
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
-                CodeNode *node = new CodeNode;
-                node->code = "WRITE" + $3->code;
-                $$ = node;
-                parentheses += 2; 
+                // CodeNode *node = new CodeNode;
+                // node->code = "WRITE" + $3->code;
+                // $$ = node;
+                // parentheses += 2; 
         }
     ;
 
 conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                CodeNode *conditions  = $3;
-                CodeNode *statements = $6;
-                std::string code = "IF" + conditions->code + "\n" + statements->code + "\nENDIF";
-                CodeNode *node = new CodeNode;
-                node->code = code;
-                parentheses += 2; 
+                // CodeNode *conditions  = $3;
+                // CodeNode *statements = $6;
+                // std::string code = "IF" + conditions->code + "\n" + statements->code + "\nENDIF";
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
+                // parentheses += 2; 
         }
         | IF L_PAR conditions R_PAR L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE {
-                CodeNode *conditions  = $3;
-                CodeNode *if_statements = $6;
-                CodeNode *else_statements = $10;
-                std::string code = "IF" + conditions->code + "\n" + if_statements->code + "\nENDIF\nELSE\n" + else_statements->code + "ENDELSE";
-                CodeNode *node = new CodeNode;
-                node->code = code;
-                parentheses += 2;
+                // CodeNode *conditions  = $3;
+                // CodeNode *if_statements = $6;
+                // CodeNode *else_statements = $10;
+                // std::string code = "IF" + conditions->code + "\n" + if_statements->code + "\nENDIF\nELSE\n" + else_statements->code + "ENDELSE";
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
+                // parentheses += 2;
         }
         ;
 
 loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                CodeNode *conditions  = $3;
-                CodeNode *statements = $6;
-                std::string code = "WHILE" + conditions->code + "\n" + statements->code + "\nENDWHILE";
-                CodeNode *node = new CodeNode;
-                node->code = code;
-                parentheses += 2; 
+                // CodeNode *conditions  = $3;
+                // CodeNode *statements = $6;
+                // std::string code = "WHILE" + conditions->code + "\n" + statements->code + "\nENDWHILE";
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
+                // parentheses += 2; 
         }
     ;
 
 conditions: condition { 
-                CodeNode *node = new CodeNode;
-                node->code = $1->code;
-                $$ = node;
+                // CodeNode *node = new CodeNode;
+                // node->code = $1->code;
+                // $$ = node;
         }
         | condition OR conditions { 
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + " OR " + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + " OR " + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | condition AND conditions { 
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + " AND " + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + " AND " + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         ;
 
 condition: r_var EQS_TO r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + "==" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + "==" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | r_var G_THAN_EQUALS r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + ">=" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + ">=" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | r_var L_THAN_EQUALS r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + "<=" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + "<=" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | r_var G_THAN r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + ">" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + ">" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | r_var L_THAN r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + "<" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + "<" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         | r_var NOT_EQS_TO r_var {
-                CodeNode *left  = $1;
-                CodeNode *right = $3;
-                std::string code = left->code + "!=" + right->code;
-                CodeNode *node = new CodeNode;
-                node->code = code;
+                // CodeNode *left  = $1;
+                // CodeNode *right = $3;
+                // std::string code = left->code + "!=" + right->code;
+                // CodeNode *node = new CodeNode;
+                // node->code = code;
         }
         ;
 %%
