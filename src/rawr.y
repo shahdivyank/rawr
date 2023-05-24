@@ -187,7 +187,9 @@ argument: INT VARIABLE { // help
                 // TODO
         }
         | r_var { 
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         ;
 
@@ -252,7 +254,9 @@ statement: initialization {
                 // $$ = node;
         }
         | BR SEMICOLON {
-                // TODO
+                CodeNode *node = new CodeNode;
+                node->code = "BREAK";
+                $$ = node;
         }
         ;
 
