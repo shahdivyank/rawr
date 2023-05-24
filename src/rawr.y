@@ -85,7 +85,6 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 %union {
   char *character;
-  int number;
   struct CodeNode *node;
 }
 
@@ -97,8 +96,8 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %token SEMICOLON COMMA
 %token INT IF ELSE WHILE BR READ WRITE MAIN RET ARRAY CONST
 
-%token <character> VARIABLES
-%token <number> NUMBER
+%token <character> VARIABLE
+%token <character> NUMBER
 %type  <node>   functions function main statements statement arguments argument initialization assignment r_var expressions
 %type  <node>   singleTerm op read write conditional loop conditions condition
 
@@ -193,12 +192,10 @@ argument: INT VARIABLE { // help
         }
         ;
 
-main: INT MAIN L_PAR R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
-                CodeNode *stmts = $6;
-                CodeNode *return_value = $8;
+main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE { 
+                CodeNode *stmts = $5;
                 std::string code = std::string("func main \n");
                 code += stmts->code;
-                code += return_value->code;
                 code += std::string("endfunc\n");
 
                 CodeNode *node = new CodeNode;
@@ -306,10 +303,9 @@ assignment: INT VARIABLE EQUALS expressions SEMICOLON {
         } 
         ;
 
-r_var: NUMBER { 
-                int value = $1;
+r_var: NUMBER {
                 CodeNode *node = new CodeNode;
-                node->name = $1;
+                node->code = $1;
                 $$ = node; 
                 integers++;
         } 
@@ -386,10 +382,10 @@ read: READ L_PAR r_var R_PAR SEMICOLON {
     ;
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
-                // CodeNode *node = new CodeNode;
-                // node->code = "WRITE" + $3->code;
-                // $$ = node;
-                // parentheses += 2; 
+                CodeNode *node = new CodeNode;
+                node->code = ".>" + $3->code + "\n";
+                $$ = node;
+                parentheses += 2; 
         }
     ;
 
