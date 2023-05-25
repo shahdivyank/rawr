@@ -218,19 +218,19 @@ statement: initialization {
                 $$ = node;
         }
         | assignment {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | conditional {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | loop {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | read {
                 CodeNode *node = new CodeNode;
@@ -254,9 +254,9 @@ initialization: INT VARIABLE SEMICOLON {
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
         }
-        | INT VARIABLE L_BRACKET NUMBER R_BRACKET SEMICOLON {
+        | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
-                node->code = std::string(".[] " ) + $2 + std::string(", ") + $4 + std::string("\n");
+                node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->code + std::string("\n");
                 $$ = node;
         } 
         ; 
@@ -271,6 +271,11 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 node->code = std::string("[]= ") + $1 + std::string(", ") + $3->code + std::string(", ") + $6->code + std::string("\n");
                 $$ = node; 
         } 
+        | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
+                CodeNode* node = new CodeNode();
+                node->code = std::string("=[] ") + $1 + std::string(", ") + $3 + std::string(", ") + $5->code + std::string("\n");
+                $$ = node; 
+        }
         ;
 
 r_var: NUMBER {
@@ -292,12 +297,6 @@ r_var: NUMBER {
                 node->code = $1;
                 $$ = node; 
          }
-        | VARIABLE L_BRACKET NUMBER R_BRACKET { 
-                //TODO
-        }
-        | VARIABLE L_BRACKET VARIABLE R_BRACKET {
-                // TODO
-        }
         ;
 
 expressions: expressions op singleTerm {
@@ -352,11 +351,23 @@ read: READ L_PAR r_var R_PAR SEMICOLON {
                 $$ = node;
                 parentheses += 2; 
         }
+        | READ L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
+                CodeNode *node = new CodeNode;
+                node->code = std::string(".[]< ") + $3 + std::string(", ") + $5->code + std::string("\n");
+                $$ = node;
+                parentheses += 2; 
+        }
     ;
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = ".> " + $3->code + "\n";
+                node->code = std::string(".> ") + $3->code + std::string("\n");
+                $$ = node;
+                parentheses += 2; 
+        }
+        | WRITE L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
+                CodeNode *node = new CodeNode;
+                node->code = std::string(".[]> ") + $3 + std::string(", ") + $5->code + std::string("\n");
                 $$ = node;
                 parentheses += 2; 
         }
