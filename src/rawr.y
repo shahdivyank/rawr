@@ -187,6 +187,12 @@ argument:
                 node->code = std::string("param ") + $1->code + std::string("\n");
                 $$ = node;
         }
+        // TODO NEED TO MAEK THIS WORK VIA  TEMP VAR
+        /* VARIABLE L_BRACKET r_var R_BRACKET {
+                CodeNode *node = new CodeNode;
+                node->code = std::string("param ") + $1->code + std::string("\n");
+                $$ = node;
+        } */
         ;
 
 main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE { 
