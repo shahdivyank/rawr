@@ -1,3 +1,37 @@
-int main() {
+const int add() {
+    int c;
+    int b;
+    int i;
+    a = 9;
     return 0;
+}
+
+const int sub(int a) {
+    int c;
+    return 0;
+}
+
+const int mult(int a, int b, int c) {
+    int c;
+    return 0;
+}
+
+main() {
+    rin(3);
+    rout(2);
+    rout(a[9]);
+    rin(a[9]);
+    int a;
+    int b;
+    int a[10];
+    int a[s];
+    a = 4;
+    a = b;
+    a[5] = 7;
+    a[6] = p;
+    z = a[4]; 
+    z = a[p]; 
+    result = add(5);
+    result = add(5, 6, 7, 8);
+    // result = mult(a[9]);
 }
