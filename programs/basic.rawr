@@ -21,4 +21,5 @@ main() {
     a[6] = p;
     z = a[4]; 
     z = a[p]; 
+    result = add(5);
 }

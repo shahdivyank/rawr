@@ -99,7 +99,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %token <character> VARIABLE
 %token <character> NUMBER
 %type  <node>   functions function main statements statement arguments argument initialization assignment r_var expressions
-%type  <node>   singleTerm op read write conditional loop conditions condition
+%type  <node>   singleTerm op read write conditional loop conditions condition function_call parameters
 
 
 %%
@@ -132,16 +132,19 @@ functions: function functions {
          }
         ;
 
-function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
+function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
                 CodeNode *node = new CodeNode;
                 node->code = std::string("func ") + $3 + std::string("\n");
                 node->code += $5->code;
                 node->code += $8->code;
                 node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
                 $$ = node;
-        } 
-        
+        }
         ;
+
+parameters: INT VARIABLE {
+                // TODO
+        };
 
 arguments: argument COMMA arguments { 
                 CodeNode *argument = new CodeNode;
@@ -154,7 +157,7 @@ arguments: argument COMMA arguments {
         }
         | argument { 
                 CodeNode *node = new CodeNode;
-                node->code = std::string("param ") + $1->code + std::string("\n");
+                node->code = $1->code;
                 $$ = node;
          }
         | %empty { 
@@ -173,9 +176,9 @@ argument: INT VARIABLE { // help
                 
                 // $$ = node;
         }
-        | INT VARIABLE L_BRACKET r_var R_BRACKET { 
+        /* | INT VARIABLE L_BRACKET r_var R_BRACKET { 
                 // TODO
-        }
+        } */
         | r_var { 
                 CodeNode *node = new CodeNode;
                 node->code = std::string("param ") + $1->code + std::string("\n");
@@ -241,6 +244,11 @@ statement: initialization {
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
+        } 
+        | function_call {
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | BR SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -248,6 +256,13 @@ statement: initialization {
                 $$ = node;
         }
         ;
+
+function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
+                CodeNode *node = new CodeNode;
+                node->code = $5->code;
+                node->code = std::string("call " ) + $3 + std::string(", ") + $1 + std::string("\n");
+                $$ = node;
+        }
 
 initialization: INT VARIABLE SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -313,9 +328,9 @@ singleTerm: op r_var {
                 // TODO
         }
         | r_var {
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
         }
         | L_PAR expressions R_PAR  {
                 // TODO
@@ -324,24 +339,24 @@ singleTerm: op r_var {
         ;
 
 op: ADD { 
-                // CodeNode *node = new CodeNode;
-                // node->name = "+";
-                // operators++; 
+                CodeNode *node = new CodeNode;
+                node->code = "+";
+                operators++; 
         } 
     | SUB { 
-                // CodeNode *node = new CodeNode;
-                // node->name = "-";
-                // operators++; 
+                CodeNode *node = new CodeNode;
+                node->code = "-";
+                operators++; 
         }
     | MULT { 
-                // CodeNode *node = new CodeNode;
-                // node->name = "*";
-                // operators++; 
+                CodeNode *node = new CodeNode;
+                node->code = "*";
+                operators++; 
         }
     | DIV { 
-                // CodeNode *node = new CodeNode;
-                // node->name = "/";
-                // operators++; 
+                CodeNode *node = new CodeNode;
+                node->code = "/";
+                operators++; 
         }
     ;
 
