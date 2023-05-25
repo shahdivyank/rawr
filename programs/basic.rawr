@@ -6,6 +6,16 @@ const int add() {
     return 0;
 }
 
+const int sub(int a) {
+    int c;
+    return 0;
+}
+
+const int mult(int a, int b, int c) {
+    int c;
+    return 0;
+}
+
 main() {
     rin(3);
     rout(2);
@@ -22,4 +32,5 @@ main() {
     z = a[4]; 
     z = a[p]; 
     result = add(5);
+    result = add(5, 6, 7, 8);
 }

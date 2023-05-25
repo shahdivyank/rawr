@@ -98,8 +98,8 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 %token <character> VARIABLE
 %token <character> NUMBER
-%type  <node>   functions function main statements statement arguments argument initialization assignment r_var expressions
-%type  <node>   singleTerm op read write conditional loop conditions condition function_call parameters
+%type  <node>   functions function main statements statement arguments initialization assignment r_var expressions
+%type  <node>   singleTerm op read write conditional loop conditions condition function_call parameters argument parameter
 
 
 %%
@@ -142,44 +142,47 @@ function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var
         }
         ;
 
-parameters: INT VARIABLE {
-                // TODO
-        };
-
-arguments: argument COMMA arguments { 
-                CodeNode *argument = new CodeNode;
-                CodeNode *arguments = new CodeNode;
+parameters: parameter COMMA parameters{
                 CodeNode *node = new CodeNode;
-
-                node->code = argument->code + arguments->code;
-
+                node->code = $1->code + $3->code;
                 $$ = node;
-        }
-        | argument { 
+        } 
+        | parameter {
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
-         }
+        }
         | %empty { 
                CodeNode *node = new CodeNode;
                $$ = node;
          }
         ;
 
-argument: INT VARIABLE { // help
-                // std::string var_name = $2;
-
-                // CodeNode *node = new CodeNode;
-                // node->code=""; // accounts for integer (don't need)
-
-                // node->code += std::string(". " ) + var_name + std::string("\n");
-                
-                // $$ = node;
+parameter: INT VARIABLE {
+                CodeNode *node = new CodeNode;
+                node->code = std::string(". " ) + $2 + std::string("\n");
+                $$ = node;
         }
-        /* | INT VARIABLE L_BRACKET r_var R_BRACKET { 
-                // TODO
-        } */
-        | r_var { 
+        ;
+
+arguments: argument COMMA arguments { 
+                CodeNode *node = new CodeNode;
+                node->code = $1->code + $3->code;
+                $$ = node;
+        }
+        | argument { 
+                CodeNode *node = new CodeNode;
+                node->code = $1->code;
+                $$ = node;
+        }
+        | %empty { 
+               CodeNode *node = new CodeNode;
+               $$ = node;
+         }
+        ;
+
+argument: 
+        r_var { 
                 CodeNode *node = new CodeNode;
                 node->code = std::string("param ") + $1->code + std::string("\n");
                 $$ = node;
@@ -260,7 +263,7 @@ statement: initialization {
 function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
                 CodeNode *node = new CodeNode;
                 node->code = $5->code;
-                node->code = std::string("call " ) + $3 + std::string(", ") + $1 + std::string("\n");
+                node->code += std::string("call " ) + $3 + std::string(", ") + $1 + std::string("\n");
                 $$ = node;
         }
 
@@ -299,14 +302,6 @@ r_var: NUMBER {
                 $$ = node; 
                 integers++;
         } 
-        | VARIABLE L_PAR arguments R_PAR { 
-                CodeNode *node = new CodeNode;
-                node->code = $3->code;
-                node->code += std::string("FUNCTION NEEDS TO BE MODIFIED BUT ARGUMENTS IS WORKIGN");
-                $$ = node; 
-
-                parentheses += 2; 
-        }
         | VARIABLE { 
                 CodeNode *node = new CodeNode;
                 node->code = $1;
