@@ -272,35 +272,15 @@ initialization: INT VARIABLE SEMICOLON {
         } 
         ; 
 
-assignment: INT VARIABLE EQUALS expressions SEMICOLON { 
-                // WE SHOULD DISABLE THIS PROLLY
-                // TODO
-                // equals++; 
-                std::string variable = $2;
-
-                // std::string value = $4->name;
-                // CodeNode* expressions = new CodeNode();
-                // expressions->code = $4->code;
-                
-                // CodeNode* node = new CodeNode();
-                // node->code = $4->code;
-
-                // node->code += std::string("= ") + variable + std::string(", ") + value + std::string("\n");
-
-
-                // $$ = node;
-        } 
-        | VARIABLE EQUALS expressions SEMICOLON {
-                std::string variableName = $1;
-                std::string varValue = $3->name;
-
-                $$ = new CodeNode();
-                $$->code = $3->code;
-                $$->code += std::string("= ") + variableName + std::string(", ") + varValue + std::string("\n");
+assignment: VARIABLE EQUALS expressions SEMICOLON {
+                CodeNode* node = new CodeNode();
+                node->code = std::string("= ") + $1 + std::string(", ") + $3->code + std::string("\n");
+                $$ = node;
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
-                // TODO 
-                // equals++; 
+                CodeNode* node = new CodeNode();
+                node->code = std::string("[]= ") + $1 + std::string(", ") + $3->code + std::string(", ") + $6->code + std::string("\n");
+                $$ = node; 
         } 
         ;
 
@@ -320,8 +300,7 @@ r_var: NUMBER {
                 $$ = node; 
          }
         | VARIABLE L_BRACKET NUMBER R_BRACKET { 
-                // TODO
-                // integers++; 
+                //TODO
         }
         | VARIABLE L_BRACKET VARIABLE R_BRACKET {
                 // TODO
