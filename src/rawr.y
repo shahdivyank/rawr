@@ -133,38 +133,29 @@ functions: function functions {
         ;
 
 function: CONST INT VARIABLE L_PAR arguments R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
-                // std::string func_name = $3;
-                // CodeNode *params = $5;
-                // CodeNode *stmts = $8;
-                // CodeNode *return_value = $10;
-
-                // std::string code = std::string("func ") + func_name + std::string("\n");
-
-                // code += params->code;
-                // code += stmts->code;
-                // code += return_value->code;
-                // code += std::string("endfunc\n");
-
-                // CodeNode *node = new CodeNode;
-                // node->code = code;
-                // $$ = node;
-
-                // parentheses += 2; 
+                CodeNode *node = new CodeNode;
+                node->code = std::string("func ") + $3 + std::string("\n");
+                node->code += $5->code;
+                node->code += $8->code;
+                node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
+                $$ = node;
         } 
         
         ;
 
 arguments: argument COMMA arguments { 
-                // CodeNode *node = $1; // argument
-                // CodeNode *node2 = $3; // arguments
+                CodeNode *argument = new CodeNode;
+                CodeNode *arguments = new CodeNode;
+                CodeNode *node = new CodeNode;
 
-                // node->code = node2->code;
-                // $$ = node;
+                node->code = argument->code + arguments->code;
+
+                $$ = node;
         }
         | argument { 
-                // CodeNode *node = new CodeNode;
-                // node->code = $1->code;
-                // $$ = node;
+                CodeNode *node = new CodeNode;
+                node->code = std::string("param ") + $1->code + std::string("\n");
+                $$ = node;
          }
         | %empty { 
                CodeNode *node = new CodeNode;
@@ -187,7 +178,7 @@ argument: INT VARIABLE { // help
         }
         | r_var { 
                 CodeNode *node = new CodeNode;
-                node->code = $1->code;
+                node->code = std::string("param ") + $1->code + std::string("\n");
                 $$ = node;
         }
         ;
@@ -242,13 +233,11 @@ statement: initialization {
                 // $$ = node;
         }
         | read {
-                printf("READ CALLED");
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
         }
         | write {
-                printf("WRITE CALLED");
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
@@ -291,8 +280,12 @@ r_var: NUMBER {
                 integers++;
         } 
         | VARIABLE L_PAR arguments R_PAR { 
-                // TODO
-                // parentheses += 2; 
+                CodeNode *node = new CodeNode;
+                node->code = $3->code;
+                node->code += std::string("FUNCTION NEEDS TO BE MODIFIED BUT ARGUMENTS IS WORKIGN");
+                $$ = node; 
+
+                parentheses += 2; 
         }
         | VARIABLE { 
                 CodeNode *node = new CodeNode;

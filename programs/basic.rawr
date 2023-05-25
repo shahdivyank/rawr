@@ -1,3 +1,11 @@
+const int add() {
+    int c;
+    int b;
+    int i;
+    a = 9;
+    return 0;
+}
+
 main() {
     rin(3);
     rout(2);
@@ -7,4 +15,5 @@ main() {
     a = 4;
     a = b;
     a[5] = 7;
+    a = add(5, 6);
 }
