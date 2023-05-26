@@ -1,0 +1,4 @@
+func main 
+. n
+= n, 150
+.> n	

@@ -1,0 +1,15 @@
+func main
+
+.a
+= a, 20
+
+.b 
+=b, 30
+
+.c 
+. _temp0, a, b
+= c, _temp0
+
+.> c 
+
+endfunc 
