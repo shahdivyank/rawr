@@ -338,10 +338,10 @@ expression:  r_var {
                 node->name = $1->name;
                 $$ = node;
         } 
-        | VARIABLE L_BRACKET NUMBER R_BRACKET {
+        | VARIABLE L_BRACKET r_var R_BRACKET {
                 CodeNode *node = new CodeNode;
                 node->code = ". temptesting\n";
-                node->code += std::string("=[] temptesting, ") + $1 + std::string(", ") + $3 + std::string("\n");
+                node->code += std::string("=[] temptesting, ") + $1 + std::string(", ") + $3->name + std::string("\n");
                 node->name = "temptesting";
                 $$ = node;
         }
