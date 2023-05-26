@@ -184,7 +184,7 @@ arguments: argument COMMA arguments {
 argument: 
         r_var { 
                 CodeNode *node = new CodeNode;
-                node->code = std::string("param ") + $1->code + std::string("\n");
+                node->code = std::string("param ") + $1->name + std::string("\n");
                 $$ = node;
         }
         | 
@@ -282,7 +282,7 @@ initialization: INT VARIABLE SEMICOLON {
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
-                node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->code + std::string("\n");
+                node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->name + std::string("\n");
                 $$ = node;
         } 
         ; 
@@ -296,75 +296,78 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 CodeNode* node = new CodeNode();
                 node->code = $6->code;
-                node->code += std::string("[]= ") + $1 + std::string(", ") + $3->code + std::string(", ") + $6->name + std::string("\n");
+                node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
                 $$ = node; 
         } 
         | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode* node = new CodeNode();
-                node->code = std::string("=[] ") + $1 + std::string(", ") + $3 + std::string(", ") + $5->code + std::string("\n");
+                node->code = std::string("=[] ") + $1 + std::string(", ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node; 
         }
         ;
 
 r_var: NUMBER {
                 CodeNode *node = new CodeNode;
-                node->code = $1;
+                node->name = $1;
                 $$ = node; 
                 integers++;
         } 
         | VARIABLE { 
                 CodeNode *node = new CodeNode;
-                node->code = $1;
+                node->name = $1;
                 $$ = node; 
          }
         ;
 
 expressions: expression op expressions {
-                CodeNode *node = new CodeNode;
-                node->code = ". temp\n";
-                node->name = "temp";
-                node->code += $2->code + " " + "temp" + ", " + $1->code + ", " + $3->code + "\n";
-                $$ = node;
-        }
-        | expression {
-                CodeNode *node = new CodeNode;
+                CodeNode* node = new CodeNode();
+                node->name = "tempVAR";
                 node->code = $1->code;
+                node->code += $3->code;
+
+                node->code += std::string(". ") + "tempVAR" + std::string("\n");
+                node->code += std::string($2->name) + std::string(" ") + "tempVAR" + std::string(", ") + $1->name + std::string(", ") + $3->name + std::string("\n");
                 $$ = node;
         }
+        | expression {}
         ;
 
 expression:  r_var {
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
+                node->name = $1->name;
+                $$ = node;
+        } 
+        | VARIABLE L_BRACKET NUMBER R_BRACKET {
+                CodeNode *node = new CodeNode;
+                node->code = ". temptesting\n";
+                node->code += std::string("=[] temptesting, ") + $1 + std::string(", ") + $3 + std::string("\n");
+                node->name = "temptesting";
                 $$ = node;
         }
-        /* | L_PAR expressions R_PAR  {
-                // TODO
-                // parentheses += 2; 
-        } */
         ;
 
 op: ADD { 
                 CodeNode *node = new CodeNode;
-                node->code = "+";
+                node->name = "+";
                 $$ = node;
                 operators++; 
         } 
     | SUB { 
                 CodeNode *node = new CodeNode;
-                node->code = "-";
+                node->name = "-";
                 $$ = node;
                 operators++; 
         }
     | MULT { 
                 CodeNode *node = new CodeNode;
-                node->code = "*";
+                node->name = "*";
                 $$ = node;
                 operators++; 
         }
     | DIV { 
                 CodeNode *node = new CodeNode;
-                node->code = "/";
+                node->name = "/";
                 $$ = node;
                 operators++; 
         }
@@ -372,13 +375,13 @@ op: ADD {
 
 read: READ L_PAR r_var R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = ".< " + $3->code + "\n";
+                node->code = ".< " + $3->name + "\n";
                 $$ = node;
                 parentheses += 2; 
         }
         | READ L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = std::string(".[]< ") + $3 + std::string(", ") + $5->code + std::string("\n");
+                node->code = std::string(".[]< ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node;
                 parentheses += 2; 
         }
@@ -386,13 +389,13 @@ read: READ L_PAR r_var R_PAR SEMICOLON {
 
 write: WRITE L_PAR r_var R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = std::string(".> ") + $3->code + std::string("\n");
+                node->code = std::string(".> ") + $3->name + std::string("\n");
                 $$ = node;
                 parentheses += 2; 
         }
         | WRITE L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
                 CodeNode *node = new CodeNode;
-                node->code = std::string(".[]> ") + $3 + std::string(", ") + $5->code + std::string("\n");
+                node->code = std::string(".[]> ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node;
                 parentheses += 2; 
         }
