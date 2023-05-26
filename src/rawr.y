@@ -4,6 +4,7 @@
 #include<vector>
 #include<string.h>
 #include<stdlib.h>
+#include <sstream>
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -28,6 +29,14 @@ struct Function {
 };
 
 std::vector <Function> symbol_table;
+int tempVariableCount = 0;
+
+std::string generateTemp() {
+        std::stringstream temp;
+        temp << std::string("temp_") << tempVariableCount;
+        tempVariableCount++;
+        return temp.str();
+}
 
 Function *get_function() {
   int last = symbol_table.size() - 1;
@@ -190,9 +199,10 @@ argument:
         | 
         VARIABLE L_BRACKET r_var R_BRACKET {
                 CodeNode *node = new CodeNode;
-                node->code = ". temp\n";
-                node->code += std::string("=[] ") + "temp, " + $1 + ", " + $3->code + "\n";
-                node->code += std::string("param ") + "temp" + std::string("\n");
+                std::string temp = generateTemp();
+                node->code = ". " + temp + "\n";
+                node->code += std::string("=[] ") + temp + ", " + $1 + ", " + $3->code + "\n";
+                node->code += std::string("param ") + temp + std::string("\n");
                 $$ = node;
         }
         ;
@@ -321,14 +331,26 @@ r_var: NUMBER {
 
 expressions: expression op expressions {
                 CodeNode* node = new CodeNode();
-                node->name = "tempVAR";
+                std::string temp = generateTemp();
+                node->name = temp;
                 node->code = $1->code;
                 node->code += $3->code;
 
-                node->code += std::string(". ") + "tempVAR" + std::string("\n");
-                node->code += std::string($2->name) + std::string(" ") + "tempVAR" + std::string(", ") + $1->name + std::string(", ") + $3->name + std::string("\n");
+                node->code += std::string(". ") + temp + std::string("\n");
+                node->code += std::string($2->name) + std::string(" ") + temp + std::string(", ") + $1->name + std::string(", ") + $3->name + std::string("\n");
                 $$ = node;
-        }
+        } 
+        | L_PAR expression op expressions R_PAR {
+                CodeNode* node = new CodeNode();
+                std::string temp = generateTemp();
+                node->name = temp;
+                node->code = $2->code;
+                node->code += $4->code;
+
+                node->code += std::string(". ") + temp + std::string("\n");
+                node->code += std::string($3->name) + std::string(" ") + temp + std::string(", ") + $2->name + std::string(", ") + $4->name + std::string("\n");
+                $$ = node;
+        } 
         | expression {}
         ;
 
@@ -340,9 +362,10 @@ expression:  r_var {
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET {
                 CodeNode *node = new CodeNode;
-                node->code = ". temptesting\n";
-                node->code += std::string("=[] temptesting, ") + $1 + std::string(", ") + $3->name + std::string("\n");
-                node->name = "temptesting";
+                std::string temp = generateTemp();
+                node->code = ". " + temp + "\n";
+                node->code += std::string("=[] ") + temp + ", " + $1 + std::string(", ") + $3->name + std::string("\n");
+                node->name = temp;
                 $$ = node;
         }
         ;
