@@ -1,12 +1,16 @@
 // tests math functions 
 /* MULTI LINE COMMENT TO TEST */
 
-int main() {
-    int a = 20;
-    int b = 30;
+main() {
+    int a;
+    a = 20;
+
+    int b;
+    b = 30;
 
     // Addition - the answer is 50 because 20+30 is 50
-    int c = a + b;
+    int c;
+    c = a + b;
     rout(c);
 
     // Subtraction - the answer is 10 because 30-20 is 10
@@ -24,9 +28,7 @@ int main() {
     // "Complex" expression 
     a = 3;
     b = 5;
-    c = (a * b) + 9;
+    c = a * b + 9;
     rout(c);
-
-    return 0;
 }
 
