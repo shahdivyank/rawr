@@ -1,55 +1,17 @@
-const int add() {
+const int add (int d, int b) {
     int c;
-    int b;
-    int i;
-    a = 9;
-    return 0;
+    c = d + b;
+    return c;
 }
 
-const int sub(int a) {
-    int c;
-    return 0;
-}
-
-const int mult(int a, int b, int c) {
-    int c;
-    return 0;
+const int add (int g) {
+    int h;
+    h = g;
+    return h;
 }
 
 main() {
-    rin(3);
-    rout(2);
-    rout(a[9]);
-    rin(a[9]);
-    int a;
-    int b;
-    int a[10];
-    int a[s];
-    a = 4;
-    a = b;
-    a[5] = 7;
-    a[6] = p;
-    z = a[4]; 
-    z = a[p]; 
-    result = add(5);
-    result = add(5, 6, 7, 8);
-    result = mult(a[9]);
-    result = mult(a[9], a[10]);
-    c = a + 1;
-    c = 1 + b;
-    c = 5 + 5;
-    c = a + a;
-    a[1] = 1 + 2;
-    a[2] = a + a;
-    a[1] = 1 + a;
-    a[2] = b + 1;
-    c = 1 + 2 + 3;
-    b = 1 + a + c;
-    a = k + 1 + c;
-    a = p[1] + 2 + 1;
-    a = p[1] + k[3] + g[5];
-    a[0] = p[1] + k[3] + g[5];
-    a[0] = p[q] + k[3] + g[a];
-    a[p] = p[y] + k[3] + g[r];
-    a = 1 + (2 + 4);
+    int a[2]; 
+    int e; 
+    
 }
