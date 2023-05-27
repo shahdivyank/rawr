@@ -491,12 +491,12 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
                 $$ = node;                 
         } 
-        | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
+        /* | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 checkNegativeArray($5->name);
                 CodeNode* node = new CodeNode();
                 node->code = std::string("=[] ") + $1 + std::string(", ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node; 
-        }
+        } */
         ;
 
 r_var: NUMBER {
