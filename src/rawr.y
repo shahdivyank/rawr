@@ -115,7 +115,7 @@ void checkFuncDefined(std::string valOfFunc) {
         for(int i = 0; i < symbol_table.size(); i++) {
                 if(symbol_table[i].name.c_str() == valOfFunc) {
                         funcFound = true;
-                        printf("im found");
+                        // printf("im found");
                 }
         }
 
@@ -175,8 +175,6 @@ prog_start: functions {
  }; 
 
 functions: function functions { 
-                // checkFuncDefined(funcName);
-
                 CodeNode *function = $1;
                 CodeNode *functions = $2;
 
@@ -194,10 +192,8 @@ functions: function functions {
 
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
-                // checkFuncDefined(funcName);
                 add_function_to_symbol_table(funcName);
         } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
-                // printf("i am being defined\n\n");
                 CodeNode *node = new CodeNode;
 
                 node->code = std::string("func ") + $3 + std::string("\n");
@@ -306,7 +302,6 @@ statement: initialization {
                 $$ = node;
         }
         | assignment {
-                printf("I AM CALLED ON LINE 307 UNDER STATEMENT\n");
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
@@ -344,6 +339,12 @@ statement: initialization {
         ;
 
 function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
+                // to add right here - PAULIAN
+                // printf("i am being defined\n\n");
+
+                std::string funcName = $3;
+                checkFuncDefined(funcName);
+
                 CodeNode *node = new CodeNode;
                 node->code = $5->code;
                 node->code += std::string("call " ) + $3 + std::string(", ") + $1 + std::string("\n");
