@@ -91,10 +91,6 @@ void print_symbol_table(void) {
 
 // 1. using a variable w/o having first declared it
 void checkVarDeclar(std::string valOfVar) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 03ebd628ef65045e8502243b365ea7aaaa751744
         bool varFound = false;
         for(int i=0; i<symbol_table.size(); i++) {
                 for(int j=0; j<symbol_table[i].declarations.size(); j++) {
