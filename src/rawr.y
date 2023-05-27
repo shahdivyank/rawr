@@ -1,5 +1,5 @@
 %{ 
-#include<stdio.h>
+#include<stdio.h> 
 #include<string>
 #include<vector>
 #include<string.h>
@@ -173,6 +173,16 @@ void checkIfArrIsVar(std::string varVal) {
                 exit(1);
         }
 }
+
+// void checkArrSize(std::string arrSize) {
+//         int sizeOfArray = atoi(arrSize.c_str());
+
+//         if(sizeOfArray < 0) {
+//                 std::string errorMsg = "ERROR! - The size of the array can not be less than 0.\n";
+//                 printf(errorMsg.c_str());
+//                 exit(1);
+//         }
+// }
 
 
 
@@ -419,6 +429,10 @@ initialization: INT VARIABLE SEMICOLON {
                 Type t = Array;
                 std::string arrName = $2;
                 add_variable_to_symbol_table(arrName, t);
+
+                // DINO 
+                // std::string arrSize = $4->name;
+                // checkArrSize(arrSize);
         } 
         ; 
 
