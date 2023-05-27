@@ -128,6 +128,10 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %%
 
 prog_start: functions main { 
+
+        std::string main_func = "main"; 
+        add_function_to_symbol_table(main_func); 
+
         CodeNode *functions = $1;
         CodeNode *main = $2;
 
@@ -318,17 +322,19 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table 
                 Type t = Integer;
                 std::string varName = $2;
-                // add_variable_to_symbol_table(varName, t);
+                add_variable_to_symbol_table(varName, t);
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
+                Type t = Array;
+                std::string arrName = $2;
+                add_variable_to_symbol_table(arrName, t);
+
                 CodeNode *node = new CodeNode;
                 node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->name + std::string("\n");
                 $$ = node;
 
                 // Add symbol table
-                Type t = Array;
-                std::string arrName = $2;
-                add_variable_to_symbol_table(arrName, t);
+                
         } 
         ; 
 
