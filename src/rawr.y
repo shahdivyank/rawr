@@ -134,9 +134,9 @@ prog_start: functions main {
         node->code = code;
 
         // add main function to symbol table - check paulian
-        std::string mainFunction = "main";
-        add_function_to_symbol_table(mainFunction);
-
+        // std::string mainFunction = "main";
+        // add_function_to_symbol_table(mainFunction);
+        print_symbol_table();
         printf("Generated code:\n");
         printf("%s\n", code.c_str());
  }; 
@@ -158,15 +158,17 @@ functions: function functions {
         ;
 
 function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {                 
+                std::string funcName = $3;
+                add_function_to_symbol_table(funcName);
                 CodeNode *node = new CodeNode;
                 node->code = std::string("func ") + $3 + std::string("\n");
                 node->code += $5->code;
                 node->code += $8->code;
-                node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
+                node->code += std::string("ret ") + $10->name + std::string("\nendfunc\n\n");
 
                  // symbol table
-                std::string funcName = $3;
-                add_function_to_symbol_table(funcName);
+                
+                
 
                 $$ = node;
         }
@@ -234,6 +236,8 @@ argument:
         ;
 
 main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE { 
+                std::string funcName = "main";
+                add_function_to_symbol_table(funcName);
                 CodeNode *stmts = $5;
                 std::string code = std::string("func main \n");
                 code += stmts->code;
@@ -241,8 +245,10 @@ main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE {
 
                 CodeNode *node = new CodeNode;
                 node->code = code;
-                $$ = node;
+                
                 parentheses += 2; 
+                
+                $$ = node;
         }
         ;
 
