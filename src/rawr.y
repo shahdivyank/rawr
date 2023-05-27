@@ -5,6 +5,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include <sstream>
+#include <algorithm>
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -174,19 +175,23 @@ void checkIfArrIsVar(std::string varVal) {
         }
 }
 
-// void checkArrSize(std::string arrSize) {
-//         int sizeOfArray = atoi(arrSize.c_str());
+void checkFuncDuplicate (std::string funcName){
+        for (int i =0; i < symbol_table.size(); i++){
+                if (symbol_table.at(i).name == funcName ){
+                        std::string errorMsg = "Error: function " + funcName + " is already defined\n"; 
+                        printf(errorMsg.c_str()); 
+                        exit(1); 
+                }
+        }
+}
 
-//         if(sizeOfArray < 0) {
-//                 std::string errorMsg = "ERROR! - The size of the array can not be less than 0.\n";
-//                 printf(errorMsg.c_str());
-//                 exit(1);
-//         }
-// }
-
-
-
-
+void checkVarDuplicate( std::string variableName){
+        if (find(variableName)){
+                std::string errorMsg = "Error: variable is already declared " + variableName + "\n"; 
+                printf(errorMsg.c_str()); 
+                exit(1); 
+        }
+}
 
 extern FILE* yyin;   
 
@@ -216,6 +221,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 prog_start: functions {
         std::string funcName = "main";
+        // checkVarDuplicate(funcName); 
         add_function_to_symbol_table(funcName);
         } main { 
         CodeNode *functions = $1;
@@ -229,10 +235,8 @@ prog_start: functions {
         node->code = code;
 
         print_symbol_table();
-
-        // TODO NEED TO UNCOMMENT IN END - PAULIAN
-        // printf("Generated code:\n");
-        // printf("%s\n", code.c_str());
+        printf("Generated code:\n");
+        printf("%s\n", code.c_str());
  }; 
 
 functions: function functions { 
@@ -253,7 +257,9 @@ functions: function functions {
 
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
+                checkFuncDuplicate(funcName);
                 add_function_to_symbol_table(funcName);
+                 
         } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
                 CodeNode *node = new CodeNode;
 
@@ -290,6 +296,7 @@ parameter: INT VARIABLE {
                 // Add to symbol table
                 std::string varName = $2;
                 Type t = Integer;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
         }
         ;
@@ -413,12 +420,12 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table - DOUBLE CHECK
                 Type t = Integer;
                 std::string varName = $2;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
 
                 CodeNode *node = new CodeNode;
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
-                
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -428,6 +435,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table
                 Type t = Array;
                 std::string arrName = $2;
+                checkVarDuplicate(arrName); 
                 add_variable_to_symbol_table(arrName, t);
 
                 // DINO 
