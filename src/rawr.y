@@ -135,7 +135,6 @@ prog_start: functions main {
         
         CodeNode *node = new CodeNode;
         node->code = code;
-        printf("Generated code:\n");
         printf("%s\n", code.c_str());
  }; 
 
@@ -569,9 +568,6 @@ int main(int argc, char** argv){
     if (yyparse() != 0){
         return 1; 
     }
-
-    printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
-
     return 0;
 }
 
