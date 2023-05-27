@@ -144,6 +144,7 @@ void checkFuncDefined(std::string valOfFunc) {
 // 3. Not defining a main function. - we define w/ syntax level
 
 // 4. array helper functions
+// when using a variable as an array --> ERROR
 void checkIfVarIsArr(std::string arrVal) {
         bool varIsArr = false; 
 
@@ -158,9 +159,22 @@ void checkIfVarIsArr(std::string arrVal) {
         }
 }
 
-void checkIfArrIsVar() {
+// when using an array as a variable --> ERROR
+void checkIfArrIsVar(std::string varVal) {
+        bool arrIsVar = false; 
 
+        if(find(varVal)) {
+                arrIsVar = true;
+        }
+
+        if(arrIsVar) {
+                std::string errorMsg = "ERROR! - the variable '" + varVal + "' isn't an array! Don't include brackets!!\n";
+                printf(errorMsg.c_str());
+                exit(1);
+        }
 }
+
+
 
 
 
@@ -426,6 +440,10 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 node->code = $6->code;
                 node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
                 $$ = node; 
+
+                // check if the "array" is a variable or not - DINOSAUR
+                std::string varName = $1;
+                checkIfArrIsVar(varName);
         } 
         | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode* node = new CodeNode();
