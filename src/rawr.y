@@ -132,6 +132,11 @@ prog_start: functions main {
         
         CodeNode *node = new CodeNode;
         node->code = code;
+
+        // add main function to symbol table - check paulian
+        std::string mainFunction = "main";
+        add_function_to_symbol_table(mainFunction);
+
         printf("Generated code:\n");
         printf("%s\n", code.c_str());
  }; 
@@ -152,18 +157,18 @@ functions: function functions {
          }
         ;
 
-function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
+function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {                 
                 CodeNode *node = new CodeNode;
                 node->code = std::string("func ") + $3 + std::string("\n");
                 node->code += $5->code;
                 node->code += $8->code;
                 node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
-                $$ = node;
 
-                // symbol table
+                 // symbol table
                 std::string funcName = $3;
-                // add_function_to_symbol_table(funcName);
-                console.log("Function added to symbol table");
+                add_function_to_symbol_table(funcName);
+
+                $$ = node;
         }
         ;
 
@@ -333,6 +338,10 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 node->code = $3->code;
                 node->code += std::string("= ") + $1 + std::string(", ") + $3->name + std::string("\n");
                 $$ = node;
+
+                // checking if variable is declared or not
+                std::string varName = $1;
+                checkVarDeclar(varName);
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 CodeNode* node = new CodeNode();
