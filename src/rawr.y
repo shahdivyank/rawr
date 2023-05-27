@@ -54,7 +54,7 @@ bool find(std::string &value) {
         Function *f = get_function();
         for(int i=0; i < f->declarations.size(); i++) {
                 Symbol *s = &f->declarations[i];
-                if (s->name == value) {
+                if (s->name == value && (s->type == Integer)) {
                         return true;
                 }
         }
@@ -147,13 +147,7 @@ void checkFuncDefined(std::string valOfFunc) {
 // 4. array helper functions
 // when using a variable as an array --> ERROR
 void checkIfVarIsArr(std::string arrVal) {
-        bool varIsArr = false; 
-
         if(findArray(arrVal)) {
-                varIsArr = true;
-        }
-
-        if(varIsArr) {
                 std::string errorMsg = "ERROR! - the array '" + arrVal + "' isn't a variable! You need to include brackets.\n";
                 printf(errorMsg.c_str());
                 exit(1);
@@ -162,13 +156,7 @@ void checkIfVarIsArr(std::string arrVal) {
 
 // when using an array as a variable --> ERROR
 void checkIfArrIsVar(std::string varVal) {
-        bool arrIsVar = false; 
-
         if(find(varVal)) {
-                arrIsVar = true;
-        }
-
-        if(arrIsVar) {
                 std::string errorMsg = "ERROR! - the variable '" + varVal + "' isn't an array! Don't include brackets!!\n";
                 printf(errorMsg.c_str());
                 exit(1);
@@ -461,15 +449,12 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 // checking if array has been declared or not
                 std::string arrName = $1;
                 checkVarDeclar(arrName);
+                checkIfArrIsVar(arrName);
 
                 CodeNode* node = new CodeNode();
                 node->code = $6->code;
                 node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
-                $$ = node; 
-
-                // check if the "array" is a variable or not - DINOSAUR
-                std::string varName = $1;
-                checkIfArrIsVar(varName);
+                $$ = node;                 
         } 
         | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode* node = new CodeNode();
