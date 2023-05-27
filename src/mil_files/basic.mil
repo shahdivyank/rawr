@@ -1,4 +1,6 @@
-func main 
+func main
 . n
 = n, 150
-.> n	
+.> n
+endfunc
+
