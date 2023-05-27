@@ -472,7 +472,7 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 std::string varName = $1;
                 checkVarDeclar(varName);
 
-                // check if variable is an array - PAULIAN 
+                // check if variable is an array
                 checkIfVarIsArr(varName);
                 
                 CodeNode* node = new CodeNode();
@@ -481,6 +481,10 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 $$ = node;
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
+                // checking if array has been declared or not
+                std::string arrName = $1;
+                checkVarDeclar(arrName);
+
                 CodeNode* node = new CodeNode();
                 node->code = $6->code;
                 node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
