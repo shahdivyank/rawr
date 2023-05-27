@@ -121,7 +121,6 @@ prog_start: functions main {
         
         CodeNode *node = new CodeNode;
         node->code = code;
-        printf("Generated code:\n");
         printf("%s\n", code.c_str());
  }; 
 
