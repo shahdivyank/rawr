@@ -86,6 +86,17 @@ void print_symbol_table(void) {
   printf("--------------------\n");
 }
 
+// helper functions for semantic errors :D
+
+// 1. using a variable w/o having first declared it
+void checkVarDeclar(std::string valOfVar) {
+        if(!find(valOfVar)) {
+                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!";
+                yyerror(errorMsg.c_str());
+        }
+}
+
+// other functions =================================
 
 extern FILE* yyin;   
 
@@ -148,6 +159,11 @@ function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var
                 node->code += $8->code;
                 node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
                 $$ = node;
+
+                // symbol table
+                std::string funcName = $3;
+                // add_function_to_symbol_table(funcName);
+                console.log("Function added to symbol table");
         }
         ;
 
@@ -171,6 +187,11 @@ parameter: INT VARIABLE {
                 CodeNode *node = new CodeNode;
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
+
+                // Add to symbol table
+                std::string varName = $2;
+                Type t = Integer;
+                add_variable_to_symbol_table(varName, t);
         }
         ;
 
@@ -289,11 +310,21 @@ initialization: INT VARIABLE SEMICOLON {
                 CodeNode *node = new CodeNode;
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
+
+                // Add symbol table 
+                Type t = Integer;
+                std::string varName = $2;
+                add_variable_to_symbol_table(varName, t);
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
                 node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->name + std::string("\n");
                 $$ = node;
+
+                // Add symbol table
+                Type t = Array;
+                std::string arrName = $2;
+                add_variable_to_symbol_table(arrName, t);
         } 
         ; 
 
