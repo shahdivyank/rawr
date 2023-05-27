@@ -90,9 +90,20 @@ void print_symbol_table(void) {
 
 // 1. using a variable w/o having first declared it
 void checkVarDeclar(std::string valOfVar) {
-        if(!find(valOfVar)) {
-                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!";
-                yyerror(errorMsg.c_str());
+        bool varFound = false;
+        for(int i=0; i<symbol_table.size(); i++) {
+                for(int j=0; j<symbol_table[i].declarations.size(); j++) {
+                        if(symbol_table[i].declarations[j].name.c_str() == valOfVar) {
+                                varFound = true;
+                                printf("i've been found");
+                        }
+                }
+        }
+
+        if(!varFound) {
+                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!\n";
+                printf(errorMsg.c_str());
+                exit(1);
         }
 }
 
@@ -202,7 +213,7 @@ parameter: INT VARIABLE {
         }
         ;
 
-arguments: argument COMMA arguments { 
+arguments: argument COMMA arguments {        
                 CodeNode *node = new CodeNode;
                 node->code = $1->code + $3->code;
                 $$ = node;
