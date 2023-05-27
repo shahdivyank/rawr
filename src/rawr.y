@@ -152,10 +152,14 @@ void checkIfVarIsArr(std::string arrVal) {
         }
 
         if(varIsArr) {
-                std::string errorMsg = "ERROR! - the array '" + arrVal + "' isn't a function! You need to include brackets.\n";
+                std::string errorMsg = "ERROR! - the array '" + arrVal + "' isn't a variable! You need to include brackets.\n";
                 printf(errorMsg.c_str());
                 exit(1);
         }
+}
+
+void checkIfArrIsVar() {
+
 }
 
 
