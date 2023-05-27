@@ -107,7 +107,26 @@ void checkVarDeclar(std::string valOfVar) {
         }
 }
 
-// other functions =================================
+// 2. Calling a function which has not been defined.
+void checkFuncDefined(std::string valOfFunc) {
+        bool funcFound = false;
+
+        // check if func name exists
+        for(int i = 0; i < symbol_table.size(); i++) {
+                if(symbol_table[i].name.c_str() == valOfFunc) {
+                        funcFound = true;
+                        printf("im found");
+                }
+        }
+
+        if(!funcFound) {
+                std::string errorMsg = "ERROR! - function of the name '" + valOfFunc + "' isn't defined!\n";
+                printf(errorMsg.c_str());
+                exit(1);
+        }
+}
+
+// 3. Not defining a main function.
 
 extern FILE* yyin;   
 
@@ -135,24 +154,29 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 %%
 
-prog_start: functions main { 
+prog_start: functions {
+        std::string funcName = "main";
+        add_function_to_symbol_table(funcName);
+        } main { 
         CodeNode *functions = $1;
-        CodeNode *main = $2;
+        CodeNode *main = $3;
+
+        
 
         std::string code = functions->code + main->code;
         
         CodeNode *node = new CodeNode;
         node->code = code;
 
-        // add main function to symbol table - check paulian
-        // std::string mainFunction = "main";
-        // add_function_to_symbol_table(mainFunction);
         print_symbol_table();
-        printf("Generated code:\n");
-        printf("%s\n", code.c_str());
+        // TODO NEED TO UNCOMMENT IN END
+        // printf("Generated code:\n");
+        // printf("%s\n", code.c_str());
  }; 
 
 functions: function functions { 
+                // checkFuncDefined(funcName);
+
                 CodeNode *function = $1;
                 CodeNode *functions = $2;
 
@@ -168,15 +192,18 @@ functions: function functions {
          }
         ;
 
-function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {                 
+function: CONST INT VARIABLE {
                 std::string funcName = $3;
+                // checkFuncDefined(funcName);
                 add_function_to_symbol_table(funcName);
-                
+        } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
+                // printf("i am being defined\n\n");
                 CodeNode *node = new CodeNode;
+
                 node->code = std::string("func ") + $3 + std::string("\n");
-                node->code += $5->code;
-                node->code += $8->code;
-                node->code += std::string("ret ") + $10->name + std::string("\nendfunc\n\n");
+                node->code += $6->code;
+                node->code += $9->code;
+                node->code += std::string("ret ") + $11->name + std::string("\nendfunc\n\n");
 
                 $$ = node;
         }
@@ -244,8 +271,6 @@ argument:
         ;
 
 main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE { 
-                std::string funcName = "main";
-                add_function_to_symbol_table(funcName);
                 CodeNode *stmts = $5;
                 std::string code = std::string("func main \n");
                 code += stmts->code;
@@ -255,7 +280,6 @@ main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE {
                 node->code = code;
                 
                 parentheses += 2; 
-                
                 $$ = node;
         }
         ;
@@ -282,6 +306,7 @@ statement: initialization {
                 $$ = node;
         }
         | assignment {
+                printf("I AM CALLED ON LINE 307 UNDER STATEMENT\n");
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
@@ -326,14 +351,15 @@ function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
         }
 
 initialization: INT VARIABLE SEMICOLON {
-                CodeNode *node = new CodeNode;
-                node->code = std::string(". " ) + $2 + std::string("\n");
-                $$ = node;
-
-                // Add symbol table 
+                // Add symbol table - DOUBLE CHECK
                 Type t = Integer;
                 std::string varName = $2;
                 add_variable_to_symbol_table(varName, t);
+
+                CodeNode *node = new CodeNode;
+                node->code = std::string(". " ) + $2 + std::string("\n");
+                $$ = node;
+                
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
