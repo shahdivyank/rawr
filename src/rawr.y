@@ -5,6 +5,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include <sstream>
+#include <algorithm>
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -126,18 +127,25 @@ void checkFuncDefined(std::string valOfFunc) {
         }
 }
 
-// 3. Not defining a main function.
-
-//check if variable is defined more than once
-void checkisFuncDuplicate (const std::string funcName){
+void checkFuncDuplicate (std::string funcName){
         for (int i =0; i < symbol_table.size(); i++){
                 if (symbol_table.at(i).name == funcName ){
-                        std::string errorMsg = "Error: function " + funcName + "is already defined "; 
+                        std::string errorMsg = "Error: function " + funcName + " is already defined\n"; 
+                        printf(errorMsg.c_str()); 
                         exit(1); 
                 }
         }
-        return; 
 }
+
+void checkVarDuplicate( std::string variableName){
+        if (find(variableName)){
+                std::string errorMsg = "Error: variable is already declared " + variableName + "\n"; 
+                printf(errorMsg.c_str()); 
+                exit(1); 
+        }
+}
+
+
 extern FILE* yyin;   
 
 int integers = 0, operators = 0, parentheses = 0, equals = 0;
@@ -166,6 +174,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 prog_start: functions {
         std::string funcName = "main";
+        // checkVarDuplicate(funcName); 
         add_function_to_symbol_table(funcName);
         } main { 
         CodeNode *functions = $1;
@@ -205,7 +214,9 @@ functions: function functions {
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
                 // checkFuncDefined(funcName);
+                checkFuncDuplicate(funcName);
                 add_function_to_symbol_table(funcName);
+                 
         } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
                 // printf("i am being defined\n\n");
                 CodeNode *node = new CodeNode;
@@ -243,7 +254,10 @@ parameter: INT VARIABLE {
                 // Add to symbol table
                 std::string varName = $2;
                 Type t = Integer;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
+
+                
         }
         ;
 
@@ -364,6 +378,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table - DOUBLE CHECK
                 Type t = Integer;
                 std::string varName = $2;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
 
                 CodeNode *node = new CodeNode;
@@ -379,6 +394,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table
                 Type t = Array;
                 std::string arrName = $2;
+                checkVarDuplicate(arrName); 
                 add_variable_to_symbol_table(arrName, t);
         } 
         ; 
