@@ -1,0 +1,14 @@
+const int add() {
+    return 0;
+}
+
+const int sub() {
+    return a;
+}
+
+main () {
+    int i;
+    int b;
+    int c;
+    
+}
