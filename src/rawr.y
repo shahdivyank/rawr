@@ -6,6 +6,8 @@
 #include<stdlib.h>
 #include <sstream>
 #include <algorithm>
+#include <unordered_set>
+#include<string>
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -181,6 +183,22 @@ void checkVarDuplicate( std::string variableName){
         }
 }
 
+std::vector<std::string> keywordsBank= {"FUNCTION", "FUNC", "INT", "INTEGER", "ARR", "CONST", 
+    "ARRAY", "IF","ENDIF", "ELSE", "WHILE", "BEGINLOOP", "ENDLOOP", "CONTINUE", "CONT",  "RIN", "ROUT", "AND", "OR", 
+    "NOT", "TRUE", "FALSE", "RETURN", "RET", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "=",  "SUB", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "L_PAREN", "R_PAREN", "L_SQUARE_BRACKET",
+    "R_SQUARE_BRACKET", "COLON", "SEMICOLON", "COMMA", "ASSIGN", "function", "func", "int", "integer", "arr", "const",
+"array", "if", "endif", "else", "while", "beginloop", "endloop", "continue", "cont", "rin", "rout", "and", "or",
+"not", "true", "false", "return", "ret", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "=", "sub", "add", "mult", "div", "mod", "eq", "neq", "lt", "gt", "lte", "gte", "l_paren", "r_paren", "l_square_bracket",
+"r_square_bracket", "colon", "semicolon", "comma", "assign"};
+
+void checkIsKeyword(std::string name){
+        if (std::find(keywordsBank.begin(), keywordsBank.end(), name) != keywordsBank.end())
+        {       
+                std::string errorMsg = "Error: function/variable name is a keyword " + name + "\n"; 
+                printf(errorMsg.c_str()); 
+                exit(1);
+        }
+}
 extern FILE* yyin;   
 
 int integers = 0, operators = 0, parentheses = 0, equals = 0;
@@ -210,6 +228,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 prog_start: functions {
         std::string funcName = "main";
         // checkVarDuplicate(funcName); 
+
         add_function_to_symbol_table(funcName);
         } main { 
         CodeNode *functions = $1;
@@ -245,6 +264,7 @@ functions: function functions {
 
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
+                checkIsKeyword(funcName); 
                 checkFuncDuplicate(funcName);
                 add_function_to_symbol_table(funcName);
                  
@@ -284,6 +304,7 @@ parameter: INT VARIABLE {
                 // Add to symbol table
                 std::string varName = $2;
                 Type t = Integer;
+                checkIsKeyword(varName); 
                 checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
         }
@@ -408,6 +429,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table - DOUBLE CHECK
                 Type t = Integer;
                 std::string varName = $2;
+                checkIsKeyword(varName); 
                 checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
 
@@ -423,6 +445,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table
                 Type t = Array;
                 std::string arrName = $2;
+                checkIsKeyword(arrName); 
                 checkVarDuplicate(arrName); 
                 add_variable_to_symbol_table(arrName, t);
 
