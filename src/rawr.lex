@@ -56,7 +56,6 @@ VARIABLE [a-zA-Z]*["_"*"-"*]*[a-zA-Z0-9]+
 }
 [0-9]{VARIABLE}  { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A NUMBER: %s\n", row, col + 1, yytext); }
 "_"{VARIABLE}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A UNDERSCORE: %s\n", row, col + 1, yytext); }
-"-"{VARIABLE}    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT START WITH A HYPHEN: %s\n", row, col + 1, yytext); }
 {VARIABLE}"-"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A HYPEN: %s\n", row, col + 1, yytext); }
 {VARIABLE}"_"    { printf("ERROR: ROW: %d COL: %d. VARIABLE CANNOT END WITH A UNDERSCORE %s\n", row, col + 1, yytext); }
 {VARIABLE}       {

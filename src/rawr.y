@@ -183,13 +183,22 @@ void checkVarDuplicate( std::string variableName){
         }
 }
 
-std::vector<std::string> keywordsBank= {"FUNCTION", "FUNC", "INT", "INTEGER", "ARR", "CONST", 
-    "ARRAY", "IF","ENDIF", "ELSE", "WHILE", "BEGINLOOP", "ENDLOOP", "CONTINUE", "CONT",  "RIN", "ROUT", "AND", "OR", 
-    "NOT", "TRUE", "FALSE", "RETURN", "RET", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "=",  "SUB", "ADD", "MULT", "DIV", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "L_PAREN", "R_PAREN", "L_SQUARE_BRACKET",
-    "R_SQUARE_BRACKET", "COLON", "SEMICOLON", "COMMA", "ASSIGN", "function", "func", "int", "integer", "arr", "const",
-"array", "if", "endif", "else", "while", "beginloop", "endloop", "continue", "cont", "rin", "rout", "and", "or",
-"not", "true", "false", "return", "ret", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "=", "sub", "add", "mult", "div", "mod", "eq", "neq", "lt", "gt", "lte", "gte", "l_paren", "r_paren", "l_square_bracket",
-"r_square_bracket", "colon", "semicolon", "comma", "assign"};
+void checkNegativeArray(std::string value) {
+        std::stringstream stream(value);
+        int integer;
+        stream >> integer;
+        if(integer < 0) {
+                std::string errorMsg = "Error: Accessing negative values in arrays is not allowed. Error accessing: " + value + "\n"; 
+                printf(errorMsg.c_str()); 
+                exit(1);
+        }
+}
+
+std::vector<std::string> keywordsBank= { "INT", "CONST", 
+    "IF", "ELSE", "WHILE", "CONTINUE",  "RIN", "ROUT"
+    , "TRUE", "FALSE", "RETURN", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "=",
+     "int", "const", "if", "else", "while", "continue", "rin", "rout",
+"true", "false", "return", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "="};
 
 void checkIsKeyword(std::string name){
         if (std::find(keywordsBank.begin(), keywordsBank.end(), name) != keywordsBank.end())
@@ -334,6 +343,7 @@ argument:
         }
         | 
         VARIABLE L_BRACKET r_var R_BRACKET {
+                checkNegativeArray($3->name);
                 CodeNode *node = new CodeNode;
                 std::string temp = generateTemp();
                 node->code = ". " + temp + "\n";
@@ -438,6 +448,7 @@ initialization: INT VARIABLE SEMICOLON {
                 $$ = node;
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
+                checkNegativeArray($4->name);
                 CodeNode *node = new CodeNode;
                 node->code = std::string(".[] " ) + $2 + std::string(", ") + $4->name + std::string("\n");
                 $$ = node;
@@ -469,6 +480,7 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 $$ = node;
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
+                checkNegativeArray($3->name);
                 // checking if array has been declared or not
                 std::string arrName = $1;
                 checkVarDeclar(arrName);
@@ -480,6 +492,7 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 $$ = node;                 
         } 
         | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
+                checkNegativeArray($5->name);
                 CodeNode* node = new CodeNode();
                 node->code = std::string("=[] ") + $1 + std::string(", ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node; 
@@ -489,6 +502,11 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
 r_var: NUMBER {
                 CodeNode *node = new CodeNode;
                 node->name = $1;
+                $$ = node; 
+                integers++;
+        } | SUB NUMBER {
+                CodeNode *node = new CodeNode;
+                node->name = std::string("-") + $2;
                 $$ = node; 
                 integers++;
         } 
@@ -531,6 +549,7 @@ expression:  r_var {
                 $$ = node;
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET {
+                checkNegativeArray($3->name);
                 CodeNode *node = new CodeNode;
                 std::string temp = generateTemp();
                 node->code = ". " + temp + "\n";
@@ -573,6 +592,7 @@ read: READ L_PAR r_var R_PAR SEMICOLON {
                 parentheses += 2; 
         }
         | READ L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
+                checkNegativeArray($5->name);
                 CodeNode *node = new CodeNode;
                 node->code = std::string(".[]< ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node;
@@ -587,6 +607,7 @@ write: WRITE L_PAR r_var R_PAR SEMICOLON {
                 parentheses += 2; 
         }
         | WRITE L_PAR VARIABLE L_BRACKET r_var R_BRACKET R_PAR SEMICOLON { 
+                checkNegativeArray($5->name);
                 CodeNode *node = new CodeNode;
                 node->code = std::string(".[]> ") + $3 + std::string(", ") + $5->name + std::string("\n");
                 $$ = node;

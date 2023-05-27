@@ -1,19 +1,7 @@
-
-const int add (int d, int b) {
-    int IF;
-    int c; 
-    c = d + b;
-    return c;
-}
-
-const int edlete (int g) {
-    int h;
-    h = g;
-    return h;
-}
-
 main() {
-    int a[2]; 
-    int e; 
-    
+    int a[8];
+    a[0] = 56;
+    int b;
+    b = a[1] + -5 + 6;
+    b = 1 + 2 + 4 + 7;
 }
