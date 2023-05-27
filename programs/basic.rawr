@@ -1,10 +1,17 @@
+const int add (int d, int b) {
+    int c;
+    c = d + b;
+    return c;
+}
+
+const int add (int g) {
+    int h;
+    h = g;
+    return h;
+}
+
 main() {
     int a[2]; 
-    int a; 
-    a=3; 
-    a[0] = 1+2+3; 
-    int c; 
-    a[1] = 2; 
-    a[2] = 3; 
-    c = a[0] + a[1] + a[2] ; 
+    int e; 
+    
 }
