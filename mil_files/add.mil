@@ -1,0 +1,12 @@
+func main 
+. a
+= a, 20
+. b
+= b, 30
+. c
+. temp_0
++ temp_0, a, b
+= c, temp_0
+.> c
+endfunc
+

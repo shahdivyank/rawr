@@ -1,0 +1,52 @@
+func add
+. a
+. b
+. c
+. temp_0
++ temp_0, a, b
+= c, temp_0
+ret 
+endfunc
+
+func subtract
+. a
+. b
+. c
+. temp_1
+- temp_1, a, b
+= c, temp_1
+ret 
+endfunc
+
+func multiply
+. a
+. b
+. c
+. temp_2
+* temp_2, a, b
+= c, temp_2
+ret 
+endfunc
+
+func main 
+. a
+= a, 5
+. b
+= b, 2
+. c
+param a
+param b
+call add, c
+.> c
+. d
+param a
+param b
+call subtract, d
+.> d
+. e
+param a
+param b
+call multiply, e
+.> e
+endfunc
+

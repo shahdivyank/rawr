@@ -10,5 +10,4 @@ main () {
     int i;
     int b;
     int c;
-    
 }

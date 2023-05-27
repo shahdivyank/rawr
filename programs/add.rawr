@@ -1,0 +1,13 @@
+main() {
+    int a; 
+    a=20; 
+
+    int b; 
+    b=30; 
+
+    int c; 
+    c = a+b; 
+
+    rout(c); 
+
+}

@@ -14,6 +14,7 @@ void yyerror(const char *msg);
 enum Type { Integer, Array };
 
 struct CodeNode {
+
     std::string code; // generated code as a string.
     std::string name;
 };
@@ -90,22 +91,13 @@ void print_symbol_table(void) {
 
 // 1. using a variable w/o having first declared it
 void checkVarDeclar(std::string valOfVar) {
-        bool varFound = false;
-        for(int i=0; i<symbol_table.size(); i++) {
-                for(int j=0; j<symbol_table[i].declarations.size(); j++) {
-                        if(symbol_table[i].declarations[j].name.c_str() == valOfVar) {
-                                varFound = true;
-                                // printf("i've been found");
-                        }
-                }
-        }
-
-        if(!varFound) {
-                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!\n";
-                printf(errorMsg.c_str());
-                exit(1);
+        if(!find(valOfVar)) {
+                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!";
+                yyerror(errorMsg.c_str());
         }
 }
+
+
 
 // other functions =================================
 
@@ -143,12 +135,6 @@ prog_start: functions main {
         
         CodeNode *node = new CodeNode;
         node->code = code;
-
-        // add main function to symbol table - check paulian
-        // std::string mainFunction = "main";
-        // add_function_to_symbol_table(mainFunction);
-        print_symbol_table();
-        printf("Generated code:\n");
         printf("%s\n", code.c_str());
  }; 
 
@@ -168,17 +154,18 @@ functions: function functions {
          }
         ;
 
-function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {                 
-                std::string funcName = $3;
-                add_function_to_symbol_table(funcName);
-                
+function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE { 
                 CodeNode *node = new CodeNode;
                 node->code = std::string("func ") + $3 + std::string("\n");
                 node->code += $5->code;
                 node->code += $8->code;
-                node->code += std::string("ret ") + $10->name + std::string("\nendfunc\n\n");
-
+                node->code += std::string("ret ") + $10->code + std::string("\nendfunc\n\n");
                 $$ = node;
+
+                // symbol table
+                std::string funcName = $3;
+                // add_function_to_symbol_table(funcName);
+                // console.log("Function added to symbol table");
         }
         ;
 
@@ -199,18 +186,20 @@ parameters: parameter COMMA parameters{
         ;
 
 parameter: INT VARIABLE {
-                CodeNode *node = new CodeNode;
-                node->code = std::string(". " ) + $2 + std::string("\n");
-                $$ = node;
+        // Add to symbol table
+        std::string varName = $2;
+        Type t = Integer;
+        add_variable_to_symbol_table(varName, t);
+        
+        CodeNode *node = new CodeNode;
+        node->code = std::string(". " ) + $2 + std::string("\n");
+        $$ = node;
 
-                // Add to symbol table
-                std::string varName = $2;
-                Type t = Integer;
-                add_variable_to_symbol_table(varName, t);
+                
         }
         ;
 
-arguments: argument COMMA arguments {        
+arguments: argument COMMA arguments { 
                 CodeNode *node = new CodeNode;
                 node->code = $1->code + $3->code;
                 $$ = node;
@@ -244,8 +233,6 @@ argument:
         ;
 
 main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE { 
-                std::string funcName = "main";
-                add_function_to_symbol_table(funcName);
                 CodeNode *stmts = $5;
                 std::string code = std::string("func main \n");
                 code += stmts->code;
@@ -253,10 +240,8 @@ main: MAIN L_PAR R_PAR L_BRACE statements R_BRACE {
 
                 CodeNode *node = new CodeNode;
                 node->code = code;
-                
-                parentheses += 2; 
-                
                 $$ = node;
+                parentheses += 2; 
         }
         ;
 
@@ -333,7 +318,7 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table 
                 Type t = Integer;
                 std::string varName = $2;
-                add_variable_to_symbol_table(varName, t);
+                // add_variable_to_symbol_table(varName, t);
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -348,10 +333,6 @@ initialization: INT VARIABLE SEMICOLON {
         ; 
 
 assignment: VARIABLE EQUALS expressions SEMICOLON {
-                // checking if variable is declared or not
-                std::string varName = $1;
-                checkVarDeclar(varName);
-                
                 CodeNode* node = new CodeNode();
                 node->code = $3->code;
                 node->code += std::string("= ") + $1 + std::string(", ") + $3->name + std::string("\n");
@@ -587,9 +568,6 @@ int main(int argc, char** argv){
     if (yyparse() != 0){
         return 1; 
     }
-
-    printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
-
     return 0;
 }
 
