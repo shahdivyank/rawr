@@ -1,11 +1,12 @@
 
 const int add (int d, int b) {
-    int c;
+    int IF;
+    int c; 
     c = d + b;
     return c;
 }
 
-const int add (int g) {
+const int edlete (int g) {
     int h;
     h = g;
     return h;
