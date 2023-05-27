@@ -95,7 +95,7 @@ void checkVarDeclar(std::string valOfVar) {
                 for(int j=0; j<symbol_table[i].declarations.size(); j++) {
                         if(symbol_table[i].declarations[j].name.c_str() == valOfVar) {
                                 varFound = true;
-                                printf("i've been found");
+                                // printf("i've been found");
                         }
                 }
         }
@@ -171,15 +171,12 @@ functions: function functions {
 function: CONST INT VARIABLE L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {                 
                 std::string funcName = $3;
                 add_function_to_symbol_table(funcName);
+                
                 CodeNode *node = new CodeNode;
                 node->code = std::string("func ") + $3 + std::string("\n");
                 node->code += $5->code;
                 node->code += $8->code;
                 node->code += std::string("ret ") + $10->name + std::string("\nendfunc\n\n");
-
-                 // symbol table
-                
-                
 
                 $$ = node;
         }
@@ -351,14 +348,14 @@ initialization: INT VARIABLE SEMICOLON {
         ; 
 
 assignment: VARIABLE EQUALS expressions SEMICOLON {
+                // checking if variable is declared or not
+                std::string varName = $1;
+                checkVarDeclar(varName);
+                
                 CodeNode* node = new CodeNode();
                 node->code = $3->code;
                 node->code += std::string("= ") + $1 + std::string(", ") + $3->name + std::string("\n");
                 $$ = node;
-
-                // checking if variable is declared or not
-                std::string varName = $1;
-                checkVarDeclar(varName);
         } 
         | VARIABLE L_BRACKET r_var R_BRACKET EQUALS expressions SEMICOLON {
                 CodeNode* node = new CodeNode();
