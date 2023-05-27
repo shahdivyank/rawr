@@ -1,10 +1,11 @@
 %{ 
-#include<stdio.h>
+#include<stdio.h> 
 #include<string>
 #include<vector>
 #include<string.h>
 #include<stdlib.h>
 #include <sstream>
+#include <algorithm>
 
 extern int yylex(void);
 void yyerror(const char *msg);
@@ -14,7 +15,6 @@ void yyerror(const char *msg);
 enum Type { Integer, Array };
 
 struct CodeNode {
-
     std::string code; // generated code as a string.
     std::string name;
 };
@@ -51,14 +51,29 @@ Function *get_function() {
 }
 
 bool find(std::string &value) {
-  Function *f = get_function();
-  for(int i=0; i < f->declarations.size(); i++) {
-    Symbol *s = &f->declarations[i];
-    if (s->name == value) {
-      return true;
-    }
-  }
-  return false;
+        Function *f = get_function();
+        for(int i=0; i < f->declarations.size(); i++) {
+                Symbol *s = &f->declarations[i];
+                if (s->name == value) {
+                        return true;
+                }
+        }
+        
+        return false;
+}
+
+bool findArray(std::string &value) {
+        Function *f = get_function();
+        for(int i = 0; i < f->declarations.size(); i++) {
+                Symbol *s = &f->declarations[i];
+
+                // checks for both type and value (want array type only here)
+                if((s->type == Array) && (s->name == value) ) {
+                        return true;
+                }
+        }
+        
+        return false;
 }
 
 void add_function_to_symbol_table(std::string &value) {
@@ -91,7 +106,6 @@ void print_symbol_table(void) {
 
 // 1. using a variable w/o having first declared it
 void checkVarDeclar(std::string valOfVar) {
-
         bool varFound = false;
         for(int i=0; i<symbol_table.size(); i++) {
                 for(int j=0; j<symbol_table[i].declarations.size(); j++) {
@@ -103,7 +117,7 @@ void checkVarDeclar(std::string valOfVar) {
         }
 
         if(!varFound) {
-                std::string errorMsg = "ERROR! - variable of the name '" + valOfVar + "' isn't declared!\n";
+                std::string errorMsg = "ERROR! - variable '" + valOfVar + "' isn't declared!\n";
                 printf(errorMsg.c_str());
                 exit(1);
         }
@@ -122,14 +136,62 @@ void checkFuncDefined(std::string valOfFunc) {
         }
 
         if(!funcFound) {
-                std::string errorMsg = "ERROR! - function of the name '" + valOfFunc + "' isn't defined!\n";
+                std::string errorMsg = "ERROR! - function '" + valOfFunc + "' isn't defined!\n";
                 printf(errorMsg.c_str());
                 exit(1);
         }
 }
 
-// 3. Not defining a main function.
+// 3. Not defining a main function. - we define w/ syntax level
 
+// 4. array helper functions
+// when using a variable as an array --> ERROR
+void checkIfVarIsArr(std::string arrVal) {
+        bool varIsArr = false; 
+
+        if(findArray(arrVal)) {
+                varIsArr = true;
+        }
+
+        if(varIsArr) {
+                std::string errorMsg = "ERROR! - the array '" + arrVal + "' isn't a variable! You need to include brackets.\n";
+                printf(errorMsg.c_str());
+                exit(1);
+        }
+}
+
+// when using an array as a variable --> ERROR
+void checkIfArrIsVar(std::string varVal) {
+        bool arrIsVar = false; 
+
+        if(find(varVal)) {
+                arrIsVar = true;
+        }
+
+        if(arrIsVar) {
+                std::string errorMsg = "ERROR! - the variable '" + varVal + "' isn't an array! Don't include brackets!!\n";
+                printf(errorMsg.c_str());
+                exit(1);
+        }
+}
+
+void checkFuncDuplicate (std::string funcName){
+        for (int i =0; i < symbol_table.size(); i++){
+                if (symbol_table.at(i).name == funcName ){
+                        std::string errorMsg = "Error: function " + funcName + " is already defined\n"; 
+                        printf(errorMsg.c_str()); 
+                        exit(1); 
+                }
+        }
+}
+
+void checkVarDuplicate( std::string variableName){
+        if (find(variableName)){
+                std::string errorMsg = "Error: variable is already declared " + variableName + "\n"; 
+                printf(errorMsg.c_str()); 
+                exit(1); 
+        }
+}
 
 extern FILE* yyin;   
 
@@ -159,6 +221,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 
 prog_start: functions {
         std::string funcName = "main";
+        // checkVarDuplicate(funcName); 
         add_function_to_symbol_table(funcName);
         } main { 
         CodeNode *functions = $1;
@@ -171,12 +234,9 @@ prog_start: functions {
         CodeNode *node = new CodeNode;
         node->code = code;
 
-
         print_symbol_table();
-        // TODO NEED TO UNCOMMENT IN END
-        // printf("Generated code:\n");
-        // printf("%s\n", code.c_str());
-
+        printf("Generated code:\n");
+        printf("%s\n", code.c_str());
  }; 
 
 functions: function functions { 
@@ -197,7 +257,9 @@ functions: function functions {
 
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
+                checkFuncDuplicate(funcName);
                 add_function_to_symbol_table(funcName);
+                 
         } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
                 CodeNode *node = new CodeNode;
 
@@ -207,11 +269,6 @@ function: CONST INT VARIABLE {
                 node->code += std::string("ret ") + $11->name + std::string("\nendfunc\n\n");
 
                 $$ = node;
-
-                // symbol table
-                std::string funcName = $3;
-                // add_function_to_symbol_table(funcName);
-                // console.log("Function added to symbol table");
         }
         ;
 
@@ -239,8 +296,8 @@ parameter: INT VARIABLE {
                 // Add to symbol table
                 std::string varName = $2;
                 Type t = Integer;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
-
         }
         ;
 
@@ -350,9 +407,6 @@ statement: initialization {
         ;
 
 function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
-                // to add right here - PAULIAN
-                // printf("i am being defined\n\n");
-
                 std::string funcName = $3;
                 checkFuncDefined(funcName);
 
@@ -366,14 +420,12 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table - DOUBLE CHECK
                 Type t = Integer;
                 std::string varName = $2;
+                checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
 
                 CodeNode *node = new CodeNode;
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
-
-                
-
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
@@ -383,7 +435,12 @@ initialization: INT VARIABLE SEMICOLON {
                 // Add symbol table
                 Type t = Array;
                 std::string arrName = $2;
+                checkVarDuplicate(arrName); 
                 add_variable_to_symbol_table(arrName, t);
+
+                // DINO 
+                // std::string arrSize = $4->name;
+                // checkArrSize(arrSize);
         } 
         ; 
 
@@ -391,6 +448,9 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 // checking if variable is declared or not
                 std::string varName = $1;
                 checkVarDeclar(varName);
+
+                // check if variable is an array - PAULIAN 
+                checkIfVarIsArr(varName);
                 
                 CodeNode* node = new CodeNode();
                 node->code = $3->code;
@@ -402,6 +462,10 @@ assignment: VARIABLE EQUALS expressions SEMICOLON {
                 node->code = $6->code;
                 node->code += std::string("[]= ") + $1 + std::string(", ") + $3->name + std::string(", ") + $6->name + std::string("\n");
                 $$ = node; 
+
+                // check if the "array" is a variable or not - DINOSAUR
+                std::string varName = $1;
+                checkIfArrIsVar(varName);
         } 
         | VARIABLE EQUALS VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode* node = new CodeNode();
@@ -627,6 +691,9 @@ int main(int argc, char** argv){
     if (yyparse() != 0){
         return 1; 
     }
+
+    printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
+
     return 0;
 }
 
