@@ -91,6 +91,10 @@ void print_symbol_table(void) {
 
 // 1. using a variable w/o having first declared it
 void checkVarDeclar(std::string valOfVar) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03ebd628ef65045e8502243b365ea7aaaa751744
         bool varFound = false;
         for(int i=0; i<symbol_table.size(); i++) {
                 for(int j=0; j<symbol_table[i].declarations.size(); j++) {
@@ -116,7 +120,7 @@ void checkFuncDefined(std::string valOfFunc) {
         for(int i = 0; i < symbol_table.size(); i++) {
                 if(symbol_table[i].name.c_str() == valOfFunc) {
                         funcFound = true;
-                        printf("im found");
+                        // printf("im found");
                 }
         }
 
@@ -194,8 +198,6 @@ prog_start: functions {
  }; 
 
 functions: function functions { 
-                // checkFuncDefined(funcName);
-
                 CodeNode *function = $1;
                 CodeNode *functions = $2;
 
@@ -213,12 +215,10 @@ functions: function functions {
 
 function: CONST INT VARIABLE {
                 std::string funcName = $3;
-                // checkFuncDefined(funcName);
                 checkFuncDuplicate(funcName);
                 add_function_to_symbol_table(funcName);
                  
         } L_PAR parameters R_PAR L_BRACE statements RET r_var SEMICOLON R_BRACE {
-                // printf("i am being defined\n\n");
                 CodeNode *node = new CodeNode;
 
                 node->code = std::string("func ") + $3 + std::string("\n");
@@ -256,8 +256,6 @@ parameter: INT VARIABLE {
                 Type t = Integer;
                 checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
-
-                
         }
         ;
 
@@ -330,7 +328,6 @@ statement: initialization {
                 $$ = node;
         }
         | assignment {
-                // printf("I AM CALLED ON LINE 307 UNDER STATEMENT\n");
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
@@ -368,6 +365,12 @@ statement: initialization {
         ;
 
 function_call: VARIABLE EQUALS VARIABLE L_PAR arguments R_PAR SEMICOLON {
+                // to add right here - PAULIAN
+                // printf("i am being defined\n\n");
+
+                std::string funcName = $3;
+                checkFuncDefined(funcName);
+
                 CodeNode *node = new CodeNode;
                 node->code = $5->code;
                 node->code += std::string("call " ) + $3 + std::string(", ") + $1 + std::string("\n");
@@ -384,7 +387,6 @@ initialization: INT VARIABLE SEMICOLON {
                 CodeNode *node = new CodeNode;
                 node->code = std::string(". " ) + $2 + std::string("\n");
                 $$ = node;
-                
         }
         | INT VARIABLE L_BRACKET r_var R_BRACKET SEMICOLON {
                 CodeNode *node = new CodeNode;
