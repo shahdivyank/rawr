@@ -50,4 +50,3 @@ call multiply, e
 .> e
 endfunc
 
-Total Count of Variables: 2 Integers, 3 Operators, 8 Parentheses, 0 Equal Signs 

@@ -532,9 +532,6 @@ int main(int argc, char** argv){
     if (yyparse() != 0){
         return 1; 
     }
-
-    printf("Total Count of Variables: %d Integers, %d Operators, %d Parentheses, %d Equal Signs \n", integers, operators, parentheses, equals);
-
     return 0;
 }
 

@@ -26,4 +26,3 @@ func main
 .[]> arr, 3
 endfunc
 
-Total Count of Variables: 16 Integers, 3 Operators, 10 Parentheses, 0 Equal Signs 
