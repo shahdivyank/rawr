@@ -1,18 +1,16 @@
 main () {
-    int c;
-    c = 999;
+    int i;
+    i = 0;
 
-    int d;
-    d = 1;
+    int j;
+    j = 0;
 
-    int e;
-    e = 0;
-
-    if(5 < 3 && 5 > 2) {
-        rout(d);
-    } else {
-        rout(e);
+    while(i < 10) {
+        while(j < 10) {
+            rout(i);
+            j = j + 1;
+        }
+        i = i + 1;
+        j = 0;
     }
-
-    rout(c);
 }
