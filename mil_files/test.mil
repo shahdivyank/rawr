@@ -1,8 +1,19 @@
-func main 
+func add
 . a
-= a, 5
+= a, $0
+. b
+= b, $1
+. c
 . temp_0
-+ temp_0, a, 5
-= a, temp_0
-.> a
++ temp_0, a, b
+= c, temp_0
+ret c
+endfunc
+
+func main 
+. result
+param 1
+param 3
+call add, result
+.> result
 endfunc

@@ -33,6 +33,7 @@ struct Function {
 
 std::vector <Function> symbol_table;
 int tempVariableCount = 0;
+int parameterCount = -1;
 
 std::string generateTemp() {
         std::stringstream temp;
@@ -293,11 +294,13 @@ parameters: parameter COMMA parameters{
                 CodeNode *node = new CodeNode;
                 node->code = $1->code + $3->code;
                 $$ = node;
+                
         } 
         | parameter {
                 CodeNode *node = new CodeNode;
                 node->code = $1->code;
                 $$ = node;
+                
         }
         | %empty { 
                CodeNode *node = new CodeNode;
@@ -306,16 +309,22 @@ parameters: parameter COMMA parameters{
         ;
 
 parameter: INT VARIABLE {
+                parameterCount++;
                 CodeNode *node = new CodeNode;
-                node->code = std::string(". " ) + $2 + std::string("\n");
-                $$ = node;
 
-                // Add to symbol table
                 std::string varName = $2;
                 Type t = Integer;
                 checkIsKeyword(varName); 
                 checkVarDuplicate(varName); 
                 add_variable_to_symbol_table(varName, t);
+
+                node->code = std::string(". " ) + varName + std::string("\n");
+                
+                std::stringstream temp;
+                temp << std::string("$") << parameterCount;
+                node->code += std::string("= ") + varName + ", " + temp.str() + "\n";
+               
+                $$ = node;
         }
         ;
 
