@@ -3,28 +3,23 @@ func main
 = i, 0
 . j
 = j, 0
-: _label_3
+: _start_0
 . _temp_0
 < _temp_0, i, 10
-?:= _label_4, _temp_0 
-:= _label_5
-: _label_4
-: _label_0
+?:= _label_2, _temp_0 
+:= _end_0
+: _label_2
 . _temp_1
-< _temp_1, j, 10
-?:= _label_1, _temp_1 
-:= _label_2
++ _temp_1, i, 1
+= i, _temp_1
+. _temp_2
+<= _temp_2, i, 5
+?:= _label_0, _temp_2
+:= _label_1
+: _label_0
+:= _start_0
 : _label_1
 .> i
-. _temp_2
-+ _temp_2, j, 1
-= j, _temp_2
-:= _label_0
-: _label_2
-. _temp_3
-+ _temp_3, i, 1
-= i, _temp_3
-= j, 0
-:= _label_3
-: _label_5
+:= _start_0
+: _end_0
 endfunc

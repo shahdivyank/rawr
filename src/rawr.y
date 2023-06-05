@@ -34,7 +34,10 @@ struct Function {
 std::vector <Function> symbol_table;
 int tempVariableCount = 0;
 int labelVariableCount = 0;
+int endVariableCount = 0;
+int startVariableCount = 0;
 int parameterCount = -1;
+int loop = 0;
 
 std::string generateTemp() {
         std::stringstream temp;
@@ -48,6 +51,20 @@ std::string generateLabel() {
         label << std::string("_label_") << labelVariableCount;
         labelVariableCount++;
         return label.str();
+}
+
+std::string generateEnd() {
+        std::stringstream end;
+        end << std::string("_end_") << endVariableCount;
+        endVariableCount++;
+        return end.str();
+}
+
+std::string generateStart() {
+        std::stringstream start;
+        start << std::string("_start_") << startVariableCount;
+        startVariableCount++;
+        return start.str();
 }
 
 Function *get_function() {
@@ -233,7 +250,7 @@ int integers = 0, operators = 0, parentheses = 0, equals = 0;
 %token L_PAR R_PAR L_BRACE R_BRACE L_BRACKET R_BRACKET
 %token EQS_TO NOT_EQS_TO G_THAN G_THAN_EQUALS L_THAN L_THAN_EQUALS AND OR
 %token SEMICOLON COMMA
-%token INT IF ELSE WHILE BR READ WRITE MAIN RET CONST
+%token INT IF ELSE WHILE BR CONTINUE READ WRITE MAIN RET CONST
 
 %token <character> VARIABLE
 %token <character> NUMBER
@@ -436,8 +453,27 @@ statement: initialization {
                 $$ = node;
         }
         | BR SEMICOLON {
+                if(loop == 0) {
+                        std::string errorMsg = "BREAK not in loop statement!\n";
+                        printf(errorMsg.c_str());
+                        exit(1);
+                }
+                std::stringstream statement;
+                statement << std::string("_end_") << endVariableCount;
                 CodeNode *node = new CodeNode;
-                node->code = "BREAK";
+                node->code = ":= " + statement.str() + "\n";
+                $$ = node;
+        }
+        | CONTINUE SEMICOLON {
+                if(loop == 0) {
+                        std::string errorMsg = "CONTINUE not in loop statement!\n";
+                        printf(errorMsg.c_str());
+                        exit(1);
+                }
+                std::stringstream statement;
+                statement << std::string("_start_") << startVariableCount;
+                CodeNode *node = new CodeNode;
+                node->code = ":= " + statement.str() + "\n";
                 $$ = node;
         }
         ;
@@ -665,20 +701,23 @@ conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE {
         }
         ;
 
-loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                std::string start = generateLabel();
+loop: WHILE { loop = 1; } L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
+                loop = 1;
+                std::string start = generateStart();
                 std::string body = generateLabel();
-                std::string end = generateLabel();
+                std::string end = generateEnd();
 
                 CodeNode *node = new CodeNode;
                 node->code = ": " + start + "\n";
-                node->code += $3->code;
-                node->code += "?:= " + body + ", " + $3->name + " \n";
+                node->code += $4->code;
+                node->code += "?:= " + body + ", " + $4->name + " \n";
                 node->code += ":= " + end + "\n";
                 node->code += ": " + body + "\n";
-                node->code += $6->code;
+                node->code += $7->code;
                 node->code += ":= " + start + "\n";
                 node->code += ": " + end + "\n";
+                
+                loop = 0;
                 $$ = node;
         }
     ;
