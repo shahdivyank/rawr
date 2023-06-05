@@ -28,7 +28,9 @@ main() {
     // "Complex" expression 
     a = 3;
     b = 5;
-    c = a * b + 9;
+    int temp;
+    temp = b * 9;
+    c = a + b * 9;
     rout(c);
 }
 

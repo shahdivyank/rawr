@@ -19,7 +19,9 @@ main() {
     arr[2] = 100;
     rout(arr[2]);
 
-    arr[3] = arr[0] * arr[1] - arr[2];
+    int temp;
+    temp = arr[1] - arr[2];
+    arr[3] = arr[0] * temp;
     rout(arr[3]);
 }
 

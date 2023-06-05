@@ -1,3 +1,6 @@
-main () {
+main() {
     int a;
+    a = 5;
+    a = a + 5;
+    rout(a);
 }

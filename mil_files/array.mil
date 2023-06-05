@@ -12,17 +12,18 @@ func main
 .[]> arr, 1
 []= arr, 2, 100
 .[]> arr, 2
+. temp
 . temp_1
-=[] temp_1, arr, 0
+=[] temp_1, arr, 1
 . temp_2
-=[] temp_2, arr, 1
+=[] temp_2, arr, 2
 . temp_3
-=[] temp_3, arr, 2
+- temp_3, temp_1, temp_2
+= temp, temp_3
 . temp_4
-- temp_4, temp_2, temp_3
+=[] temp_4, arr, 0
 . temp_5
-* temp_5, temp_1, temp_4
+* temp_5, temp_4, temp
 []= arr, 3, temp_5
 .[]> arr, 3
 endfunc
-
