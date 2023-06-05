@@ -666,12 +666,20 @@ conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE {
         ;
 
 loop: WHILE L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                // CodeNode *conditions  = $3;
-                // CodeNode *statements = $6;
-                // std::string code = "WHILE" + conditions->code + "\n" + statements->code + "\nENDWHILE";
-                // CodeNode *node = new CodeNode;
-                // node->code = code;
-                // parentheses += 2; 
+                std::string start = generateLabel();
+                std::string body = generateLabel();
+                std::string end = generateLabel();
+
+                CodeNode *node = new CodeNode;
+                node->code = ": " + start + "\n";
+                node->code += $3->code;
+                node->code += "?:= " + body + ", " + $3->name + " \n";
+                node->code += ":= " + end + "\n";
+                node->code += ": " + body + "\n";
+                node->code += $6->code;
+                node->code += ":= " + start + "\n";
+                node->code += ": " + end + "\n";
+                $$ = node;
         }
     ;
 
