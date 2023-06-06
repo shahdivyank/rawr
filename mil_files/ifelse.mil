@@ -1,0 +1,22 @@
+func main 
+. a
+= a, 56
+. b
+= b, 12
+. c
+= c, 7
+. _temp_0
+> _temp_0, a, b
+. _temp_1
+< _temp_1, a, 50
+. _temp_2
+&& _temp_2, _temp_0, _temp_1
+?:= _label_0, _temp_2
+:= _label_1
+: _label_0
+.> a
+:= _label_2
+: _label_1
+.> c
+: _label_2
+endfunc

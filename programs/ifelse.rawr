@@ -1,12 +1,20 @@
-int main(){
-    int a = 5;
-    int b = 3;
+main() {
+    // initialize var a
+    int a;
+    a = 56;
 
-    if (a > b) {
+    // initialize var b
+    int b; 
+    b = 12;
+
+    // initialize var c 
+    int c; 
+    c = 7;
+
+    // if else statements - should print out 7 (variable c)
+    if (a > b && a < 50) {
         rout(a);
     } else {
-        rout(b);
+        rout(c);
     }
-
-    return 0;
 }
