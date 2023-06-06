@@ -1,0 +1,16 @@
+main() {
+    int a;
+    a = 0;
+
+    int b;
+    b = 0;
+
+    while(a < 10) {
+        while(b < 10) {
+            rout(a);
+            b = b + 1;
+        }
+        a = a + 1;
+        b = 0;
+    }
+}
