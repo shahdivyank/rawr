@@ -1,0 +1,15 @@
+main() {
+    int a;
+    a = 0;
+
+    int b;
+    b = 20;
+
+    if(a > 5 && b > 10) { 
+        if(a > 8 && b > 15) {
+            rout(a);
+        }
+    } else {
+        rout(b);
+    }
+}

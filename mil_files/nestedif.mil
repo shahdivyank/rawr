@@ -1,0 +1,30 @@
+func main 
+. a
+= a, 0
+. b
+= b, 20
+. _temp_0
+> _temp_0, a, 5
+. _temp_1
+> _temp_1, b, 10
+. _temp_2
+&& _temp_2, _temp_0, _temp_1
+?:= _label_2, _temp_2
+:= _label_3
+: _label_2
+. _temp_3
+> _temp_3, a, 8
+. _temp_4
+> _temp_4, b, 15
+. _temp_5
+&& _temp_5, _temp_3, _temp_4
+?:= _label_0, _temp_5
+:= _label_1
+: _label_0
+.> a
+: _label_1
+:= _label_4
+: _label_3
+.> b
+: _label_4
+endfunc
