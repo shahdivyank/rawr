@@ -462,6 +462,8 @@ statement: initialization {
                 statement << std::string("_end_") << endVariableCount;
                 CodeNode *node = new CodeNode;
                 node->code = ":= " + statement.str() + "\n";
+                endVariableCount--;
+                startVariableCount--;
                 $$ = node;
         }
         | CONTINUE SEMICOLON {
@@ -719,6 +721,9 @@ loop: WHILE { loop = 1; } L_PAR conditions R_PAR L_BRACE statements R_BRACE {
                 
                 loop = 0;
                 $$ = node;
+
+                endVariableCount--;
+                startVariableCount--;
         }
     ;
 
