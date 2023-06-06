@@ -704,7 +704,6 @@ conditional: IF L_PAR conditions R_PAR L_BRACE statements R_BRACE {
         ;
 
 loop: WHILE { loop = 1; } L_PAR conditions R_PAR L_BRACE statements R_BRACE { 
-                loop = 1;
                 std::string start = generateStart();
                 std::string body = generateLabel();
                 std::string end = generateEnd();

@@ -1,0 +1,21 @@
+func main 
+. a
+= a, 10
+. i
+= i, 0
+. b
+= b, 5
+: _start_0
+. _temp_0
+< _temp_0, a, 15
+?:= _label_0, _temp_0 
+:= _end_0
+: _label_0
+.> a
+. _temp_1
++ _temp_1, a, 1
+= a, _temp_1
+:= _start_0
+: _end_0
+= a, 5
+endfunc

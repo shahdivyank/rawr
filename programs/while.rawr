@@ -1,26 +1,18 @@
 // this is a while loop that prints out numbers from 1 to 100
 
-int main() {
+main() {
     int a; 
     a = 10;
     int i; 
     i = 0;
-    int b ; 
-    b = 5
+    int b; 
+    b = 5;
 
     while(a < 15) {
-        i = 1;
+        rout(a);
+        a  = a + 1;
     }
 
     a = 5; 
-
-    while (a <= 5){
-        while(i < 4){
-            i = i + 1; 
-            rout (i); 
-        }
-
-    }
-    return 0;
 }
 
