@@ -1,4 +1,4 @@
-// this is a while loop that prints out numbers from 1 to 100 and breaks when it reaches 50
+// this is a while loop that prints out numbers from 1 to 10 and breaks when it reaches 5
 
 main() {
     int i;
