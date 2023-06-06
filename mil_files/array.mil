@@ -4,26 +4,26 @@ func main
 . b
 = a, 5
 = b, 2
-. temp_0
-+ temp_0, a, b
-[]= arr, 0, temp_0
+. _temp_0
++ _temp_0, a, b
+[]= arr, 0, _temp_0
 .[]> arr, 0
 []= arr, 1, 20
 .[]> arr, 1
 []= arr, 2, 100
 .[]> arr, 2
 . temp
-. temp_1
-=[] temp_1, arr, 1
-. temp_2
-=[] temp_2, arr, 2
-. temp_3
-- temp_3, temp_1, temp_2
-= temp, temp_3
-. temp_4
-=[] temp_4, arr, 0
-. temp_5
-* temp_5, temp_4, temp
-[]= arr, 3, temp_5
+. _temp_1
+=[] _temp_1, arr, 1
+. _temp_2
+=[] _temp_2, arr, 2
+. _temp_3
+- _temp_3, _temp_1, _temp_2
+= temp, _temp_3
+. _temp_4
+=[] _temp_4, arr, 0
+. _temp_5
+* _temp_5, _temp_4, temp
+[]= arr, 3, _temp_5
 .[]> arr, 3
 endfunc

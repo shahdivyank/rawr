@@ -2,20 +2,20 @@ func main
 .[] a, 8
 []= a, 1, 56
 . b
-. temp_0
-=[] temp_0, a, 1
-. temp_1
-+ temp_1, 5, 6
-. temp_2
-+ temp_2, temp_0, temp_1
-= b, temp_2
+. _temp_0
+=[] _temp_0, a, 1
+. _temp_1
++ _temp_1, 5, 6
+. _temp_2
++ _temp_2, _temp_0, _temp_1
+= b, _temp_2
 .> b
-. temp_3
-+ temp_3, 4, 7
-. temp_4
-+ temp_4, 2, temp_3
-. temp_5
-+ temp_5, 1, temp_4
-= b, temp_5
+. _temp_3
++ _temp_3, 4, 7
+. _temp_4
++ _temp_4, 2, _temp_3
+. _temp_5
++ _temp_5, 1, _temp_4
+= b, _temp_5
 .> b
 endfunc
